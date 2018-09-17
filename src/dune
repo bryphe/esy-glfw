@@ -1,11 +1,10 @@
 (library
-    (name glfw)
-    (public_name glfw)
+    (name EsyGlfw)
     (js_of_ocaml (javascript_files stubs.js))
     (flags (:include flags.sexp))
     (c_names glad)
     (c_flags (:include c_flags.sexp))
-    (cxx_names glfw_wrapper)
+    (cxx_names glfw_wrapper stb_image stb_image_wrapper)
     (cxx_flags (:include cxx_flags.sexp)))
 
 (rule

@@ -1,4 +1,5 @@
-open Glfw;
+open EsyGlfw;
+open EsyGlfw.Glfw;
 
 let loadShader = (shaderType, source) => {
   let shader = glCreateShader(shaderType);
@@ -24,6 +25,8 @@ let () = {
   let w = glfwCreateWindow(800, 600, "test");
   glfwMakeContextCurrent(w);
 
+  let img = Image.load ("test.jpg");
+  Image.debug_print(img);
   let vsSource = {|
         #ifndef GL_ES
         #define lowp
