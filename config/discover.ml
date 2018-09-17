@@ -18,7 +18,7 @@ let get_os =
         | "Darwin" -> Mac
         | _ -> Unknown
 
-let c_flags = ["-I";  "./../../../include"]
+let c_flags = ["-I";  "./../../../include"; "-I"; "./../../../src"]
 
 let ccopt s = ["-ccopt"; s]
 let cclib s = ["-cclib"; s]

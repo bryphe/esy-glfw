@@ -4,13 +4,9 @@
 
 #include "stb_image.h"
 
+#include "image.h"
+
 extern "C" {
-    struct ImageInfo {
-        int width;
-        int height;
-        int numChannels;
-        unsigned char* data;
-    };
 
     CAMLprim value
     caml_stb_image_print_hello(value unit)

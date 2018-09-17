@@ -9,6 +9,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include <image.h>
+
 extern "C" {
 
     CAMLprim value
@@ -226,6 +228,47 @@ extern "C" {
         int uloc = (int)vUniformLocation;
 
         glUniformMatrix4fv(uloc, 1, GL_FALSE, &mat[0]);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glCreateTexture(value vUnit) {
+        unsigned int texture;
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        return (value)texture;
+    }
+
+    CAMLprim value
+    caml_glBindTexture(value vTextureType, value vTexture) {
+        // TODO: Implement textureType
+        unsigned int texture = (unsigned int)vTexture;
+        glBindTexture(GL_TEXTURE_2D, texture);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glTexImage2D(value vTextureType, value vTexturePixelDataFormat, value vTexturePixelDataType, value vImage) {
+        // TODO: Parameters...
+        ImageInfo *pImage = (ImageInfo *)vImage;
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, pImage->width, pImage->height, 0, GL_RGB, GL_UNSIGNED_BYTE, pImage->data);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glTexParameteri(value vTextureType, value vTextureParameter, value vTextureParameterValue) {
+        // TODO: Parameters! No hardcoding!
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glGenerateMipmap(value vTextureType) {
+        // TODO: Use value!
+        glGenerateMipmap(GL_TEXTURE_2D);
         return Val_unit;
     }
 
