@@ -51,6 +51,36 @@ type uniformLocation;
 let glGetUniformLocation: (program, string) => uniformLocation;
 let glUniformMatrix4fv: uniformLocation => unit;
 
+type textureType =
+  | GL_TEXTURE_2D;
+
+type textureParameter =
+  | GL_TEXTURE_WRAP_S
+  | GL_TEXTURE_WRAP_T
+  | GL_TEXTURE_MIN_FILTER
+  | GL_TEXTURE_MAX_FILTER;
+
+type textureParameterValue =
+  | GL_REPEAT
+  | GL_LINEAR
+
+type texturePixelDataFormat =
+  | GL_RGB
+  | GL_RGBA
+
+type texturePixelDataType =
+  | GL_UNSIGNED_BYTE
+
+type width = number;
+type height = number;
+
+type texture;
+let glCreateTexture: unit => texture;
+let glBindTexture: (textureType, texture) => unit;
+let glTexParameteri: (textureType, textureParameter, textureParamterValue) => unit;
+let glTexImage2D: (textureType, texturePixelDataFormat, texturePixelDataType, Image.t) => unit;
+let glGenerateMipmap: (textureType) => unit;
+
 type bufferType =
   | GL_ARRAY_BUFFER;
 
