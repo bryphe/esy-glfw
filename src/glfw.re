@@ -60,6 +60,34 @@ external glGetUniformLocation: (program, string) => uniformLocation =
 external glUniformMatrix4fv: uniformLocation => /* todo */ unit =
   "caml_glUniformMatrix4fv";
 
+type texture;
+type textureType =
+  | GL_TEXTURE_2D;
+
+type textureParameter =
+  | GL_TEXTURE_WRAP_S
+  | GL_TEXTURE_WRAP_T
+  | GL_TEXTURE_MIN_FILTER
+  | GL_TEXTURE_MAX_FILTER;
+
+type textureParameterValue =
+  | GL_REPEAT
+  | GL_LINEAR;
+
+type texturePixelDataFormat =
+  | GL_RGB
+  | GL_RGBA;
+
+type texturePixelDataType =
+  | GL_UNSIGNED_BYTE;
+
+
+external glCreateTexture: unit => texture = "caml_glCreateTexture";
+external glBindTexture: (textureType, texture) => unit = "caml_glBindTexture";
+external glTexParameteri: (textureType, textureParameter, textureParameterValue) => unit = "caml_glTexParameteri";
+external glTexImage2D: (textureType, texturePixelDataFormat, texturePixelDataType, Image.t) => unit = "caml_glTexImage2D";
+external glGenerateMipmap: (textureType) => unit = "caml_glGenerateMipmap";
+
 type bufferType =
   | GL_ARRAY_BUFFER;
 

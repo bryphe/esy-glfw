@@ -71,13 +71,10 @@ type texturePixelDataFormat =
 type texturePixelDataType =
   | GL_UNSIGNED_BYTE
 
-type width = number;
-type height = number;
-
 type texture;
 let glCreateTexture: unit => texture;
 let glBindTexture: (textureType, texture) => unit;
-let glTexParameteri: (textureType, textureParameter, textureParamterValue) => unit;
+let glTexParameteri: (textureType, textureParameter, textureParameterValue) => unit;
 let glTexImage2D: (textureType, texturePixelDataFormat, texturePixelDataType, Image.t) => unit;
 let glGenerateMipmap: (textureType) => unit;
 
