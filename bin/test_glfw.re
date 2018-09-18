@@ -34,7 +34,7 @@ let () = {
 
         attribute vec3 aVertexPosition;
         attribute vec4 aVertexColor;
-        attribute vec3 aVertexTexCoord;
+        attribute vec2 aVertexTexCoord;
 
         uniform mat4 transform;
 
