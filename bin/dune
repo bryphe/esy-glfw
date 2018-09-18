@@ -5,3 +5,7 @@
         Bigarray
         EsyGlfw
             ))
+
+(install
+    (section bin)
+    (files test.jpg))
