@@ -13,6 +13,64 @@
 
 extern "C" {
 
+    void warn(const char *message) {
+        printf("[WARNING]: %s\n", message);
+    }
+
+    GLenum variantToTextureType(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_TEXTURE_2D;
+            default:
+                warn("Unexpected texture type!");
+                return 0;
+        }
+    }
+
+    GLenum variantToTextureParameter(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_TEXTURE_WRAP_S;
+            case 1:
+                return GL_TEXTURE_WRAP_T;
+            case 2:
+                return GL_TEXTURE_MIN_FILTER;
+            case 3:
+                return GL_TEXTURE_MAG_FILTER;
+            default:
+                warn("Unexpected texture parameter!");
+                return 0;
+        }
+    }
+
+    GLenum variantToTextureParamaterValue(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_REPEAT;
+            case 1:
+                return GL_LINEAR;
+            default:
+                warn("Unexpected texture parameter value!");
+                return 0;
+        }
+    }
+
+    GLenum variantToTexturePixelDataFormat(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_RGB;
+            case 1:
+                return GL_RGBA;
+            default:
+                warn ("Unexpected texture pixel data format!");
+                return 0;
+        }
+    }
+
+    GLenum variantToTexturePixelDataType(value vVal) {
+        return GL_UNSIGNED_BYTE;
+    }
+
     CAMLprim value
     caml_print_hello(value unit)
     {
