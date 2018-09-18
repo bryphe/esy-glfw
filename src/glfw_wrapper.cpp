@@ -334,8 +334,7 @@ extern "C" {
 
     CAMLprim value
     caml_glGenerateMipmap(value vTextureType) {
-        // TODO: Use value!
-        glGenerateMipmap(GL_TEXTURE_2D);
+        glGenerateMipmap(variantToTextureType(vTextureType));
         return Val_unit;
     }
 
