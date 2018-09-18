@@ -58,7 +58,7 @@ type textureParameter =
   | GL_TEXTURE_WRAP_S
   | GL_TEXTURE_WRAP_T
   | GL_TEXTURE_MIN_FILTER
-  | GL_TEXTURE_MAX_FILTER;
+  | GL_TEXTURE_MAG_FILTER;
 
 type textureParameterValue =
   | GL_REPEAT

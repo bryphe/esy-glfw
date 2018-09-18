@@ -43,7 +43,7 @@ extern "C" {
         }
     }
 
-    GLenum variantToTextureParamaterValue(value vVal) {
+    GLenum variantToTextureParameterValue(value vVal) {
         switch (Int_val(vVal)) {
             case 0:
                 return GL_REPEAT;
@@ -321,11 +321,10 @@ extern "C" {
 
     CAMLprim value
     caml_glTexParameteri(value vTextureType, value vTextureParameter, value vTextureParameterValue) {
-        // TODO: Parameters! No hardcoding!
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(
+                variantToTextureType(vTextureType),
+                variantToTextureParameter(vTextureParameter),
+                variantToTextureParameterValue(vTextureParameterValue));
         return Val_unit;
     }
 
