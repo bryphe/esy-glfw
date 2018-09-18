@@ -293,14 +293,12 @@ extern "C" {
     caml_glCreateTexture(value vUnit) {
         unsigned int texture;
         glGenTextures(1, &texture);
-        printf("glTexImage2D: create texture: %d!\n", texture);
         return (value)texture;
     }
 
     CAMLprim value
     caml_glBindTexture(value vTextureType, value vTexture) {
         unsigned int texture = (unsigned int)vTexture;
-        printf("glTexImage2D: binding texture: %d!\n", texture);
         glBindTexture(variantToTextureType(vTextureType), texture);
         return Val_unit;
     }
@@ -308,7 +306,6 @@ extern "C" {
     CAMLprim value
     caml_glTexImage2D(value vTextureType, value vTexturePixelDataFormat, value vTexturePixelDataType, value vImage) {
         ImageInfo *pImage = (ImageInfo *)vImage;
-        printf("glTexImage2D: binding image!\n");
         glTexImage2D(
                 variantToTextureType(vTextureType), 
                 0,
