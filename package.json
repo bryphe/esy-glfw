@@ -23,7 +23,9 @@
     "@opam/dune": "*",
     "@esy-ocaml/reason": "*",
     "refmterr": "*",
+    "@opam/js_of_ocaml": "*",
     "@opam/js_of_ocaml-compiler": "*",
+    "@opam/js_of_ocaml-lwt": "*",
     "@opam/lwt": "^4.0.0",
     "@opam/lwt_ppx": "^1.1.0",
     "esy-cmake": "*"
