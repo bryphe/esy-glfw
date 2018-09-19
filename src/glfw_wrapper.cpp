@@ -3,6 +3,9 @@
 #include <caml/mlvalues.h>
 #include <caml/bigarray.h>
 #include <caml/memory.h>
+#include <caml/alloc.h>
+#include <caml/callback.h>
+
 #include <glad/glad.h>
 
 #define GLFW_INCLUDE_NONE
@@ -12,6 +15,22 @@
 #include <image.h>
 
 extern "C" {
+
+    CAMLprim value
+    caml_test_callback_success(value vSuccess, value vFailure) {
+        CAMLparam2(vSuccess, vFailure);
+
+        caml_callback(vSuccess, Val_int(900));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_test_callback_failure(value vSuccess, value vFailure) {
+        CAMLparam2(vSuccess, vFailure);
+
+        caml_callback(vFailure, caml_copy_string("failure!"));
+        CAMLreturn(Val_unit);
+    }
 
     void warn(const char *message) {
         printf("[WARNING]: %s\n", message);

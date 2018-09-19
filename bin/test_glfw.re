@@ -1,6 +1,9 @@
 open EsyGlfw;
 open EsyGlfw.Glfw;
 
+external test_callback_success: ((int => unit), (string => unit)) => unit = "caml_test_callback_success";
+external test_callback_failure: ((int => unit), (string => unit)) => unit = "caml_test_callback_failure";
+
 let loadShader = (shaderType, source) => {
   let shader = glCreateShader(shaderType);
   let () = glShaderSource(shader, source);
@@ -19,8 +22,15 @@ let initShaderProgram = (vsSource, fsSource) => {
   shaderProgram;
 };
 
-let () = {
+let p = () => {
   print_hello();
+
+  let success = (v) => print_endline("SUCCESS: " ++ string_of_int(v));
+  let failure = (msg) => print_endline("FAILURE: " ++ msg);
+
+  test_callback_success(success, failure);
+  test_callback_failure(success, failure);
+
   let _ = glfwInit();
   let w = glfwCreateWindow(800, 600, "test");
   glfwMakeContextCurrent(w);
@@ -134,4 +144,14 @@ let () = {
   };
   print_endline("Done!");
   glfwTerminate();
+  Lwt.return(true);
 };
+
+print_endline (Sys.os_type);
+
+switch (Sys.backend_type) {
+    | Native => print_endline("native")
+    | Bytecode => print_endline("bytecode")
+    | Other(s) => print_endline(s);
+};
+
