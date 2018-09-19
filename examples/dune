@@ -1,0 +1,10 @@
+(library
+    (name EsyGlfwExamples)
+    (js_of_ocaml)
+    (libraries
+        lwt
+        EsyGlfw ))
+
+(install
+    (section bin)
+    (files test.jpg))

@@ -2,13 +2,9 @@
     (name test_glfw)
     (preprocess (pps lwt_ppx))
     (public_name test_glfw)
-    (js_of_ocaml)
     (libraries
         lwt
-        Bigarray
+        lwt.unix
         EsyGlfw
+        EsyGlfwExamples
             ))
-
-(install
-    (section bin)
-    (files test_glfw.bc.js test.jpg))

@@ -1,0 +1,14 @@
+(executable
+    (name test_glfw_js)
+    (preprocess (pps lwt_ppx))
+    (public_name test_glfw_js)
+    (js_of_ocaml)
+    (libraries
+        lwt
+        EsyGlfw
+        EsyGlfwExamples
+            ))
+
+(install
+    (section bin)
+    (files test_glfw.bc.js))

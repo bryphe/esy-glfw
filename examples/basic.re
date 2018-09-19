@@ -22,7 +22,7 @@ let initShaderProgram = (vsSource, fsSource) => {
   shaderProgram;
 };
 
-let p = () => {
+let run = () => {
   print_hello();
 
   let success = (v) => print_endline("SUCCESS: " ++ string_of_int(v));
@@ -146,5 +146,3 @@ let p = () => {
   glfwTerminate();
   Lwt.return(true);
 };
-
-p();
