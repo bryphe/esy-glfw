@@ -8,6 +8,16 @@ function caml_glfwInit() {
     // no-op
 };
 
+// Provides: caml_test_callback_success
+function caml_test_callback_success(s, f) {
+    s(999);
+}
+
+// Provides: caml_test_callback_failure
+function caml_test_callback_failure(s, f) {
+    f(caml_js_to_string("failed"));
+}
+
 //Provides: caml_glfwCreateWindow
 function caml_glfwCreateWindow(width, height, title) {
     var canvas = document.createElement("canvas");

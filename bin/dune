@@ -5,7 +5,7 @@
     (js_of_ocaml)
     (libraries
         lwt
-        lwt.unix
+        Bigarray
         EsyGlfw
             ))
 

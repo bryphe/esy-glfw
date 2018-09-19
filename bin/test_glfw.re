@@ -147,11 +147,4 @@ let p = () => {
   Lwt.return(true);
 };
 
-print_endline (Sys.os_type);
-
-switch (Sys.backend_type) {
-    | Native => print_endline("native")
-    | Bytecode => print_endline("bytecode")
-    | Other(s) => print_endline(s);
-};
-
+p();
