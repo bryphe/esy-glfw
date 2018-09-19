@@ -24,6 +24,8 @@ let initShaderProgram = (vsSource, fsSource) => {
 
 let run = () => {
   print_hello();
+  let%lwt v = Lwt.return("hello");
+  print_endline("hello from lwt: " ++ v);
 
   let success = (v) => print_endline("SUCCESS: " ++ string_of_int(v));
   let failure = (msg) => print_endline("FAILURE: " ++ msg);
