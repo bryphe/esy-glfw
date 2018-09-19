@@ -1,10 +1,11 @@
 (executable
-    (name test_glfw_js)
+    (name test_glfw)
     (preprocess (pps lwt_ppx))
     (public_name test_glfw_js)
     (js_of_ocaml)
     (libraries
         lwt
+        Bigarray
         EsyGlfw
         EsyGlfwExamples
             ))

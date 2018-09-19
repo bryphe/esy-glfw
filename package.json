@@ -7,7 +7,7 @@
     "build": [
         ["make", "build-glfw", "ROOTDIR=#{self.root}"],
         ["dune", "build"],
-        ["dune", "build", "./bin/test_glfw.bc.js"]
+        ["dune", "build", "./bin_js/test_glfw.bc.js"]
     ],
     "buildsInSource":"_build"
   },
