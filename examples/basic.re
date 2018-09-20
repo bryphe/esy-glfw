@@ -22,7 +22,7 @@ let initShaderProgram = (vsSource, fsSource) => {
   shaderProgram;
 };
 
-let r = (img) => {
+let run = () => {
   print_hello();
 
   let success = (v) => print_endline("SUCCESS: " ++ string_of_int(v));
@@ -35,6 +35,7 @@ let r = (img) => {
   let w = glfwCreateWindow(800, 600, "test");
   glfwMakeContextCurrent(w);
 
+  let%lwt img = Image.load("test.jpg");
   Image.debug_print(img);
   let vsSource = {|
         #ifndef GL_ES
@@ -143,12 +144,5 @@ let r = (img) => {
   };
   print_endline("Done!");
   glfwTerminate();
+  Lwt.return();
 };
-
-let fail = (sz) => print_endline("Failure!" ++ sz);
-
-let run = () => {
-    Image.load ("test.jpg", r, fail);
-    Lwt.return (true);
-};
-
