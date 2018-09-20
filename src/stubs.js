@@ -158,9 +158,12 @@ function caml_glDepthFunc(df) {
 }
 
 // Provides: caml_glDrawArrays
-function caml_glDrawArrays(drawMode, first, count) {
-    // TODO: Use params
-    gl().drawArrays(gl().TRIANGLES, 0, 3);
+function caml_glDrawArrays(vDrawMode, first, count) {
+    var drawMode = variantToDrawMode[vDrawMode];
+    console.log("FIRST: " + first + " COUNT: " + count + " DRAW MODE: " + drawMode);
+    console.log("glTRIANGLESTRIP: " + gl().TRIANGLE_STRIP);
+
+    gl().drawArrays(drawMode, first, count);
 }
 
 // Provides: caml_glEnable
@@ -226,6 +229,18 @@ function caml_glTexParameteri(vTextureType, vTextureParameter, vTextureParameter
 
     console.log("type: " + textureType.toString() + " textureParameter: " + textureParameter.toString() + " tpv: " + textureParameterValue.toString());
     gl().texParameteri(textureType, textureParameter, textureParameterValue);
+}
+
+// Provides: caml_glTexImage2D
+function caml_glTexImage2D(vTextureType, vTexturePixelDataFormat, vTexturePixelDataType, vImage) {
+    var textureType = joo_global_object.variantToTextureType[vTextureType];
+    gl().texImage2D(textureType, 0, gl().RGBA, gl().RGBA, gl().UNSIGNED_BYTE, vImage);
+}
+
+// Provides: caml_glGenerateMipmap
+function caml_glGenerateMipmap(vTextureType) {
+    var textureType = joo_global_object.variantToTextureType[vTextureType];
+    gl().generateMipmap(textureType)
 }
 
 // Provides: caml_glVertexAttribPointer
