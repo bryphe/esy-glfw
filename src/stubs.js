@@ -39,7 +39,38 @@ function caml_glfwCreateWindow(width, height, title) {
 // Provides: caml_glfwMakeContextCurrent
 function caml_glfwMakeContextCurrent(win) {
     var context = win.canvas.getContext('webgl');
+    var gl = context;
     window.__glfw__gl__ = context;
+
+    joo_global_object.variantToTextureType = {
+        '0': gl.TEXTURE_2D,
+    };
+
+    joo_global_object.variantToTextureParameter = {
+        '0': gl.TEXTURE_WRAP_S,
+        '1': gl.TEXTURE_WRAP_T,
+        '2': gl.TEXTURE_MIN_FILTER,
+        '3': gl.TEXTURE_MAG_FILTER,
+    };
+
+    joo_global_object.variantToTextureParameterValue = {
+        '0': gl.REPEAT,
+        '1': gl.LINEAR
+    }
+
+    joo_global_object.variantToTexturePixelDataFormat = {
+        '0': gl.RGB,
+        '1': gl.RGBA,
+    }
+
+    joo_global_object.variantToTexturePixelDataType = {
+        '0': gl.UNSIGNED_BYTE
+    }
+
+    joo_global_object.variantToDrawMode = {
+        '0': gl.TRIANGLES,
+        '1': gl.TRIANGLE_STRIP
+    }
 
     console.log("set context to: " + win.title)
 }
@@ -173,6 +204,28 @@ function caml_glShaderSource(shader, src) {
 // Provides: caml_glUseProgram
 function caml_glUseProgram(program) {
     gl().useProgram(program);
+}
+
+// Provides: caml_glCreateTexture
+function caml_glCreateTexture() {
+    return gl().createTexture();
+}
+
+// Provides: caml_glBindTexture
+function caml_glBindTexture(vTextureType, vTexture) {
+    var textureType = joo_global_object.variantToTextureType[vTextureType];
+    console.log("TEXTURE TYPE: " + textureType.toString());
+    gl().bindTexture(textureType, vTexture);
+}
+
+// Provides: caml_glTexParameteri
+function caml_glTexParameteri(vTextureType, vTextureParameter, vTextureParameterValue) {
+    var textureType = joo_global_object.variantToTextureType[vTextureType];
+    var textureParameter = joo_global_object.variantToTextureParameter[vTextureParameter];
+    var textureParameterValue = joo_global_object.variantToTextureParameterValue[vTextureParameterValue];
+
+    console.log("type: " + textureType.toString() + " textureParameter: " + textureParameter.toString() + " tpv: " + textureParameterValue.toString());
+    gl().texParameteri(textureType, textureParameter, textureParameterValue);
 }
 
 // Provides: caml_glVertexAttribPointer
