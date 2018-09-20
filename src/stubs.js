@@ -136,7 +136,6 @@ function caml_glCreateProgram() {
 
 // Provides: caml_glCreateShader
 function caml_glCreateShader(type) {
-    console.log("create shader: " + type);
     var glType;
     switch (type) {
         case 0:
@@ -160,9 +159,6 @@ function caml_glDepthFunc(df) {
 // Provides: caml_glDrawArrays
 function caml_glDrawArrays(vDrawMode, first, count) {
     var drawMode = variantToDrawMode[vDrawMode];
-    console.log("FIRST: " + first + " COUNT: " + count + " DRAW MODE: " + drawMode);
-    console.log("glTRIANGLESTRIP: " + gl().TRIANGLE_STRIP);
-
     gl().drawArrays(drawMode, first, count);
 }
 
@@ -217,7 +213,6 @@ function caml_glCreateTexture() {
 // Provides: caml_glBindTexture
 function caml_glBindTexture(vTextureType, vTexture) {
     var textureType = joo_global_object.variantToTextureType[vTextureType];
-    console.log("TEXTURE TYPE: " + textureType.toString());
     gl().bindTexture(textureType, vTexture);
 }
 
@@ -227,7 +222,6 @@ function caml_glTexParameteri(vTextureType, vTextureParameter, vTextureParameter
     var textureParameter = joo_global_object.variantToTextureParameter[vTextureParameter];
     var textureParameterValue = joo_global_object.variantToTextureParameterValue[vTextureParameterValue];
 
-    console.log("type: " + textureType.toString() + " textureParameter: " + textureParameter.toString() + " tpv: " + textureParameterValue.toString());
     gl().texParameteri(textureType, textureParameter, textureParameterValue);
 }
 
