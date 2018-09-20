@@ -4,6 +4,7 @@
     (public_name test_glfw_js)
     (js_of_ocaml)
     (libraries
+        js_of_ocaml
         lwt
         Bigarray
         EsyGlfw
@@ -12,4 +13,4 @@
 
 (install
     (section bin)
-    (files test_glfw.bc.js))
+    (files index.html test_glfw.bc.js))
