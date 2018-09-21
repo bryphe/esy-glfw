@@ -20,7 +20,7 @@ let initShaderProgram = (vsSource, fsSource) => {
   shaderProgram;
 };
 
-let () = {
+let run = () => {
   let _ = glfwInit();
   let w = glfwCreateWindow(800, 600, "test");
   glfwMakeContextCurrent(w);
