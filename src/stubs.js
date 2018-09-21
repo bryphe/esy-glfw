@@ -171,16 +171,6 @@ function caml_glGetShaderIsCompiled() {
     return true;
 }
 
-// Provides: caml_stb_image_load
-function caml_stb_image_load() {
-    return null;
-}
-
-// Provides: caml_stb_image_debug_print
-function caml_stb_image_debug_print() {
-    return null;
-}
-
 // Provides: caml_glLinkProgram
 function caml_glLinkProgram(program) {
     joo_global_object.gl.linkProgram(program);
@@ -198,8 +188,7 @@ function caml_glGetUniformLocation(program, uniformName) {
 
 // Provides: caml_glUniformMatrix4fv
 function caml_glUniformMatrix4fv(uniformLocation, uniformValue) {
-    console.log("TODO: Remove hardcoding caml_glUniformMatrix4fv")
-    return joo_global_object.gl.uniformMatrix4fv(uniformLocation, false, new Float32Array([2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]));
+    return joo_global_object.gl.uniformMatrix4fv(uniformLocation, false, uniformValue);
 }
 
 // Provides: caml_glShaderSource
@@ -214,13 +203,13 @@ function caml_glUseProgram(program) {
 
 // Provides: caml_glCreateTexture
 function caml_glCreateTexture() {
-    return gl().createTexture();
+    return joo_global_object.gl.createTexture();
 }
 
 // Provides: caml_glBindTexture
 function caml_glBindTexture(vTextureType, vTexture) {
     var textureType = joo_global_object.variantToTextureType[vTextureType];
-    gl().bindTexture(textureType, vTexture);
+    joo_global_object.gl.bindTexture(textureType, vTexture);
 }
 
 // Provides: caml_glTexParameteri
@@ -229,19 +218,19 @@ function caml_glTexParameteri(vTextureType, vTextureParameter, vTextureParameter
     var textureParameter = joo_global_object.variantToTextureParameter[vTextureParameter];
     var textureParameterValue = joo_global_object.variantToTextureParameterValue[vTextureParameterValue];
 
-    gl().texParameteri(textureType, textureParameter, textureParameterValue);
+    joo_global_object.gl.texParameteri(textureType, textureParameter, textureParameterValue);
 }
 
 // Provides: caml_glTexImage2D
 function caml_glTexImage2D(vTextureType, vTexturePixelDataFormat, vTexturePixelDataType, vImage) {
     var textureType = joo_global_object.variantToTextureType[vTextureType];
-    gl().texImage2D(textureType, 0, gl().RGBA, gl().RGBA, gl().UNSIGNED_BYTE, vImage);
+    joo_global_object.gl.texImage2D(textureType, 0, joo_global_object.gl.RGBA, joo_global_object.gl.RGBA, joo_global_object.gl.UNSIGNED_BYTE, vImage);
 }
 
 // Provides: caml_glGenerateMipmap
 function caml_glGenerateMipmap(vTextureType) {
     var textureType = joo_global_object.variantToTextureType[vTextureType];
-    gl().generateMipmap(textureType)
+    joo_global_object.gl.generateMipmap(textureType)
 }
 
 // Provides: caml_glVertexAttribPointer

@@ -13,4 +13,4 @@
 
 (install
     (section bin)
-    (files index.html test_glfw.bc.js))
+    (files gl-matrix-min.js index.html test_glfw.bc.js))

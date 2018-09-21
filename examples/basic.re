@@ -116,7 +116,7 @@ let run = () => {
     glUseProgram(shaderProgram);
     let m = Mat4.create();
     let v = Vec3.create();
-    Vec3.set(v, 2., 0.5, 0.5);
+    Vec3.set(v, 1., 2., 0.5);
     Mat4.fromScaling(m, v);
     glUniformMatrix4fv(worldUniform, m);
     glBindBuffer(GL_ARRAY_BUFFER, vb);
