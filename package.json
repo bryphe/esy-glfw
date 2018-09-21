@@ -28,7 +28,8 @@
     "@opam/js_of_ocaml-lwt": "*",
     "@opam/lwt": "^4.0.0",
     "@opam/lwt_ppx": "^1.1.0",
-    "esy-cmake": "*"
+    "esy-cmake": "*",
+    "reason-gl-matrix": "bryphe/reason-gl-matrix"
   },
   "devDependencies": {
     "ocaml": "~4.6.0"

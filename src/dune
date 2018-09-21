@@ -1,6 +1,8 @@
 (library
     (name EsyGlfw)
     (js_of_ocaml (javascript_files stubs.js stb_image_stubs.js))
+    (libraries
+        Reglm)
     (libraries lwt)
     (flags (:include flags.sexp))
     (c_names glad)

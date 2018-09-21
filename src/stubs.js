@@ -73,22 +73,19 @@ function caml_glfwMakeContextCurrent(win) {
     }
 
     console.log("set context to: " + win.title)
-}
-
-function gl() {
-    return window.__glfw__gl__
+    joo_global_object.gl = context;
 }
 
 // Provides: caml_glClearColor
 function caml_glClearColor(r, g, b, a) {
-    gl().clearColor(r, g, b, a);
-    gl().clear(gl().COLOR_BUFFER_BIT);
+    joo_global_object.gl.clearColor(r, g, b, a);
+    joo_global_object.gl.clear(joo_global_object.gl.COLOR_BUFFER_BIT);
 }
 
 // Provides: caml_glClearDepth
 function caml_glClearDepth(d) {
-    gl().clearDepth(d);
-    gl().clear(gl().DEPTH_BUFFER_BIT);
+    joo_global_object.gl.clearDepth(d);
+    joo_global_object.gl.clear(joo_global_object.gl.DEPTH_BUFFER_BIT);
 }
 
 // Provides: caml_glfwWindowShouldClose
@@ -104,34 +101,34 @@ function caml_glfwWindowShouldClose() {
 
 // Provides: caml_glAttachShader
 function caml_glAttachShader(program, shader) {
-    gl().attachShader(program, shader);
+    joo_global_object.gl.attachShader(program, shader);
 }
 
 // Provides: caml_glBindBuffer
 function caml_glBindBuffer(target, buffer) {
     // TODO: target param
-    gl().bindBuffer(gl().ARRAY_BUFFER, buffer)
+    joo_global_object.gl.bindBuffer(joo_global_object.gl.ARRAY_BUFFER, buffer)
 }
 
 // Provides: caml_glBufferData
 function caml_glBufferData(target, data, usage) {
     // TODO: Remove size
-    gl().bufferData(gl().ARRAY_BUFFER, data.data,  gl().STATIC_DRAW)
+    joo_global_object.gl.bufferData(joo_global_object.gl.ARRAY_BUFFER, data.data,  joo_global_object.gl.STATIC_DRAW)
 }
 
 // Provides: caml_glCompileShader
 function caml_glCompileShader(shader) {
-    gl().compileShader(shader);
+    joo_global_object.gl.compileShader(shader);
 }
 
 // Provides: caml_glCreateBuffer
 function caml_glCreateBuffer() {
-    return gl().createBuffer();
+    return joo_global_object.gl.createBuffer();
 }
 
 // Provides: caml_glCreateProgram
 function caml_glCreateProgram() {
-    return gl().createProgram();
+    return joo_global_object.gl.createProgram();
 }
 
 // Provides: caml_glCreateShader
@@ -139,33 +136,33 @@ function caml_glCreateShader(type) {
     var glType;
     switch (type) {
         case 0:
-            glType = gl().VERTEX_SHADER;
+            glType = joo_global_object.gl.VERTEX_SHADER;
             break;
         case 1:
-            glType = gl().FRAGMENT_SHADER;
+            glType = joo_global_object.gl.FRAGMENT_SHADER;
             break;
         default:
             throw "Unrecognized shader type";
     }
-    return gl().createShader(glType);
+    return joo_global_object.gl.createShader(glType);
 }
 
 // Provides: caml_glDepthFunc
 function caml_glDepthFunc(df) {
     // TODO: Use df parameter
-    gl().depthFunc(gl().LEQUAL);
+    joo_global_object.gl.depthFunc(joo_global_object.gl.LEQUAL);
 }
 
 // Provides: caml_glDrawArrays
 function caml_glDrawArrays(vDrawMode, first, count) {
     var drawMode = variantToDrawMode[vDrawMode];
-    gl().drawArrays(drawMode, first, count);
+    joo_global_object.gl.drawArrays(drawMode, first, count);
 }
 
 // Provides: caml_glEnable
 function caml_glEnable(option) {
     // TODO: Use params
-    gl().enable(gl().DEPTH_TEST)
+    joo_global_object.gl.enable(joo_global_object.gl.DEPTH_TEST)
 }
 
 // Provides: caml_glGetShaderIsCompiled
@@ -174,35 +171,45 @@ function caml_glGetShaderIsCompiled() {
     return true;
 }
 
+// Provides: caml_stb_image_load
+function caml_stb_image_load() {
+    return null;
+}
+
+// Provides: caml_stb_image_debug_print
+function caml_stb_image_debug_print() {
+    return null;
+}
+
 // Provides: caml_glLinkProgram
 function caml_glLinkProgram(program) {
-    gl().linkProgram(program);
+    joo_global_object.gl.linkProgram(program);
 }
 
 // Provides: caml_glGetAttribLocation
 function caml_glGetAttribLocation(program, attribName) {
-    return gl().getAttribLocation(program, attribName)
+    return joo_global_object.gl.getAttribLocation(program, attribName)
 }
 
 // Provides: caml_glGetUniformLocation
 function caml_glGetUniformLocation(program, uniformName) {
-    return gl().getUniformLocation(program, uniformName)
+    return joo_global_object.gl.getUniformLocation(program, uniformName)
 }
 
 // Provides: caml_glUniformMatrix4fv
 function caml_glUniformMatrix4fv(uniformLocation, uniformValue) {
     console.log("TODO: Remove hardcoding caml_glUniformMatrix4fv")
-    return gl().uniformMatrix4fv(uniformLocation, false, new Float32Array([2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]));
+    return joo_global_object.gl.uniformMatrix4fv(uniformLocation, false, new Float32Array([2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]));
 }
 
 // Provides: caml_glShaderSource
 function caml_glShaderSource(shader, src) {
-    gl().shaderSource(shader, src);
+    joo_global_object.gl.shaderSource(shader, src);
 }
 
 // Provides: caml_glUseProgram
 function caml_glUseProgram(program) {
-    gl().useProgram(program);
+    joo_global_object.gl.useProgram(program);
 }
 
 // Provides: caml_glCreateTexture
@@ -240,12 +247,12 @@ function caml_glGenerateMipmap(vTextureType) {
 // Provides: caml_glVertexAttribPointer
 function caml_glVertexAttribPointer(attributeLocation, numComponents) {
     // TODO: PARAMS!
-    gl().vertexAttribPointer(attributeLocation, numComponents, gl().FLOAT, false, 0, 0);
+    joo_global_object.gl.vertexAttribPointer(attributeLocation, numComponents, joo_global_object.gl.FLOAT, false, 0, 0);
 }
 
 // Provides: caml_glEnableVertexAttribArray
 function caml_glEnableVertexAttribArray(attributeLocation) {
-    gl().enableVertexAttribArray(attributeLocation);
+    joo_global_object.gl.enableVertexAttribArray(attributeLocation);
 }
 
 // Provides: caml_glfwPollEvents

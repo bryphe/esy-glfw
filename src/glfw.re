@@ -1,4 +1,4 @@
-external print_hello: unit => unit = "caml_print_hello";
+open Reglm;
 
 type window;
 
@@ -57,7 +57,7 @@ external glGetAttribLocation: (program, string) => attribLocation =
 type uniformLocation;
 external glGetUniformLocation: (program, string) => uniformLocation =
   "caml_glGetUniformLocation";
-external glUniformMatrix4fv: uniformLocation => /* todo */ unit =
+external glUniformMatrix4fv: (uniformLocation, Mat4.t) => /* todo */ unit =
   "caml_glUniformMatrix4fv";
 
 type texture;

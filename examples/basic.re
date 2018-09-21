@@ -1,8 +1,6 @@
 open EsyGlfw;
 open EsyGlfw.Glfw;
-
-external test_callback_success: ((int => unit), (string => unit)) => unit = "caml_test_callback_success";
-external test_callback_failure: ((int => unit), (string => unit)) => unit = "caml_test_callback_failure";
+open Reglm;
 
 let loadShader = (shaderType, source) => {
   let shader = glCreateShader(shaderType);
@@ -22,15 +20,7 @@ let initShaderProgram = (vsSource, fsSource) => {
   shaderProgram;
 };
 
-let run = () => {
-  print_hello();
-
-  let success = (v) => print_endline("SUCCESS: " ++ string_of_int(v));
-  let failure = (msg) => print_endline("FAILURE: " ++ msg);
-
-  test_callback_success(success, failure);
-  test_callback_failure(success, failure);
-
+let () = {
   let _ = glfwInit();
   let w = glfwCreateWindow(800, 600, "test");
   glfwMakeContextCurrent(w);
@@ -124,7 +114,11 @@ let run = () => {
     glDepthFunc(GL_LEQUAL);
 
     glUseProgram(shaderProgram);
-    glUniformMatrix4fv(worldUniform);
+    let m = Mat4.create();
+    let v = Vec3.create();
+    Vec3.set(v, 2., 0.5, 0.5);
+    Mat4.fromScaling(m, v);
+    glUniformMatrix4fv(worldUniform, m);
     glBindBuffer(GL_ARRAY_BUFFER, vb);
     glVertexAttribPointer(posAttribute, 3, GL_FLOAT, false);
     glEnableVertexAttribArray(posAttribute);

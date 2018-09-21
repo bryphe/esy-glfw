@@ -1,6 +1,7 @@
+open Reglm;
+
 type window;
 
-let print_hello: unit => unit;
 let glfwInit: unit => bool;
 let glfwCreateWindow: (int, int, string) => window;
 let glfwMakeContextCurrent: window => unit;
@@ -49,7 +50,7 @@ let glGetAttribLocation: (program, string) => attribLocation;
 
 type uniformLocation;
 let glGetUniformLocation: (program, string) => uniformLocation;
-let glUniformMatrix4fv: uniformLocation => unit;
+let glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit;
 
 type textureType =
   | GL_TEXTURE_2D;
