@@ -6,6 +6,6 @@
         lwt
         lwt.unix
         Reglm
-        EsyGlfw
+        reglfw
         EsyGlfwExamples
             ))

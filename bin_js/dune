@@ -7,7 +7,7 @@
         js_of_ocaml
         lwt
         Bigarray
-        EsyGlfw
+        reglfw
         EsyGlfwExamples
             ))
 

@@ -4,7 +4,7 @@
     (js_of_ocaml)
     (libraries
         lwt
-        EsyGlfw ))
+        reglfw ))
 
 (install
     (section bin)

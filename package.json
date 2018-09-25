@@ -1,13 +1,14 @@
 {
-  "name": "esy-glfw",
+  "name": "reason-glfw",
   "version": "0.1.0",
   "description": "GLFW bindings for OCaml",
   "license": "MIT",
   "esy": {
     "build": [
-        ["make", "build-glfw", "ROOTDIR=#{self.root}"],
+        ["make", "#{os == 'windows' ? 'noop' : 'build-glfw'}", "ROOTDIR=#{self.root}"],
         ["dune", "build"],
-        ["dune", "build", "./bin_js/test_glfw.bc.js"]
+        ["dune", "build", "./bin_js/test_glfw.bc.js"],
+        ["make", "install", "ROOTDIR=#{self.root}", "LIBDIR=#{self.lib}/reglfw"]
     ],
     "buildsInSource":"_build"
   },

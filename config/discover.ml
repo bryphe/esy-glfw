@@ -26,10 +26,12 @@ let cclib s = ["-cclib"; s]
 let flags =
     match get_os with
     | Windows ->  []
+        @ ccopt("-L.")
         @ ccopt("-L./../../lib-mingw-w64")
         @ cclib("-lglfw3")
         @ cclib("-lgdi32")
     | _ -> []
+        @ ccopt("-L.")
         @ ccopt("-L./../glfw/src")
         @ cclib("-lglfw3")
         @ ccopt("-framework OpenGL")

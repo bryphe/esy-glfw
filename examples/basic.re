@@ -1,5 +1,5 @@
-open EsyGlfw;
-open EsyGlfw.Glfw;
+open Reglfw;
+open Reglfw.Glfw;
 open Reglm;
 
 let loadShader = (shaderType, source) => {
