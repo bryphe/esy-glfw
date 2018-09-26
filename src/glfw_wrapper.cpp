@@ -217,34 +217,31 @@ extern "C" {
 
     CAMLprim value
     caml_glCompileShader(value vShader) {
+        CAMLparam1(vShader);
         GLuint shader = (GLuint)vShader;
         glCompileShader(shader);
-        return Val_unit;
+
+        GLint result;
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
+
+        if (result == GL_TRUE) {
+            CAMLreturn(Val_int(0));
+        } else {
+            char infoLog[512];
+            glGetShaderInfoLog(shader, 512, NULL, infoLog);
+
+            CAMLlocal2(failure, log);
+            failure = caml_alloc(1, 0);
+            log = caml_copy_string(infoLog);
+            Store_field(failure, 0, log);
+            CAMLreturn(failure);
+        }
     }
 
     CAMLprim value
     caml_glDeleteShader(value vShader) {
         GLuint shader = (GLuint)vShader;
         glDeleteShader(shader);
-    }
-
-    CAMLprim value
-    caml_glGetShaderIsCompiled(value vShader) {
-        GLuint shader = (GLuint)vShader;
-
-        GLint result;
-        glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
-
-        if (result == GL_TRUE) {
-            printf("Compiled! %d\n", shader);
-            return Val_true;
-        } else {
-            printf("Not compiled! %d\n", shader);
-            char infoLog[512];
-            glGetShaderInfoLog(shader, 512, NULL, infoLog);
-            printf("Output: %s\n", infoLog);
-            return Val_false;
-        }
     }
 
     CAMLprim value

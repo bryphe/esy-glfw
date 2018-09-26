@@ -5,8 +5,12 @@ open Reglm;
 let loadShader = (shaderType, source) => {
   let shader = glCreateShader(shaderType);
   let () = glShaderSource(shader, source);
-  let () = glCompileShader(shader);
-  let _ = glGetShaderIsCompiled(shader);
+  let result = glCompileShader(shader);
+  switch (result) {
+  | CompilationSuccess => print_endline ("SUCCESS!");
+  | CompilationFailure(v) => print_endline ("FAILURE!" ++ v);
+    };
+  /* let _ = glGetShaderIsCompiled(shader); */
   shader;
 };
 

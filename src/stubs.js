@@ -119,6 +119,8 @@ function caml_glBufferData(target, data, usage) {
 // Provides: caml_glCompileShader
 function caml_glCompileShader(shader) {
     joo_global_object.gl.compileShader(shader);
+
+    return [0, "test"];
 }
 
 // Provides: caml_glCreateBuffer

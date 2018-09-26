@@ -19,6 +19,10 @@ type shaderType =
   | GL_VERTEX_SHADER
   | GL_FRAGMENT_SHADER;
 
+type shaderCompilationResult =
+  | CompilationSuccess
+  | CompilationFailure(string);
+
 external glClearColor: (float, float, float, float) => unit =
   "caml_glClearColor";
 external glClearDepth: float => unit = "caml_glClearDepth";
@@ -36,10 +40,8 @@ type depthFunctions =
 external glDepthFunc: depthFunctions => unit = "caml_glDepthFunc";
 
 /* TODO: Add compile result return */
-external glCompileShader: shader => unit = "caml_glCompileShader";
+external glCompileShader: shader => shaderCompilationResult = "caml_glCompileShader";
 external glDeleteShader: shader => unit = "caml_glDeleteShader";
-/* TODO: Remove */
-external glGetShaderIsCompiled: shader => bool = "caml_glGetShaderIsCompiled";
 
 type program;
 

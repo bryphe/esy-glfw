@@ -1,1 +1,5 @@
 (ignored_subdirs (node_modules))
+
+(alias
+    (name runtest)
+    (action (run ./test/test.exe)))

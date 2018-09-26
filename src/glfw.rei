@@ -21,12 +21,14 @@ type shaderType =
   | GL_VERTEX_SHADER
   | GL_FRAGMENT_SHADER;
 
+type shaderCompilationResult =
+  | CompilationSuccess
+  | CompilationFailure(string);
+
 let glCreateShader: shaderType => shader;
 let glShaderSource: (shader, string) => unit;
-let glCompileShader: shader => unit;
+let glCompileShader: shader => shaderCompilationResult;
 let glDeleteShader: shader => unit;
-/*TODO: Remove*/
-let glGetShaderIsCompiled: shader => bool;
 
 type enableOptions =
   | GL_DEPTH_TEST;
