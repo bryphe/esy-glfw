@@ -7,6 +7,15 @@ function caml_print_hello(stub) {
 //Provides: caml_glfwInit
 function caml_glfwInit() {
     // no-op
+
+    joo_global_object.window.addEventListener("resize", function () {
+        console.log("RESIZE");
+        var wins = joo_global_object._activeWindows;
+        for (var i = 0; i < wins.length; i++) {
+            console.log("notifying");
+            wins[i]._notifyResize();
+        }
+    });
 };
 
 // Provides: caml_test_callback_success
@@ -30,12 +39,31 @@ function caml_glfwCreateWindow(width, height, title) {
     canvas.width = width;
     canvas.height = height;
 
+    joo_global_object._activeWindows = joo_global_object._activeWindows || [];
+
     document.body.appendChild(canvas);
-    return {
+    var w = {
         canvas: canvas,
         title: title,
         isMaximized: false,
+        onSetFramebufferSize: null,
     };
+
+    var notifyResize = function () {
+        if (w.isMaximized) {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            if (w.onSetFramebufferSize) {
+                w.onSetFramebufferSize(w, canvas.offsetWidth, canvas.offsetHeight);
+            }
+        }
+    };
+
+    w._notifyResize = notifyResize;
+
+    joo_global_object._activeWindows.push(w);
+    return w;
 };
 
 // Provides: caml_glfwSetWindowSize
@@ -49,7 +77,7 @@ function caml_glfwSetWindowSize(w, width, height) {
 
 // Provides: caml_glfwSetFramebufferSizeCallback
 function caml_glfwSetFramebufferSizeCallback(w, callback) {
-
+    w.onSetFramebufferSize = callback;
 }
 
 // Provides: caml_glfwMaximizeWindow
@@ -60,6 +88,8 @@ function caml_glfwMaximizeWindow(w) {
         canvas.style.height = "100%";
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
+        w.isMaximized = true;
+        w._notifyResize();
     }
 }
 
