@@ -7,10 +7,9 @@ let loadShader = (shaderType, source) => {
   let () = glShaderSource(shader, source);
   let result = glCompileShader(shader);
   switch (result) {
-  | CompilationSuccess => print_endline ("SUCCESS!");
-  | CompilationFailure(v) => print_endline ("FAILURE!" ++ v);
+  | CompilationSuccess => print_endline ("Shader compiled successfully.");
+  | CompilationFailure(v) => print_endline ("Failed to compile shader: " ++ v);
     };
-  /* let _ = glGetShaderIsCompiled(shader); */
   shader;
 };
 
