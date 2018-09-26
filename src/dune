@@ -1,7 +1,7 @@
 (library
     (name reglfw)
     (public_name reglfw)
-    (js_of_ocaml (javascript_files stubs.js stb_image_stubs.js))
+    (js_of_ocaml (javascript_files glfw_stubs.js gl_stubs.js stb_image_stubs.js))
     (libraries
         lwt
         Reglm)
