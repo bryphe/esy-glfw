@@ -10,6 +10,10 @@ let glfwPollEvents: unit => unit;
 let glfwTerminate: unit => unit;
 let glfwSwapBuffers: window => unit;
 let glfwSetWindowSize: (window, int, int) => unit;
+
+type glfwFrameBufferSizeCallback = (window, int, int) => unit;
+let glfwSetFramebufferSizeCallback = (window, glfwSetFramebufferSizeCallback) => unit;
+
 let printFrameBufferSize: window => unit;
 
 /* GL */

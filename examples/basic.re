@@ -29,6 +29,12 @@ let run = () => {
 
   glViewport(0, 0, 800, 600);
 
+  let sizeChanged = (w, width, height) => {
+    print_endline ("Size changed: " ++ string_of_int(width) ++ ", " ++ string_of_int(height));
+  };
+
+  glfwSetFramebufferSizeCallback(sizeChanged);
+
   let%lwt img = Image.load("test.jpg");
   Image.debug_print(img);
   let vsSource = {|
