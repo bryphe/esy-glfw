@@ -36,6 +36,15 @@ function caml_glfwCreateWindow(width, height, title) {
     };
 };
 
+// Provides: caml_glfwSetWindowSize
+function caml_glfwSetWindowSize(w, width, height) {
+    var canvas = w.canvas;
+    canvas.style.width = width.toString() + "px";
+    canvas.style.height = height.toString() + "px";
+    canvas.width = width;
+    canvas.height = height;
+}
+
 // Provides: caml_glfwMakeContextCurrent
 function caml_glfwMakeContextCurrent(win) {
     var context = win.canvas.getContext('webgl');
@@ -80,6 +89,11 @@ function caml_glfwMakeContextCurrent(win) {
 function caml_glClearColor(r, g, b, a) {
     joo_global_object.gl.clearColor(r, g, b, a);
     joo_global_object.gl.clear(joo_global_object.gl.COLOR_BUFFER_BIT);
+}
+
+// Provides: caml_glViewport
+function caml_glViewport(x, y, width, height) {
+    joo_global_object.gl.viewport(x, y , width, height);
 }
 
 // Provides: caml_glClearDepth

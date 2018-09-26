@@ -12,6 +12,7 @@ external glfwWindowShouldClose: window => bool = "caml_glfwWindowShouldClose";
 external glfwPollEvents: unit => unit = "caml_glfwPollEvents";
 external glfwTerminate: unit => unit = "caml_glfwTerminate";
 external glfwSwapBuffers: window => unit = "caml_glfwSwapBuffers";
+external glfwSetWindowSize: (window, int, int) => unit = "caml_glfwSetWindowSize";
 
 /* GL */
 type shader;
@@ -24,6 +25,8 @@ external glClearColor: (float, float, float, float) => unit =
 external glClearDepth: float => unit = "caml_glClearDepth";
 external glCreateShader: shaderType => shader = "caml_glCreateShader";
 external glShaderSource: (shader, string) => unit = "caml_glShaderSource";
+
+external glViewport: (int, int, int, int) => unit = "caml_glViewport";
 
 type enableOptions =
   | GL_DEPTH_TEST;

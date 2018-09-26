@@ -22,8 +22,12 @@ let initShaderProgram = (vsSource, fsSource) => {
 
 let run = () => {
   let _ = glfwInit();
-  let w = glfwCreateWindow(800, 600, "test");
+  let w = glfwCreateWindow(100, 50, "test");
   glfwMakeContextCurrent(w);
+
+  glfwSetWindowSize(w, 800, 600);
+
+  glViewport(0, 0, 800, 600);
 
   let%lwt img = Image.load("test.jpg");
   Image.debug_print(img);

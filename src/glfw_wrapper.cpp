@@ -121,6 +121,13 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwSetWindowSize(value vWindow, value vWidth, value vHeight) {
+        GLFWwindow* w = (GLFWwindow *)vWindow;
+        glfwSetWindowSize(w, Int_val(vWidth), Int_val(vHeight));
+        return Val_unit;
+    }
+
+    CAMLprim value
     caml_glfwMakeContextCurrent(value window)
     {
         GLFWwindow* wd = (GLFWwindow *)window;
@@ -165,6 +172,16 @@ extern "C" {
         float a = Double_val(va);
         glClearColor(r, g, b, a);
         glClear(GL_COLOR_BUFFER_BIT);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glViewport(value vX, value vY, value vWidth, value vHeight) {
+        int x = Int_val(vX);
+        int y = Int_val(vY);
+        int width = Int_val(vWidth);
+        int height = Int_val(vHeight);
+        glViewport(x, y, width, height);
         return Val_unit;
     }
 

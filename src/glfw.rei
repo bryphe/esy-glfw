@@ -9,12 +9,14 @@ let glfwWindowShouldClose: window => bool;
 let glfwPollEvents: unit => unit;
 let glfwTerminate: unit => unit;
 let glfwSwapBuffers: window => unit;
+let glfwSetWindowSize: (window, int, int) => unit;
 let printFrameBufferSize: window => unit;
 
 /* GL */
 
 let glClearColor: (float, float, float, float) => unit;
 let glClearDepth: float => unit;
+let glViewport: (int, int, int, int) => unit;
 
 type shader;
 type shaderType =
