@@ -15,5 +15,6 @@ install:
 
 build_script:
     - esy build
+    - esy b dune runtest
 
 test: off
