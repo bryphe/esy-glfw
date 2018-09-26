@@ -18,8 +18,21 @@ extern "C" {
 
     struct WindowInfo {
         GLFWwindow* pWindow;
-        void* pSetFramebufferSizeCallback;
+        value vSetFramebufferSizeCallback;
     };
+
+    static WindowInfo* sActiveWindows[255];
+    static int sActiveWindowCount = 0;
+
+    WindowInfo* getWindowInfoFromWindow(GLFWwindow *w) {
+        WindowInfo *pInfo;
+        for (int i = 0; i < sActiveWindowCount; i++) {
+            if (sActiveWindows[i] && sActiveWindows[i]->pWindow) {
+                pInfo = sActiveWindows[i];
+            }
+        }
+        return pInfo;
+    }
 
     CAMLprim value
     caml_test_callback_success(value vSuccess, value vFailure) {
@@ -44,6 +57,15 @@ extern "C" {
         return Val_bool(ret);
     }
 
+    void framebuffer_size_callback(GLFWwindow *pWin, int iWidth, int iHeight) {
+        // Is there a window info?
+        WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
+
+        if (pWinInfo && pWinInfo->vSetFramebufferSizeCallback != Val_unit) {
+            (void) caml_callback3((value)pWinInfo->vSetFramebufferSizeCallback, ((value)(void *)pWinInfo), Val_int(iWidth), Val_int(iHeight));
+        }
+    }
+
     CAMLprim value
     caml_glfwCreateWindow(value iWidth, value iHeight, value sTitle)
     {
@@ -59,6 +81,12 @@ extern "C" {
 
       struct WindowInfo* pWindowInfo = (WindowInfo *)malloc(sizeof(WindowInfo));
       pWindowInfo->pWindow = wd;
+      pWindowInfo->vSetFramebufferSizeCallback = Val_unit;
+
+      glfwSetFramebufferSizeCallback(wd, framebuffer_size_callback);
+
+      sActiveWindows[sActiveWindowCount] = pWindowInfo;
+      sActiveWindowCount++;
 
       CAMLreturn((value)pWindowInfo);
     }
@@ -80,15 +108,30 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwSetFramebufferSizeCallback(value vWindow, value vCallback) {
+        CAMLparam2(vWindow, vCallback);
+
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+
+        if (pWinInfo) {
+            // TODO: Recycle existing callback if any!
+
+            // We need to mark the closure as being a global root, so the garbage
+            // collector knows it is being used.
+            pWinInfo->vSetFramebufferSizeCallback = vCallback;
+            caml_register_global_root(&(pWinInfo->vSetFramebufferSizeCallback));
+        }
+
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
     caml_printFrameBufferSize(value window)
     {
-
         WindowInfo* wd = (WindowInfo*)window;
         int fbwidth;
         int fbheight;
         glfwGetFramebufferSize(wd->pWindow, &fbwidth, &fbheight);
-
-        printf("size2: %d %d\n", fbwidth, fbheight);
         return Val_unit;
     }
 
