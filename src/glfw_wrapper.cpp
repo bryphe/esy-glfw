@@ -16,6 +16,11 @@
 
 extern "C" {
 
+    struct WindowInfo {
+        GLFWwindow* pWindow;
+        void* pSetFramebufferSizeCallback;
+    };
+
     CAMLprim value
     caml_test_callback_success(value vSuccess, value vFailure) {
         CAMLparam2(vSuccess, vFailure);
@@ -42,6 +47,8 @@ extern "C" {
     CAMLprim value
     caml_glfwCreateWindow(value iWidth, value iHeight, value sTitle)
     {
+      CAMLparam3(iWidth, iHeight, sTitle);
+
       GLFWwindow* wd;           /* window desciptor/handle */
       int w = Int_val(iWidth);
       int h = Int_val(iHeight);
@@ -49,21 +56,25 @@ extern "C" {
 
       wd = glfwCreateWindow(w, h, s,
                             NULL, NULL);
-      return (value) wd;
+
+      struct WindowInfo* pWindowInfo = (WindowInfo *)malloc(sizeof(WindowInfo));
+      pWindowInfo->pWindow = wd;
+
+      CAMLreturn((value)pWindowInfo);
     }
 
     CAMLprim value
     caml_glfwSetWindowSize(value vWindow, value vWidth, value vHeight) {
-        GLFWwindow* w = (GLFWwindow *)vWindow;
-        glfwSetWindowSize(w, Int_val(vWidth), Int_val(vHeight));
+        WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
+        glfwSetWindowSize(pWindowInfo->pWindow, Int_val(vWidth), Int_val(vHeight));
         return Val_unit;
     }
 
     CAMLprim value
     caml_glfwMakeContextCurrent(value window)
     {
-        GLFWwindow* wd = (GLFWwindow *)window;
-        glfwMakeContextCurrent(wd);
+        WindowInfo* wd = (WindowInfo *)window;
+        glfwMakeContextCurrent(wd->pWindow);
         gladLoadGLES2Loader((GLADloadproc) glfwGetProcAddress);
         return Val_unit;
     }
@@ -72,10 +83,10 @@ extern "C" {
     caml_printFrameBufferSize(value window)
     {
 
-        GLFWwindow *wd = (GLFWwindow*)window;
+        WindowInfo* wd = (WindowInfo*)window;
         int fbwidth;
         int fbheight;
-        glfwGetFramebufferSize(wd, &fbwidth, &fbheight);
+        glfwGetFramebufferSize(wd->pWindow, &fbwidth, &fbheight);
 
         printf("size2: %d %d\n", fbwidth, fbheight);
         return Val_unit;
@@ -84,8 +95,8 @@ extern "C" {
     CAMLprim value
     caml_glfwWindowShouldClose(value window)
     {
-        GLFWwindow *wd = (GLFWwindow*)window;
-        int val = glfwWindowShouldClose(wd);
+        WindowInfo *wd = (WindowInfo *)window;
+        int val = glfwWindowShouldClose(wd->pWindow);
         return Val_bool(val);
     }
 
@@ -99,8 +110,8 @@ extern "C" {
     CAMLprim value
     caml_glfwSwapBuffers(value window)
     {
-        GLFWwindow *wd = (GLFWwindow*)window;
-        glfwSwapBuffers(wd);
+        WindowInfo *wd = (WindowInfo*)window;
+        glfwSwapBuffers(wd->pWindow);
         return Val_unit;
     }
 
