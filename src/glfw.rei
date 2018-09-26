@@ -12,7 +12,7 @@ let glfwSwapBuffers: window => unit;
 let glfwSetWindowSize: (window, int, int) => unit;
 
 type glfwFrameBufferSizeCallback = (window, int, int) => unit;
-let glfwSetFramebufferSizeCallback = (window, glfwSetFramebufferSizeCallback) => unit;
+/* let glfwSetFramebufferSizeCallback = (window, glfwSetFramebufferSizeCallback) => unit; */
 
 let printFrameBufferSize: window => unit;
 

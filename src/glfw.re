@@ -15,7 +15,7 @@ external glfwSwapBuffers: window => unit = "caml_glfwSwapBuffers";
 external glfwSetWindowSize: (window, int, int) => unit = "caml_glfwSetWindowSize";
 
 type glfwFrameBufferSizeCallback = (window, int, int) => unit;
-external glfwSetFramebufferSizeCallback = (window, glfwSetFramebufferSizeCallback) => unit = "caml_glfwSetFramebufferSizeCallback";
+/* external glfwSetFramebufferSizeCallback = (window, glfwSetFramebufferSizeCallback) => unit = "caml_glfwSetFramebufferSizeCallback"; */
 
 /* GL */
 type shader;
