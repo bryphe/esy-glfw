@@ -1,6 +1,7 @@
 //Provides: caml_print_hello
-function caml_print_hello() {
+function caml_print_hello(stub) {
     console.log("Hello!");
+    console.dir(stub);
 }
 
 //Provides: caml_glfwInit
@@ -133,6 +134,15 @@ function caml_glBufferData(target, data, usage) {
 // Provides: caml_glCompileShader
 function caml_glCompileShader(shader) {
     joo_global_object.gl.compileShader(shader);
+
+    var result = joo_global_object.gl.getShaderParameter(shader, joo_global_object.gl.COMPILE_STATUS);
+
+    if (result) {
+        return 0;
+    } else {
+        var log = gl.getShaderInfoLog(shader);
+        return [0, caml_js_to_string(log)];
+    }
 }
 
 // Provides: caml_glCreateBuffer
@@ -177,12 +187,6 @@ function caml_glDrawArrays(vDrawMode, first, count) {
 function caml_glEnable(option) {
     // TODO: Use params
     joo_global_object.gl.enable(joo_global_object.gl.DEPTH_TEST)
-}
-
-// Provides: caml_glGetShaderIsCompiled
-function caml_glGetShaderIsCompiled() {
-    // TODO: Refactor this
-    return true;
 }
 
 // Provides: caml_glLinkProgram

@@ -5,8 +5,11 @@ open Reglm;
 let loadShader = (shaderType, source) => {
   let shader = glCreateShader(shaderType);
   let () = glShaderSource(shader, source);
-  let () = glCompileShader(shader);
-  let _ = glGetShaderIsCompiled(shader);
+  let result = glCompileShader(shader);
+  switch (result) {
+  | CompilationSuccess => print_endline("Shader compiled successfully.")
+  | CompilationFailure(v) => print_endline("Failed to compile shader: " ++ v)
+  };
   shader;
 };
 
@@ -77,12 +80,37 @@ let run = () => {
   print_endline(fsSource);
 
   let positions = [|
-        -0.5, 0.5, 0.0,
-        0.5, 0.5, 0.0,
-        -0.5, -0.5, 0.0,
-        0.5, -0.5, 0.0
-|];
-  let colors = [|1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0|];
+    (-0.5),
+    0.5,
+    0.0,
+    0.5,
+    0.5,
+    0.0,
+    (-0.5),
+    (-0.5),
+    0.0,
+    0.5,
+    (-0.5),
+    0.0,
+  |];
+  let colors = [|
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+  |];
   let textures = [|0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0|];
   let vArray =
     Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, positions);
@@ -115,7 +143,8 @@ let run = () => {
 
   let posAttribute = glGetAttribLocation(shaderProgram, "aVertexPosition");
   let colorAttribute = glGetAttribLocation(shaderProgram, "aVertexColor");
-  let textureAttribute = glGetAttribLocation(shaderProgram, "aVertexTexCoord");
+  let textureAttribute =
+    glGetAttribLocation(shaderProgram, "aVertexTexCoord");
   let worldUniform = glGetUniformLocation(shaderProgram, "transform");
   while (!glfwWindowShouldClose(w)) {
     glClearColor(0.0, 0., 0., 1.);
