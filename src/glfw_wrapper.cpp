@@ -99,6 +99,12 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwMaximizeWindow(value vWindow) {
+        WindowInfo *pWindowInfo = (WindowInfo *)vWindow;
+        glfwMaximizeWindow(pWindowInfo->pWindow);
+    }
+
+    CAMLprim value
     caml_glfwMakeContextCurrent(value window)
     {
         WindowInfo* wd = (WindowInfo *)window;

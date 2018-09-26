@@ -10,6 +10,7 @@ let glfwPollEvents: unit => unit;
 let glfwTerminate: unit => unit;
 let glfwSwapBuffers: window => unit;
 let glfwSetWindowSize: (window, int, int) => unit;
+let glfwMaximizeWindow: (window) => unit;
 
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
 let glfwSetFramebufferSizeCallback:

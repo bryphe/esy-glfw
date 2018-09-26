@@ -34,6 +34,7 @@ function caml_glfwCreateWindow(width, height, title) {
     return {
         canvas: canvas,
         title: title,
+        isMaximized: false,
     };
 };
 
@@ -44,6 +45,22 @@ function caml_glfwSetWindowSize(w, width, height) {
     canvas.style.height = height.toString() + "px";
     canvas.width = width;
     canvas.height = height;
+}
+
+// Provides: caml_glfwSetFramebufferSizeCallback
+function caml_glfwSetFramebufferSizeCallback(w, callback) {
+
+}
+
+// Provides: caml_glfwMaximizeWindow
+function caml_glfwMaximizeWindow(w) {
+    if (w && !w.isMaximized) {
+        var canvas = w.canvas;
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+    }
 }
 
 // Provides: caml_glfwMakeContextCurrent

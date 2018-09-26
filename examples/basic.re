@@ -183,6 +183,8 @@ let run = () => {
     },
   );
 
+  glfwMaximizeWindow(w);
+
   while (!glfwWindowShouldClose(w)) {
     render();
 
