@@ -12,7 +12,8 @@ let glfwSwapBuffers: window => unit;
 let glfwSetWindowSize: (window, int, int) => unit;
 
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
-let glfwSetFramebufferSizeCallback: (window, glfwFramebufferSizeCallback) => unit;
+let glfwSetFramebufferSizeCallback:
+  (window, glfwFramebufferSizeCallback) => unit;
 
 let printFrameBufferSize: window => unit;
 
@@ -71,21 +72,23 @@ type textureParameter =
 
 type textureParameterValue =
   | GL_REPEAT
-  | GL_LINEAR
+  | GL_LINEAR;
 
 type texturePixelDataFormat =
   | GL_RGB
-  | GL_RGBA
+  | GL_RGBA;
 
 type texturePixelDataType =
-  | GL_UNSIGNED_BYTE
+  | GL_UNSIGNED_BYTE;
 
 type texture;
 let glCreateTexture: unit => texture;
 let glBindTexture: (textureType, texture) => unit;
-let glTexParameteri: (textureType, textureParameter, textureParameterValue) => unit;
-let glTexImage2D: (textureType, texturePixelDataFormat, texturePixelDataType, Image.t) => unit;
-let glGenerateMipmap: (textureType) => unit;
+let glTexParameteri:
+  (textureType, textureParameter, textureParameterValue) => unit;
+let glTexImage2D:
+  (textureType, texturePixelDataFormat, texturePixelDataType, Image.t) => unit;
+let glGenerateMipmap: textureType => unit;
 
 type bufferType =
   | GL_ARRAY_BUFFER;

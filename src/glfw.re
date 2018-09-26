@@ -12,10 +12,13 @@ external glfwWindowShouldClose: window => bool = "caml_glfwWindowShouldClose";
 external glfwPollEvents: unit => unit = "caml_glfwPollEvents";
 external glfwTerminate: unit => unit = "caml_glfwTerminate";
 external glfwSwapBuffers: window => unit = "caml_glfwSwapBuffers";
-external glfwSetWindowSize: (window, int, int) => unit = "caml_glfwSetWindowSize";
+external glfwSetWindowSize: (window, int, int) => unit =
+  "caml_glfwSetWindowSize";
 
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
-external glfwSetFramebufferSizeCallback: (window, glfwFramebufferSizeCallback) => unit = "caml_glfwSetFramebufferSizeCallback";
+external glfwSetFramebufferSizeCallback:
+  (window, glfwFramebufferSizeCallback) => unit =
+  "caml_glfwSetFramebufferSizeCallback";
 
 /* GL */
 type shader;
@@ -46,7 +49,8 @@ type depthFunctions =
 external glDepthFunc: depthFunctions => unit = "caml_glDepthFunc";
 
 /* TODO: Add compile result return */
-external glCompileShader: shader => shaderCompilationResult = "caml_glCompileShader";
+external glCompileShader: shader => shaderCompilationResult =
+  "caml_glCompileShader";
 external glDeleteShader: shader => unit = "caml_glDeleteShader";
 
 type program;
@@ -89,12 +93,15 @@ type texturePixelDataFormat =
 type texturePixelDataType =
   | GL_UNSIGNED_BYTE;
 
-
 external glCreateTexture: unit => texture = "caml_glCreateTexture";
 external glBindTexture: (textureType, texture) => unit = "caml_glBindTexture";
-external glTexParameteri: (textureType, textureParameter, textureParameterValue) => unit = "caml_glTexParameteri";
-external glTexImage2D: (textureType, texturePixelDataFormat, texturePixelDataType, Image.t) => unit = "caml_glTexImage2D";
-external glGenerateMipmap: (textureType) => unit = "caml_glGenerateMipmap";
+external glTexParameteri:
+  (textureType, textureParameter, textureParameterValue) => unit =
+  "caml_glTexParameteri";
+external glTexImage2D:
+  (textureType, texturePixelDataFormat, texturePixelDataType, Image.t) => unit =
+  "caml_glTexImage2D";
+external glGenerateMipmap: textureType => unit = "caml_glGenerateMipmap";
 
 type bufferType =
   | GL_ARRAY_BUFFER;
@@ -127,7 +134,6 @@ external glEnableVertexAttribArray: attribLocation => unit =
 type drawMode =
   | GL_TRIANGLES
   | GL_TRIANGLE_STRIP;
-
 
 external glDrawArrays: (drawMode, int, int) => unit = "caml_glDrawArrays";
 

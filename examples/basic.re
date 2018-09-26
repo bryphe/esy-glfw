@@ -32,7 +32,6 @@ let run = () => {
 
   glViewport(0, 0, 800, 600);
 
-
   let%lwt img = Image.load("test.jpg");
   Image.debug_print(img);
   let vsSource = {|
@@ -141,7 +140,7 @@ let run = () => {
   let textureAttribute =
     glGetAttribLocation(shaderProgram, "aVertexTexCoord");
   let worldUniform = glGetUniformLocation(shaderProgram, "transform");
-  
+
   let render = () => {
     glClearColor(0.0, 0., 0., 1.);
     glClearDepth(1.0);
@@ -168,17 +167,24 @@ let run = () => {
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glfwSwapBuffers(w);
+  };
 
-    };
-
-  glfwSetFramebufferSizeCallback(w, (_, width, height) => {
-    glViewport(0, 0, width, height);
-    print_endline ("Size changed: " ++ string_of_int(width) ++ ", " ++ string_of_int(height));
-    render();
-  });
+  glfwSetFramebufferSizeCallback(
+    w,
+    (_, width, height) => {
+      glViewport(0, 0, width, height);
+      print_endline(
+        "Size changed: "
+        ++ string_of_int(width)
+        ++ ", "
+        ++ string_of_int(height),
+      );
+      render();
+    },
+  );
 
   while (!glfwWindowShouldClose(w)) {
-render();
+    render();
 
     glfwPollEvents();
   };
