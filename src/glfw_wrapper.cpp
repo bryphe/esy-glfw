@@ -102,6 +102,7 @@ extern "C" {
     caml_glfwMaximizeWindow(value vWindow) {
         WindowInfo *pWindowInfo = (WindowInfo *)vWindow;
         glfwMaximizeWindow(pWindowInfo->pWindow);
+        return Val_unit;
     }
 
     CAMLprim value
