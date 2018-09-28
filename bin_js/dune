@@ -6,7 +6,7 @@
     (libraries
         js_of_ocaml
         lwt
-        Bigarray
+        bigarray
         reglfw
         EsyGlfwExamples
             ))

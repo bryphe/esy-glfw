@@ -5,7 +5,7 @@
     (libraries
         lwt
         lwt.unix
-        Reglm
-        reglfw
+        reglm
         EsyGlfwExamples
+        reglfw
             ))

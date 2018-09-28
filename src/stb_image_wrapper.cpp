@@ -44,5 +44,6 @@ extern "C" {
         ImageInfo *pImage = (ImageInfo*)vImage;
 
         printf("Debug - width: %d height: %d numChannels: %d\n", pImage->width, pImage->height, pImage->numChannels);
+        return Val_unit;
     }
 }

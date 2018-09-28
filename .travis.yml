@@ -1,8 +1,22 @@
 language: node_js
-os:
-- osx
-node_js:
-- '8'
+
+matrix:
+  include:
+  - os: linux
+    sudo: required
+    dist: trusty
+    node_js: 8
+    addons:
+      apt:
+        packages:
+           - libxrandr-dev
+           - libxinerama-dev
+           - libxcursor-dev
+           - libxi-dev
+  - os: osx # OSX 10.12
+    node_js: 8
+
+
 install:
 - travis_retry npm install -g esy@0.2.11
 - travis_wait esy install
