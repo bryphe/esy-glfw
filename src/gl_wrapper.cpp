@@ -342,17 +342,12 @@ extern "C" {
 
     CAMLprim value
     caml_glBufferData(value vBufferType, value vData, value drawType) {
-        /* printf("glBufferData - show floats TODO\n"); */
         int size = Caml_ba_array_val(vData)->dim[0];
 
-        printf("ARRAY INFO: Flags: %d (float: %d uint16: %d)\n", Caml_ba_array_val(vData)->flags, CAML_BA_FLOAT32, CAML_BA_UINT16);
-
         if ((Caml_ba_array_val(vData)->flags & CAML_BA_UINT16) == CAML_BA_UINT16) {
-            printf("- short array - size: %d\n", size);
             unsigned short* elements = (unsigned short*)Caml_ba_data_val(vData);
             glBufferData(variantToBufferType(vBufferType), size * sizeof(unsigned short), elements, GL_STATIC_DRAW);
         } else if ((Caml_ba_array_val(vData)->flags & CAML_BA_FLOAT32) == CAML_BA_FLOAT32) {
-            printf("- float array - size: %d\n", size);
             float* elements = (float*)Caml_ba_data_val(vData);
             glBufferData(variantToBufferType(vBufferType), size * sizeof(float), elements, GL_STATIC_DRAW);
         } else {
