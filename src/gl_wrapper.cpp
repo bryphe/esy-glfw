@@ -333,10 +333,8 @@ extern "C" {
     CAMLprim value
     caml_glBindBuffer(value vBufferType, value vBuffer) {
         unsigned int VBO = (unsigned int)vBuffer;
-        /* printf("bind buffer: %d\n", VBO); */
-
         glBindBuffer(variantToBufferType(vBufferType), VBO);
-        /* printf("glBindBuffer: %d\n", VBO); */
+
         return Val_unit;
     }
 
@@ -358,7 +356,6 @@ extern "C" {
 
     CAMLprim value
     caml_glDrawArrays(value vDrawMode, value vFirst, value vCount) {
-        // TODO: Use param
         unsigned int first = Int_val(vFirst);
         unsigned int count = Int_val(vCount);
         glDrawArrays(variantToDrawMode(vDrawMode), first, count);
@@ -371,14 +368,6 @@ extern "C" {
        GLenum dataType = variantToType(vGlType);
        unsigned int count = Int_val(vCount);
        unsigned int first = Int_val(vFirst);
-
-        /* unsigned int VBO; */
-        /* glGenBuffers(1, &VBO); */
-
-        /* unsigned short indices[] = {0, 1, 2, 1, 2, 3}; */
-        /* glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO); */
-        /* glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); */
-
        glDrawElements(drawMode, vCount, dataType, (void *)first);
        return Val_unit;
     }
