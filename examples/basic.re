@@ -110,14 +110,12 @@ let run = () => {
     0, 1, 2,    1, 2, 3
   |];
   let textures = [|0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0|];
-  let vArray =
-    Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, positions);
-  let cArray =
-    Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, colors);
-  let tArray =
-    Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, textures);
-  let iArray =
-    Bigarray.Array1.of_array(Bigarray.Int16_unsigned, Bigarray.C_layout, indices);
+
+  let vArray = Float32Array.of_array(positions);
+  let cArray = Float32Array.of_array(colors);
+  let tArray = Float32Array.of_array(textures);
+  let iArray = Uint16Array.of_array(indices);
+
   let shaderProgram = initShaderProgram(vsSource, fsSource);
   let vb = glCreateBuffer();
   let cb = glCreateBuffer();
