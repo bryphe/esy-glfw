@@ -79,85 +79,90 @@ let run = () => {
   print_endline(fsSource);
 
   let positions = [|
-  // Front face
   -1.0, -1.0,  1.0,
    1.0, -1.0,  1.0,
    1.0,  1.0,  1.0,
   -1.0,  1.0,  1.0,
   
-  // Back face
   -1.0, -1.0, -1.0,
   -1.0,  1.0, -1.0,
    1.0,  1.0, -1.0,
    1.0, -1.0, -1.0,
   
-  // Top face
   -1.0,  1.0, -1.0,
   -1.0,  1.0,  1.0,
    1.0,  1.0,  1.0,
    1.0,  1.0, -1.0,
   
-  // Bottom face
   -1.0, -1.0, -1.0,
    1.0, -1.0, -1.0,
    1.0, -1.0,  1.0,
   -1.0, -1.0,  1.0,
   
-  // Right face
    1.0, -1.0, -1.0,
    1.0,  1.0, -1.0,
    1.0,  1.0,  1.0,
    1.0, -1.0,  1.0,
   
-  // Left face
   -1.0, -1.0, -1.0,
   -1.0, -1.0,  1.0,
   -1.0,  1.0,  1.0,
   -1.0,  1.0, -1.0,
   |];
   let colors = [|
-    1.0,  1.0,  1.0,  1.0,    // Front face: white
-    1.0,  1.0,  1.0,  1.0,    // Front face: white
-    1.0,  1.0,  1.0,  1.0,    // Front face: white
-    1.0,  1.0,  1.0,  1.0,    // Front face: white
+    1.0,  1.0,  1.0,  1.0,    
+    1.0,  1.0,  1.0,  1.0,    
+    1.0,  1.0,  1.0,  1.0,    
+    1.0,  1.0,  1.0,  1.0,    
 
-    1.0,  0.0,  0.0,  1.0,    // Back face: red
-    1.0,  0.0,  0.0,  1.0,    // Back face: red
-    1.0,  0.0,  0.0,  1.0,    // Back face: red
-    1.0,  0.0,  0.0,  1.0,    // Back face: red
+    1.0,  0.0,  0.0,  1.0,    
+    1.0,  0.0,  0.0,  1.0,    
+    1.0,  0.0,  0.0,  1.0,    
+    1.0,  0.0,  0.0,  1.0,    
 
-    0.0,  1.0,  0.0,  1.0,    // Top face: green
-    0.0,  1.0,  0.0,  1.0,    // Top face: green
-    0.0,  1.0,  0.0,  1.0,    // Top face: green
-    0.0,  1.0,  0.0,  1.0,    // Top face: green
+    0.0,  1.0,  0.0,  1.0,    
+    0.0,  1.0,  0.0,  1.0,    
+    0.0,  1.0,  0.0,  1.0,    
+    0.0,  1.0,  0.0,  1.0,    
 
-    0.0,  0.0,  1.0,  1.0,    // Bottom face: blue
-    0.0,  0.0,  1.0,  1.0,    // Bottom face: blue
-    0.0,  0.0,  1.0,  1.0,    // Bottom face: blue
-    0.0,  0.0,  1.0,  1.0,    // Bottom face: blue
+    0.0,  0.0,  1.0,  1.0,    
+    0.0,  0.0,  1.0,  1.0,    
+    0.0,  0.0,  1.0,  1.0,    
+    0.0,  0.0,  1.0,  1.0,    
 
-    1.0,  1.0,  0.0,  1.0,    // Right face: yellow
-    1.0,  1.0,  0.0,  1.0,    // Right face: yellow
-    1.0,  1.0,  0.0,  1.0,    // Right face: yellow
-    1.0,  1.0,  0.0,  1.0,    // Right face: yellow
+    1.0,  1.0,  0.0,  1.0,    
+    1.0,  1.0,  0.0,  1.0,    
+    1.0,  1.0,  0.0,  1.0,    
+    1.0,  1.0,  0.0,  1.0,    
 
-    1.0,  0.0,  1.0,  1.0,    // Left face: purple
-    1.0,  0.0,  1.0,  1.0,    // Left face: purple
-    1.0,  0.0,  1.0,  1.0,    // Left face: purple
-    1.0,  0.0,  1.0,  1.0,    // Left face: purple
+    1.0,  0.0,  1.0,  1.0,    
+    1.0,  0.0,  1.0,  1.0,    
+    1.0,  0.0,  1.0,  1.0,    
+    1.0,  0.0,  1.0,  1.0,    
   |];
-  let vArray =
-    Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, positions);
-  let cArray =
-    Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, colors);
+  let indices = [|
+    0,  1,  2,      0,  2,  3,    
+    4,  5,  6,      4,  6,  7,    
+    8,  9,  10,     8,  10, 11,   
+    12, 13, 14,     12, 14, 15,   
+    16, 17, 18,     16, 18, 19,   
+    20, 21, 22,     20, 22, 23,   
+  |];
+  let vArray = Float32Array.of_array(positions);
+  let cArray = Float32Array.of_array(colors);
+  let iArray = Uint16Array.of_array(indices);
   let shaderProgram = initShaderProgram(vsSource, fsSource);
   let vb = glCreateBuffer();
   let cb = glCreateBuffer();
+  let ib = glCreateBuffer();
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glBufferData(GL_ARRAY_BUFFER, vArray, GL_STATIC_DRAW);
 
   glBindBuffer(GL_ARRAY_BUFFER, cb);
   glBufferData(GL_ARRAY_BUFFER, cArray, GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, iArray, GL_STATIC_DRAW);
 
   let posAttribute = glGetAttribLocation(shaderProgram, "aVertexPosition");
   let colorAttribute = glGetAttribLocation(shaderProgram, "aVertexColor");
@@ -180,14 +185,14 @@ let run = () => {
 
     glUseProgram(shaderProgram);
     let m = Mat4.create();
-    let v = Vec3.create(0., 0., -6.);
+    let v = Vec3.create(0., 0., -10.);
     Mat4.fromTranslation(m, v);
 
     let rot = Mat4.create();
     Mat4.rotate(rot, delta^, Vec3.create(0., 0., 1.));
 
     let yRot = Mat4.create();
-    Mat4.rotate(rot, delta^, Vec3.create(0., 1., 0.));
+    Mat4.rotate(rot, delta^ *. 0.7, Vec3.create(0., 1., 0.));
 
     Mat4.multiply(rot, m, rot);
     Mat4.multiply(rot, yRot, rot);
@@ -208,11 +213,8 @@ let run = () => {
     glVertexAttribPointer(colorAttribute, 4, GL_FLOAT, false);
     glEnableVertexAttribArray(colorAttribute);
 
-    glBindBuffer(GL_ARRAY_BUFFER, tb);
-    glVertexAttribPointer(textureAttribute, 2, GL_FLOAT, false);
-    glEnableVertexAttribArray(textureAttribute);
-
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
   };
 
   glfwSetFramebufferSizeCallback(

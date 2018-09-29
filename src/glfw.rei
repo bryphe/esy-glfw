@@ -79,8 +79,10 @@ type texturePixelDataFormat =
   | GL_RGB
   | GL_RGBA;
 
-type texturePixelDataType =
-  | GL_UNSIGNED_BYTE;
+type glType =
+  | GL_FLOAT
+  | GL_UNSIGNED_BYTE
+  | GL_UNSIGNED_SHORT;
 
 type texture;
 let glCreateTexture: unit => texture;
@@ -88,14 +90,12 @@ let glBindTexture: (textureType, texture) => unit;
 let glTexParameteri:
   (textureType, textureParameter, textureParameterValue) => unit;
 let glTexImage2D:
-  (textureType, texturePixelDataFormat, texturePixelDataType, Image.t) => unit;
+  (textureType, texturePixelDataFormat, glType, Image.t) => unit;
 let glGenerateMipmap: textureType => unit;
 
 type bufferType =
-  | GL_ARRAY_BUFFER;
-
-type glType =
-  | GL_FLOAT;
+  | GL_ARRAY_BUFFER
+  | GL_ELEMENT_ARRAY_BUFFER;
 
 let glVertexAttribPointer: (attribLocation, int, glType, bool) => unit;
 let glEnableVertexAttribArray: attribLocation => unit;
@@ -111,7 +111,7 @@ type drawType =
 let glBufferData:
   (
     bufferType,
-    Bigarray.Array1.t(float, Bigarray.float32_elt, Bigarray.c_layout),
+    Bigarray.Array1.t('a, 'b, Bigarray.c_layout),
     drawType
   ) =>
   unit;
@@ -121,3 +121,4 @@ type drawMode =
   | GL_TRIANGLE_STRIP;
 
 let glDrawArrays: (drawMode, int, int) => unit;
+let glDrawElements: (drawMode, int, glType, int) => unit;

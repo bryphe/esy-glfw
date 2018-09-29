@@ -24,7 +24,7 @@ A very simple example project is provided - you can test it out here:
 
 __NATIVE:__
 - `cd _build/install/default/bin`
-- `./test_glfw.` (`./test_glfw.exe` on Windows)
+- `./test_glfw` (`./test_glfw.exe` on Windows)
 
 __WEB:__
 - Start an http-server at `_build/install/default/bin`. (I use `npm install -g http-server`).
@@ -37,4 +37,4 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) for more
 ## Acknowledgements
 
 - The test texture is provided by [LearnOpenGL](https://www.learnopengl) - an excellent resource for OpenGL!
-- This is built on several great libraries, like [GLFW](https://www.glfw.org) and [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)
+- This is built on several great libraries, like [GLFW](https://www.glfw.org), [glad](https://github.com/Dav1dde/glad), [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)
