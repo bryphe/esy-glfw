@@ -79,71 +79,88 @@ let run = () => {
   print_endline(fsSource);
 
   let positions = [|
-    (-0.5),
-    0.5,
-    0.0,
-    0.5,
-    0.5,
-    0.0,
-    (-0.5),
-    (-0.5),
-    0.0,
-    0.5,
-    (-0.5),
-    0.0,
+  // Front face
+  -1.0, -1.0,  1.0,
+   1.0, -1.0,  1.0,
+   1.0,  1.0,  1.0,
+  -1.0,  1.0,  1.0,
+  
+  // Back face
+  -1.0, -1.0, -1.0,
+  -1.0,  1.0, -1.0,
+   1.0,  1.0, -1.0,
+   1.0, -1.0, -1.0,
+  
+  // Top face
+  -1.0,  1.0, -1.0,
+  -1.0,  1.0,  1.0,
+   1.0,  1.0,  1.0,
+   1.0,  1.0, -1.0,
+  
+  // Bottom face
+  -1.0, -1.0, -1.0,
+   1.0, -1.0, -1.0,
+   1.0, -1.0,  1.0,
+  -1.0, -1.0,  1.0,
+  
+  // Right face
+   1.0, -1.0, -1.0,
+   1.0,  1.0, -1.0,
+   1.0,  1.0,  1.0,
+   1.0, -1.0,  1.0,
+  
+  // Left face
+  -1.0, -1.0, -1.0,
+  -1.0, -1.0,  1.0,
+  -1.0,  1.0,  1.0,
+  -1.0,  1.0, -1.0,
   |];
   let colors = [|
-    1.0,
-    0.0,
-    0.0,
-    1.0,
-    0.0,
-    1.0,
-    0.0,
-    1.0,
-    0.0,
-    0.0,
-    1.0,
-    1.0,
-    1.0,
-    1.0,
-    1.0,
-    1.0,
+    1.0,  1.0,  1.0,  1.0,    // Front face: white
+    1.0,  1.0,  1.0,  1.0,    // Front face: white
+    1.0,  1.0,  1.0,  1.0,    // Front face: white
+    1.0,  1.0,  1.0,  1.0,    // Front face: white
+
+    1.0,  0.0,  0.0,  1.0,    // Back face: red
+    1.0,  0.0,  0.0,  1.0,    // Back face: red
+    1.0,  0.0,  0.0,  1.0,    // Back face: red
+    1.0,  0.0,  0.0,  1.0,    // Back face: red
+
+    0.0,  1.0,  0.0,  1.0,    // Top face: green
+    0.0,  1.0,  0.0,  1.0,    // Top face: green
+    0.0,  1.0,  0.0,  1.0,    // Top face: green
+    0.0,  1.0,  0.0,  1.0,    // Top face: green
+
+    0.0,  0.0,  1.0,  1.0,    // Bottom face: blue
+    0.0,  0.0,  1.0,  1.0,    // Bottom face: blue
+    0.0,  0.0,  1.0,  1.0,    // Bottom face: blue
+    0.0,  0.0,  1.0,  1.0,    // Bottom face: blue
+
+    1.0,  1.0,  0.0,  1.0,    // Right face: yellow
+    1.0,  1.0,  0.0,  1.0,    // Right face: yellow
+    1.0,  1.0,  0.0,  1.0,    // Right face: yellow
+    1.0,  1.0,  0.0,  1.0,    // Right face: yellow
+
+    1.0,  0.0,  1.0,  1.0,    // Left face: purple
+    1.0,  0.0,  1.0,  1.0,    // Left face: purple
+    1.0,  0.0,  1.0,  1.0,    // Left face: purple
+    1.0,  0.0,  1.0,  1.0,    // Left face: purple
   |];
-  let textures = [|0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0|];
   let vArray =
     Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, positions);
   let cArray =
     Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, colors);
-  let tArray =
-    Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, textures);
   let shaderProgram = initShaderProgram(vsSource, fsSource);
   let vb = glCreateBuffer();
   let cb = glCreateBuffer();
-  let tb = glCreateBuffer();
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glBufferData(GL_ARRAY_BUFFER, vArray, GL_STATIC_DRAW);
 
   glBindBuffer(GL_ARRAY_BUFFER, cb);
   glBufferData(GL_ARRAY_BUFFER, cArray, GL_STATIC_DRAW);
 
-  glBindBuffer(GL_ARRAY_BUFFER, tb);
-  glBufferData(GL_ARRAY_BUFFER, tArray, GL_STATIC_DRAW);
-
-  /* Create texture */
-  let texture = glCreateTexture();
-  glBindTexture(GL_TEXTURE_2D, texture);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexImage2D(GL_TEXTURE_2D, GL_RGB, GL_UNSIGNED_BYTE, img);
-  glGenerateMipmap(GL_TEXTURE_2D);
-
   let posAttribute = glGetAttribLocation(shaderProgram, "aVertexPosition");
   let colorAttribute = glGetAttribLocation(shaderProgram, "aVertexColor");
-  let textureAttribute =
-    glGetAttribLocation(shaderProgram, "aVertexTexCoord");
   let worldUniform = glGetUniformLocation(shaderProgram, "uWorldMatrix");
   let viewUniform = glGetUniformLocation(shaderProgram, "uViewMatrix");
   let projectionUniform = glGetUniformLocation(shaderProgram, "uProjectionMatrix");
