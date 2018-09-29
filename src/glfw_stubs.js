@@ -120,8 +120,15 @@ function caml_glfwMakeContextCurrent(win) {
         '1': gl.RGBA,
     }
 
-    joo_global_object.variantToTexturePixelDataType = {
-        '0': gl.UNSIGNED_BYTE
+    joo_global_object.variantToGlType = {
+        '0': gl.FLOAT,
+        '1': gl.UNSIGNED_BYTE,
+        '2': gl.UNSIGNED_SHORT,
+    }
+
+    joo_global_object.variantToBufferType = {
+        '0': gl.ARRAY_BUFFER,
+        '1': gl.ELEMENT_ARRAY_BUFFER,
     }
 
     joo_global_object.variantToDrawMode = {

@@ -24,13 +24,15 @@ function caml_glAttachShader(program, shader) {
 // Provides: caml_glBindBuffer
 function caml_glBindBuffer(target, buffer) {
     // TODO: target param
-    joo_global_object.gl.bindBuffer(joo_global_object.gl.ARRAY_BUFFER, buffer)
+    var bufferType = joo_global_object.variantToBufferType[target];
+    joo_global_object.gl.bindBuffer(bufferType, buffer)
 }
 
 // Provides: caml_glBufferData
 function caml_glBufferData(target, data, usage) {
     // TODO: Remove size
-    joo_global_object.gl.bufferData(joo_global_object.gl.ARRAY_BUFFER, data.data,  joo_global_object.gl.STATIC_DRAW)
+    var bufferType = joo_global_object.variantToBufferType[target];
+    joo_global_object.gl.bufferData(bufferType, data.data,  joo_global_object.gl.STATIC_DRAW)
 }
 
 // Provides: caml_glCompileShader
@@ -83,6 +85,13 @@ function caml_glDepthFunc(df) {
 function caml_glDrawArrays(vDrawMode, first, count) {
     var drawMode = variantToDrawMode[vDrawMode];
     joo_global_object.gl.drawArrays(drawMode, first, count);
+}
+
+// Provides: caml_glDrawElements
+function caml_glDrawElements(vDrawMode, count, vDataType, first) {
+    var drawMode = variantToDrawMode[vDrawMode];
+    var dataType = joo_global_object.variantToGlType[vDataType];
+    joo_global_object.gl.drawElements(drawMode, count, dataType, first);
 }
 
 // Provides: caml_glEnable
