@@ -71,9 +71,9 @@ let run = () => {
         uniform sampler2D texture;
 
         void main() {
-            //gl_FragColor = vColor;
+            gl_FragColor = vColor;
             // gl_FragColor = vec4(vTexCoord, 0.0, 1.0);
-            gl_FragColor = texture2D(texture, vTexCoord);
+            //gl_FragColor = texture2D(texture, vTexCoord);
         }
     |};
   print_endline(fsSource);
