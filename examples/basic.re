@@ -148,7 +148,13 @@ let run = () => {
   let viewUniform = glGetUniformLocation(shaderProgram, "uViewMatrix");
   let projectionUniform = glGetUniformLocation(shaderProgram, "uProjectionMatrix");
 
+  let prevTime = ref(Unix.gettimeofday());
+
   let render = () => {
+    let time = Unix.gettimeofday();
+    let delta = time -. prevTime^;
+    print_endline ("TIME: " ++ string_of_float(time));
+
     glClearColor(0.0, 0., 0., 1.);
     glClearDepth(1.0);
     glEnable(GL_DEPTH_TEST);
@@ -158,7 +164,13 @@ let run = () => {
     let m = Mat4.create();
     let v = Vec3.create(0., 0., -6.);
     Mat4.fromTranslation(m, v);
-    glUniformMatrix4fv(worldUniform, m);
+
+    let rot = Mat4.create();
+    Mat4.rotate(rot, delta, Vec3.create(0., 0., 1.));
+
+    Mat4.multiply(rot, m, rot);
+
+    glUniformMatrix4fv(worldUniform, rot);
 
     glUniformMatrix4fv(viewUniform, Mat4.create());
 
