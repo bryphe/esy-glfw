@@ -32,6 +32,9 @@ let run = () => {
 
   glViewport(0, 0, 800, 600);
 
+  let width = ref(800);
+  let height = ref(600);
+
   let%lwt img = Image.load("test.jpg");
   Image.debug_print(img);
   let vsSource = {|
@@ -43,13 +46,15 @@ let run = () => {
         attribute vec4 aVertexColor;
         attribute vec2 aVertexTexCoord;
 
-        uniform mat4 transform;
+        uniform mat4 uProjectionMatrix;
+        uniform mat4 uViewMatrix;
+        uniform mat4 uWorldMatrix;
 
         varying lowp vec4 vColor;
         varying lowp vec2 vTexCoord;
 
         void main() {
-            gl_Position = transform * vec4(aVertexPosition, 1.0);
+            gl_Position = uProjectionMatrix * uViewMatrix * uWorldMatrix * vec4(aVertexPosition, 1.0);
             vColor = aVertexColor;
             vTexCoord = aVertexTexCoord;
         }
@@ -139,7 +144,9 @@ let run = () => {
   let colorAttribute = glGetAttribLocation(shaderProgram, "aVertexColor");
   let textureAttribute =
     glGetAttribLocation(shaderProgram, "aVertexTexCoord");
-  let worldUniform = glGetUniformLocation(shaderProgram, "transform");
+  let worldUniform = glGetUniformLocation(shaderProgram, "uWorldMatrix");
+  let viewUniform = glGetUniformLocation(shaderProgram, "uViewMatrix");
+  let projectionUniform = glGetUniformLocation(shaderProgram, "uProjectionMatrix");
 
   let render = () => {
     glClearColor(0.0, 0., 0., 1.);
@@ -149,10 +156,16 @@ let run = () => {
 
     glUseProgram(shaderProgram);
     let m = Mat4.create();
-    let v = Vec3.create();
-    Vec3.set(v, 1., 2., 0.5);
-    Mat4.fromScaling(m, v);
+    let v = Vec3.create(0., 0., -6.);
+    Mat4.fromTranslation(m, v);
     glUniformMatrix4fv(worldUniform, m);
+
+    glUniformMatrix4fv(viewUniform, Mat4.create());
+
+    let projectionMatrix = Mat4.create();
+    Mat4.perspective(projectionMatrix, 45. *. (4.0 *. atan(1.0)) /. 180., float_of_int(width^) /. float_of_int(height^), 0.1, 100.)
+
+    glUniformMatrix4fv(projectionUniform, projectionMatrix);
     glBindBuffer(GL_ARRAY_BUFFER, vb);
     glVertexAttribPointer(posAttribute, 3, GL_FLOAT, false);
     glEnableVertexAttribArray(posAttribute);
@@ -171,14 +184,16 @@ let run = () => {
 
   glfwSetFramebufferSizeCallback(
     w,
-    (_, width, height) => {
-      glViewport(0, 0, width, height);
+    (_, w, h) => {
+      glViewport(0, 0, w, h);
       print_endline(
         "Size changed: "
-        ++ string_of_int(width)
+        ++ string_of_int(w)
         ++ ", "
-        ++ string_of_int(height),
+        ++ string_of_int(h),
       );
+      width := w;
+      height := h;
       render();
     },
   );
