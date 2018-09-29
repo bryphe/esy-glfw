@@ -91,8 +91,10 @@ type texturePixelDataFormat =
   | GL_RGB
   | GL_RGBA;
 
-type texturePixelDataType =
-  | GL_UNSIGNED_BYTE;
+type glType =
+  | GL_FLOAT
+  | GL_UNSIGNED_BYTE
+  | GL_UNSIGNED_SHORT;
 
 external glCreateTexture: unit => texture = "caml_glCreateTexture";
 external glBindTexture: (textureType, texture) => unit = "caml_glBindTexture";
@@ -100,12 +102,13 @@ external glTexParameteri:
   (textureType, textureParameter, textureParameterValue) => unit =
   "caml_glTexParameteri";
 external glTexImage2D:
-  (textureType, texturePixelDataFormat, texturePixelDataType, Image.t) => unit =
+  (textureType, texturePixelDataFormat, glType, Image.t) => unit =
   "caml_glTexImage2D";
 external glGenerateMipmap: textureType => unit = "caml_glGenerateMipmap";
 
 type bufferType =
-  | GL_ARRAY_BUFFER;
+  | GL_ARRAY_BUFFER
+  | GL_ELEMENT_ARRAY_BUFFER;
 
 type buffer;
 external glCreateBuffer: unit => buffer = "caml_glCreateBuffer";
@@ -118,14 +121,11 @@ type drawType =
 external glBufferData:
   (
     bufferType,
-    Bigarray.Array1.t(float, Bigarray.float32_elt, Bigarray.c_layout),
+    Bigarray.Array1.t('a, 'b, Bigarray.c_layout),
     drawType
   ) =>
   unit =
   "caml_glBufferData";
-
-type glType =
-  | GL_FLOAT;
 
 external glVertexAttribPointer: (attribLocation, int, glType, bool) => unit =
   "caml_glVertexAttribPointer";
@@ -137,5 +137,6 @@ type drawMode =
   | GL_TRIANGLE_STRIP;
 
 external glDrawArrays: (drawMode, int, int) => unit = "caml_glDrawArrays";
+external glDrawElements: (drawMode, int, glType, int) => unit = "caml_glDrawElements";
 
 external printFrameBufferSize: window => unit = "caml_printFrameBufferSize";

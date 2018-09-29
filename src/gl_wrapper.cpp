@@ -20,6 +20,32 @@ extern "C" {
         printf("[WARNING]: %s\n", message);
     }
 
+    GLenum variantToType(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_FLOAT;
+            case 1:
+                return GL_UNSIGNED_BYTE;
+            case 2:
+                return GL_UNSIGNED_SHORT;
+            default:
+                warn("Unexpected GL type!");
+                return 0;
+        }
+    }
+
+    GLenum variantToBufferType(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_ARRAY_BUFFER;
+            case 1:
+                return GL_ELEMENT_ARRAY_BUFFER;
+            default:
+                warn("Unexpected buffer type!");
+                return 0;
+        }
+    }
+
     GLenum variantToTextureType(value vVal) {
         switch (Int_val(vVal)) {
             case 0:
@@ -309,7 +335,7 @@ extern "C" {
         unsigned int VBO = (unsigned int)vBuffer;
         /* printf("bind buffer: %d\n", VBO); */
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBindBuffer(variantToBufferType(vBufferType), VBO);
         /* printf("glBindBuffer: %d\n", VBO); */
         return Val_unit;
     }
@@ -318,8 +344,20 @@ extern "C" {
     caml_glBufferData(value vBufferType, value vData, value drawType) {
         /* printf("glBufferData - show floats TODO\n"); */
         int size = Caml_ba_array_val(vData)->dim[0];
-        float* elements = (float*)Caml_ba_data_val(vData);
-        glBufferData(GL_ARRAY_BUFFER, size * sizeof(float), elements, GL_STATIC_DRAW);
+
+        printf("ARRAY INFO: Flags: %d (float: %d uint16: %d)\n", Caml_ba_array_val(vData)->flags, CAML_BA_FLOAT32, CAML_BA_UINT16);
+
+        if ((Caml_ba_array_val(vData)->flags & CAML_BA_UINT16) == CAML_BA_UINT16) {
+            printf("- short array - size: %d\n", size);
+            unsigned short* elements = (unsigned short*)Caml_ba_data_val(vData);
+            glBufferData(variantToBufferType(vBufferType), size * sizeof(unsigned short), elements, GL_STATIC_DRAW);
+        } else if ((Caml_ba_array_val(vData)->flags & CAML_BA_FLOAT32) == CAML_BA_FLOAT32) {
+            printf("- float array - size: %d\n", size);
+            float* elements = (float*)Caml_ba_data_val(vData);
+            glBufferData(variantToBufferType(vBufferType), size * sizeof(float), elements, GL_STATIC_DRAW);
+        } else {
+            warn("Unexpected Bigarray type!");
+        }
         return Val_unit;
     }
 
@@ -330,6 +368,24 @@ extern "C" {
         unsigned int count = Int_val(vCount);
         glDrawArrays(variantToDrawMode(vDrawMode), first, count);
         return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glDrawElements(value vDrawMode, value vCount, value vGlType, value vFirst) {
+       GLenum drawMode = variantToDrawMode(vDrawMode);
+       GLenum dataType = variantToType(vGlType);
+       unsigned int count = Int_val(vCount);
+       unsigned int first = Int_val(vFirst);
+
+        /* unsigned int VBO; */
+        /* glGenBuffers(1, &VBO); */
+
+        /* unsigned short indices[] = {0, 1, 2, 1, 2, 3}; */
+        /* glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO); */
+        /* glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); */
+
+       glDrawElements(drawMode, vCount, dataType, (void *)first);
+       return Val_unit;
     }
 
     CAMLprim value

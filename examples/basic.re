@@ -105,6 +105,10 @@ let run = () => {
     1.0,
     1.0,
   |];
+
+  let indices = [|
+    0, 1, 2,    1, 2, 3
+  |];
   let textures = [|0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0|];
   let vArray =
     Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, positions);
@@ -112,10 +116,13 @@ let run = () => {
     Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, colors);
   let tArray =
     Bigarray.Array1.of_array(Bigarray.Float32, Bigarray.C_layout, textures);
+  let iArray =
+    Bigarray.Array1.of_array(Bigarray.Int16_unsigned, Bigarray.C_layout, indices);
   let shaderProgram = initShaderProgram(vsSource, fsSource);
   let vb = glCreateBuffer();
   let cb = glCreateBuffer();
   let tb = glCreateBuffer();
+  let ib = glCreateBuffer();
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glBufferData(GL_ARRAY_BUFFER, vArray, GL_STATIC_DRAW);
 
@@ -124,6 +131,9 @@ let run = () => {
 
   glBindBuffer(GL_ARRAY_BUFFER, tb);
   glBufferData(GL_ARRAY_BUFFER, tArray, GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, iArray, GL_STATIC_DRAW);
 
   /* Create texture */
   let texture = glCreateTexture();
@@ -153,6 +163,7 @@ let run = () => {
     Vec3.set(v, 1., 2., 0.5);
     Mat4.fromScaling(m, v);
     glUniformMatrix4fv(worldUniform, m);
+
     glBindBuffer(GL_ARRAY_BUFFER, vb);
     glVertexAttribPointer(posAttribute, 3, GL_FLOAT, false);
     glEnableVertexAttribArray(posAttribute);
@@ -165,7 +176,10 @@ let run = () => {
     glVertexAttribPointer(textureAttribute, 2, GL_FLOAT, false);
     glEnableVertexAttribArray(textureAttribute);
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+
+    /* glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); */
     glfwSwapBuffers(w);
   };
 
