@@ -31,17 +31,17 @@
         "@opam/js_of_ocaml-lwt@opam:3.2.1", "@opam/lwt@opam:4.1.0",
         "@opam/lwt_ppx@opam:1.2.1",
         "esy-cmake@github:bryphe/esy-cmake#8afd4a1", "ocaml@4.6.6",
-        "reason-gl-matrix@github:bryphe/reason-gl-matrix#24499b2610164d8b9220f704e46d3cc8a35dabe1",
+        "reason-gl-matrix@github:bryphe/reason-gl-matrix#0ae52c1519e0b161ad23ee66ffe19e5e042b4767",
         "refmterr@3.1.7"
       ]
     },
-    "reason-gl-matrix@github:bryphe/reason-gl-matrix#24499b2610164d8b9220f704e46d3cc8a35dabe1": {
+    "reason-gl-matrix@github:bryphe/reason-gl-matrix#0ae52c1519e0b161ad23ee66ffe19e5e042b4767": {
       "record": {
         "name": "reason-gl-matrix",
         "version":
-          "github:bryphe/reason-gl-matrix#24499b2610164d8b9220f704e46d3cc8a35dabe1",
+          "github:bryphe/reason-gl-matrix#0ae52c1519e0b161ad23ee66ffe19e5e042b4767",
         "source":
-          "github:bryphe/reason-gl-matrix#24499b2610164d8b9220f704e46d3cc8a35dabe1",
+          "github:bryphe/reason-gl-matrix#0ae52c1519e0b161ad23ee66ffe19e5e042b4767",
         "files": [],
         "opam": null
       },
@@ -554,12 +554,11 @@
           "version": "transition",
           "opam":
             "opam-version: \"2.0\"\nname: \"jbuilder\"\nversion: \"transition\"\nsynopsis:\n  \"This is a transition package, jbuilder is now named dune. Use the dune\"\ndescription: \"package instead.\"\nmaintainer: \"opensource@janestreet.com\"\nauthors: \"Jane Street Group, LLC <opensource@janestreet.com>\"\nlicense: \"MIT\"\nhomepage: \"https://github.com/ocaml/dune\"\nbug-reports: \"https://github.com/ocaml/dune/issues\"\ndepends: [\"ocaml\" \"dune\"]\npost-messages:\n  \"Jbuilder has been renamed and the jbuilder package is now a transition package. Use the dune package instead.\"\ndev-repo: \"git+https://github.com/ocaml/dune.git\"",
-          "override": { "dependencies": { "@opam/ocamlfind": "*" } }
+          "override": null
         }
       },
       "dependencies": [
-        "@esy-ocaml/substs@0.0.1", "@opam/dune@opam:1.3.0",
-        "@opam/ocamlfind@opam:1.8.0", "ocaml@4.6.6"
+        "@esy-ocaml/substs@0.0.1", "@opam/dune@opam:1.3.0", "ocaml@4.6.6"
       ]
     },
     "@opam/easy-format@opam:1.3.1": {
