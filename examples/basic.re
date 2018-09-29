@@ -150,10 +150,11 @@ let run = () => {
 
   let prevTime = ref(Unix.gettimeofday());
 
+  let delta = ref(0.);
   let render = () => {
     let time = Unix.gettimeofday();
-    let delta = time -. prevTime^;
-    print_endline ("TIME: " ++ string_of_float(time));
+    delta := delta^ +. time -. prevTime^;
+    prevTime := time;
 
     glClearColor(0.0, 0., 0., 1.);
     glClearDepth(1.0);
@@ -166,9 +167,13 @@ let run = () => {
     Mat4.fromTranslation(m, v);
 
     let rot = Mat4.create();
-    Mat4.rotate(rot, delta, Vec3.create(0., 0., 1.));
+    Mat4.rotate(rot, delta^, Vec3.create(0., 0., 1.));
+
+    let yRot = Mat4.create();
+    Mat4.rotate(rot, delta^, Vec3.create(0., 1., 0.));
 
     Mat4.multiply(rot, m, rot);
+    Mat4.multiply(rot, yRot, rot);
 
     glUniformMatrix4fv(worldUniform, rot);
 
@@ -191,7 +196,6 @@ let run = () => {
     glEnableVertexAttribArray(textureAttribute);
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glfwSwapBuffers(w);
   };
 
   glfwSetFramebufferSizeCallback(
@@ -213,7 +217,9 @@ let run = () => {
   glfwMaximizeWindow(w);
 
   while (!glfwWindowShouldClose(w)) {
+
     render();
+    glfwSwapBuffers(w);
 
     glfwPollEvents();
   };

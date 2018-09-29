@@ -163,6 +163,7 @@ extern "C" {
     caml_glfwSwapBuffers(value window)
     {
         WindowInfo *wd = (WindowInfo*)window;
+        glfwSwapInterval(0);
         glfwSwapBuffers(wd->pWindow);
         return Val_unit;
     }
