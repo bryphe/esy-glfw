@@ -23,6 +23,19 @@ function caml_test_callback_success(s, f) {
     s(999);
 }
 
+// Provides: caml_glfwJavascriptRenderLoop
+function caml_glfwJavascriptRenderLoop(loopFunc) {
+    function renderLoop(t) {
+        var ret = loopFunc(t);
+
+        if (!ret) {
+            joo_global_object.window.requestAnimationFrame(renderLoop);
+        }
+    }
+
+    joo_global_object.window.requestAnimationFrame(renderLoop);
+}
+
 // Provides: caml_test_callback_failure
 function caml_test_callback_failure(s, f) {
     f(caml_js_to_string("failed"));
@@ -141,14 +154,8 @@ function caml_glfwMakeContextCurrent(win) {
 }
 
 // Provides: caml_glfwWindowShouldClose
-var i = 0;
 function caml_glfwWindowShouldClose() {
-    i++
-    if (i > 1) {
-        return true
-    } else {
-        return false
-    }
+    return false
 }
 
 // Provides: caml_glfwPollEvents

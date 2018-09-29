@@ -362,6 +362,7 @@ let run = () => {
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
+    glfwSwapBuffers(w);
   };
 
   glfwSetFramebufferSizeCallback(
@@ -379,12 +380,12 @@ let run = () => {
 
   glfwMaximizeWindow(w);
 
-  while (!glfwWindowShouldClose(w)) {
+  glfwRenderLoop((_t) => {
     render();
-    glfwSwapBuffers(w);
 
     glfwPollEvents();
-  };
+    glfwWindowShouldClose(w);
+  })
 
   print_endline("Done!");
   glfwTerminate();

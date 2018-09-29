@@ -12,11 +12,16 @@ let glfwSwapBuffers: window => unit;
 let glfwSetWindowSize: (window, int, int) => unit;
 let glfwMaximizeWindow: (window) => unit;
 
+
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
 let glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit;
 
 let printFrameBufferSize: window => unit;
+
+type glfwRenderLoopCallback = (float) => bool;
+
+let glfwRenderLoop: (glfwRenderLoopCallback) => unit;
 
 /* GL */
 
