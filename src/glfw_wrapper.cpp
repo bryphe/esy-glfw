@@ -82,8 +82,6 @@ extern "C" {
       int h = Int_val(iHeight);
       char *s = String_val(sTitle);
 
-      glfwWindowHint(GLFW_SAMPLES, 4);
-
       wd = glfwCreateWindow(w, h, s,
                             NULL, NULL);
 
