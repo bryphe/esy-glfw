@@ -78,7 +78,7 @@ let run = () => {
     |};
   print_endline(fsSource);
 
-  // Populate buffers for the cube geometry
+  /* Populate buffers for the cube geometry */
   let vArray = Float32Array.of_array(Cube.positions);
   let cArray = Float32Array.of_array(Cube.colors);
   let iArray = Uint16Array.of_array(Cube.indices);
