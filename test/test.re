@@ -21,6 +21,8 @@ let () = {
     | CompilationSuccess => assert(true);
     | _ => assert(false);
     }
+
+    assert(false);
 }
 
 /* Compilation Failure test */
