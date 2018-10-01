@@ -22,6 +22,7 @@ install:
 - travis_wait esy install
 script:
 - travis_wait esy build
+- esy b runtest
 cache:
   timeout: 360
   directories:
