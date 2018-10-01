@@ -19,15 +19,18 @@ matrix:
     node_js: 8
 
 
+before_install:
+- export DISPLAY=:99
+- export LIBGL_ALWAYS_SOFTWARE=1
+# https://stackoverflow.com/questions/28837117/travis-ci-run-lwjgl-tests-in-non-headless-environment
+- sudo apt-get install -qq --force-yes mesa-utils libgl1-mesa-swx11 libgl1-mesa-swx11-dev xvfb
+- /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1400x900x24 -ac +extension GLX +render
+- glxinfo
 install:
 - travis_retry npm install -g esy@0.2.11
 - travis_wait esy install
 script:
 - travis_wait 30 esy build
-- glxinfo
-# https://stackoverflow.com/questions/28837117/travis-ci-run-lwjgl-tests-in-non-headless-environment
-- sudo apt-get install -qq --force-yes mesa-utils libgl1-mesa-swx11 libgl1-mesa-swx11-dev xvfb
-- /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1400x900x24 -ac +extension GLX +render
 - esy b dune runtest
 cache:
   timeout: 360
