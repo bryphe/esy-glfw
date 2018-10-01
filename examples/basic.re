@@ -19,7 +19,11 @@ let initShaderProgram = (vsSource, fsSource) => {
   let shaderProgram = glCreateProgram();
   let () = glAttachShader(shaderProgram, vsShader);
   let _ = glAttachShader(shaderProgram, fsShader);
-  let _ = glLinkProgram(shaderProgram);
+  let result = glLinkProgram(shaderProgram);
+  switch (result) {
+  | LinkSuccess => print_endline("Shader linked successfully.");
+  | LinkFailure(v) => print_endline("Failed to link shader: " ++ v);
+  };
   shaderProgram;
 };
 
@@ -32,6 +36,9 @@ let run = () => {
 
   glViewport(0, 0, 800, 600);
 
+  let width = ref(800);
+  let height = ref(600);
+
   let%lwt img = Image.load("test.jpg");
   Image.debug_print(img);
   let vsSource = {|
@@ -43,13 +50,15 @@ let run = () => {
         attribute vec4 aVertexColor;
         attribute vec2 aVertexTexCoord;
 
-        uniform mat4 transform;
+        uniform mat4 uProjectionMatrix;
+        uniform mat4 uViewMatrix;
+        uniform mat4 uWorldMatrix;
 
         varying lowp vec4 vColor;
         varying lowp vec2 vTexCoord;
 
         void main() {
-            gl_Position = transform * vec4(aVertexPosition, 1.0);
+            gl_Position = uProjectionMatrix * uViewMatrix * uWorldMatrix * vec4(aVertexPosition, 1.0);
             vColor = aVertexColor;
             vTexCoord = aVertexTexCoord;
         }
@@ -66,60 +75,21 @@ let run = () => {
         uniform sampler2D texture;
 
         void main() {
-            //gl_FragColor = vColor;
+            gl_FragColor = vColor;
             // gl_FragColor = vec4(vTexCoord, 0.0, 1.0);
-            gl_FragColor = texture2D(texture, vTexCoord);
+            //gl_FragColor = texture2D(texture, vTexCoord);
         }
     |};
   print_endline(fsSource);
 
-  let positions = [|
-    (-0.5),
-    0.5,
-    0.0,
-    0.5,
-    0.5,
-    0.0,
-    (-0.5),
-    (-0.5),
-    0.0,
-    0.5,
-    (-0.5),
-    0.0,
-  |];
-  let colors = [|
-    1.0,
-    0.0,
-    0.0,
-    1.0,
-    0.0,
-    1.0,
-    0.0,
-    1.0,
-    0.0,
-    0.0,
-    1.0,
-    1.0,
-    1.0,
-    1.0,
-    1.0,
-    1.0,
-  |];
-
-  let indices = [|
-    0, 1, 2,    1, 2, 3
-  |];
-  let textures = [|0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0|];
-
-  let vArray = Float32Array.of_array(positions);
-  let cArray = Float32Array.of_array(colors);
-  let tArray = Float32Array.of_array(textures);
-  let iArray = Uint16Array.of_array(indices);
+  /* Populate buffers for the cube geometry */
+  let vArray = Float32Array.of_array(Cube.positions);
+  let cArray = Float32Array.of_array(Cube.colors);
+  let iArray = Uint16Array.of_array(Cube.indices);
 
   let shaderProgram = initShaderProgram(vsSource, fsSource);
   let vb = glCreateBuffer();
   let cb = glCreateBuffer();
-  let tb = glCreateBuffer();
   let ib = glCreateBuffer();
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glBufferData(GL_ARRAY_BUFFER, vArray, GL_STATIC_DRAW);
@@ -127,29 +97,24 @@ let run = () => {
   glBindBuffer(GL_ARRAY_BUFFER, cb);
   glBufferData(GL_ARRAY_BUFFER, cArray, GL_STATIC_DRAW);
 
-  glBindBuffer(GL_ARRAY_BUFFER, tb);
-  glBufferData(GL_ARRAY_BUFFER, tArray, GL_STATIC_DRAW);
-
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, iArray, GL_STATIC_DRAW);
 
-  /* Create texture */
-  let texture = glCreateTexture();
-  glBindTexture(GL_TEXTURE_2D, texture);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexImage2D(GL_TEXTURE_2D, GL_RGB, GL_UNSIGNED_BYTE, img);
-  glGenerateMipmap(GL_TEXTURE_2D);
-
   let posAttribute = glGetAttribLocation(shaderProgram, "aVertexPosition");
   let colorAttribute = glGetAttribLocation(shaderProgram, "aVertexColor");
-  let textureAttribute =
-    glGetAttribLocation(shaderProgram, "aVertexTexCoord");
-  let worldUniform = glGetUniformLocation(shaderProgram, "transform");
+  let worldUniform = glGetUniformLocation(shaderProgram, "uWorldMatrix");
+  let viewUniform = glGetUniformLocation(shaderProgram, "uViewMatrix");
+  let projectionUniform =
+    glGetUniformLocation(shaderProgram, "uProjectionMatrix");
 
+  let prevTime = ref(Unix.gettimeofday());
+
+  let delta = ref(0.);
   let render = () => {
+    let time = Unix.gettimeofday();
+    delta := delta^ +. time -. prevTime^;
+    prevTime := time;
+
     glClearColor(0.0, 0., 0., 1.);
     glClearDepth(1.0);
     glEnable(GL_DEPTH_TEST);
@@ -157,11 +122,32 @@ let run = () => {
 
     glUseProgram(shaderProgram);
     let m = Mat4.create();
-    let v = Vec3.create();
-    Vec3.set(v, 1., 2., 0.5);
-    Mat4.fromScaling(m, v);
-    glUniformMatrix4fv(worldUniform, m);
+    let v = Vec3.create(0., 0., -10.);
+    Mat4.fromTranslation(m, v);
 
+    let rot = Mat4.create();
+    Mat4.rotate(rot, delta^, Vec3.create(0., 0., 1.));
+
+    let yRot = Mat4.create();
+    Mat4.rotate(rot, delta^ *. 0.7, Vec3.create(0., 1., 0.));
+
+    Mat4.multiply(rot, m, rot);
+    Mat4.multiply(rot, yRot, rot);
+
+    glUniformMatrix4fv(worldUniform, rot);
+
+    glUniformMatrix4fv(viewUniform, Mat4.create());
+
+    let projectionMatrix = Mat4.create();
+    Mat4.perspective(
+      projectionMatrix,
+      45. *. (4.0 *. atan(1.0)) /. 180.,
+      float_of_int(width^) /. float_of_int(height^),
+      0.1,
+      100.,
+    );
+
+    glUniformMatrix4fv(projectionUniform, projectionMatrix);
     glBindBuffer(GL_ARRAY_BUFFER, vb);
     glVertexAttribPointer(posAttribute, 3, GL_FLOAT, false);
     glEnableVertexAttribArray(posAttribute);
@@ -170,38 +156,32 @@ let run = () => {
     glVertexAttribPointer(colorAttribute, 4, GL_FLOAT, false);
     glEnableVertexAttribArray(colorAttribute);
 
-    glBindBuffer(GL_ARRAY_BUFFER, tb);
-    glVertexAttribPointer(textureAttribute, 2, GL_FLOAT, false);
-    glEnableVertexAttribArray(textureAttribute);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
-
-    /* glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); */
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
     glfwSwapBuffers(w);
   };
 
   glfwSetFramebufferSizeCallback(
     w,
-    (_, width, height) => {
-      glViewport(0, 0, width, height);
+    (_, w, h) => {
+      glViewport(0, 0, w, h);
       print_endline(
-        "Size changed: "
-        ++ string_of_int(width)
-        ++ ", "
-        ++ string_of_int(height),
+        "Size changed: " ++ string_of_int(w) ++ ", " ++ string_of_int(h),
       );
+      width := w;
+      height := h;
       render();
     },
   );
 
   glfwMaximizeWindow(w);
 
-  while (!glfwWindowShouldClose(w)) {
+  glfwRenderLoop((_t) => {
     render();
 
     glfwPollEvents();
-  };
+    glfwWindowShouldClose(w);
+  })
 
   print_endline("Done!");
   glfwTerminate();

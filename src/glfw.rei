@@ -18,6 +18,10 @@ let glfwSetFramebufferSizeCallback:
 
 let printFrameBufferSize: window => unit;
 
+type glfwRenderLoopCallback = (float) => bool;
+
+let glfwRenderLoop: (glfwRenderLoopCallback) => unit;
+
 /* GL */
 
 let glClearColor: (float, float, float, float) => unit;
@@ -50,9 +54,13 @@ let glDepthFunc: depthFunctions => unit;
 
 type program;
 
+type shaderLinkResult =
+| LinkSuccess
+| LinkFailure(string);
+
 let glCreateProgram: unit => program;
 let glAttachShader: (program, shader) => unit;
-let glLinkProgram: program => unit;
+let glLinkProgram: program => shaderLinkResult;
 let glUseProgram: program => unit;
 
 type attribLocation;

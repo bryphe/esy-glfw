@@ -21,7 +21,7 @@ install:
 - travis_retry npm install -g esy@0.2.11
 - travis_wait esy install
 script:
-- travis_wait esy build
+- travis_wait 30 esy build
 - esy b dune runtest
 cache:
   timeout: 360

@@ -16,6 +16,26 @@ external glfwSetWindowSize: (window, int, int) => unit =
   "caml_glfwSetWindowSize";
 external glfwMaximizeWindow: (window) => unit = "caml_glfwMaximizeWindow";
 
+type glfwRenderLoopCallback = float => bool;
+
+external glfwJavascriptRenderLoop: (glfwRenderLoopCallback) => unit = "caml_glfwJavascriptRenderLoop";
+
+let glfwNativeRenderLoop = (callback) => {
+    let shouldClose = ref(false);
+
+    while(shouldClose^ == false) {
+        shouldClose := callback(0.);
+    }
+};
+
+let glfwRenderLoop = (callback) => {
+    switch (Sys.backend_type) {
+    | Native => glfwNativeRenderLoop(callback)
+    | Bytecode => glfwNativeRenderLoop(callback);
+    | _ => glfwJavascriptRenderLoop(callback);
+    };
+}
+
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
 external glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit =
@@ -60,8 +80,11 @@ external glCreateProgram: unit => program = "caml_glCreateProgram";
 external glAttachShader: (program, shader) => unit = "caml_glAttachShader";
 external glUseProgram: program => unit = "caml_glUseProgram";
 
-/* TODO: Add link result return */
-external glLinkProgram: program => unit = "caml_glLinkProgram";
+type shaderLinkResult =
+| LinkSuccess
+| LinkFailure(string);
+
+external glLinkProgram: program => shaderLinkResult = "caml_glLinkProgram";
 
 type attribLocation;
 external glGetAttribLocation: (program, string) => attribLocation =

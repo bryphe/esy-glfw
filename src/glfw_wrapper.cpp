@@ -43,6 +43,12 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwJavascriptRenderLoop(value unit) {
+        // no-op for native
+        return Val_unit;
+    }
+
+    CAMLprim value
     caml_test_callback_failure(value vSuccess, value vFailure) {
         CAMLparam2(vSuccess, vFailure);
 

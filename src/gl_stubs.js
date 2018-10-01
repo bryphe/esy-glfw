@@ -103,6 +103,15 @@ function caml_glEnable(option) {
 // Provides: caml_glLinkProgram
 function caml_glLinkProgram(program) {
     joo_global_object.gl.linkProgram(program);
+
+    var result = joo_global_object.gl.getProgramParameter(program, joo_global_object.gl.LINK_STATUS);
+
+    if (result) {
+        return 0;
+    } else {
+        var log = gl.getProgramInfoLog(shader);
+        return [0, caml_js_to_string(log)];
+    }
 }
 
 // Provides: caml_glGetAttribLocation

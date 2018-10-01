@@ -156,12 +156,10 @@ extern "C" {
         int shaderType;
         switch (Int_val(v)) {
             case 0:
-                printf("vertex shader");
                 shaderType = GL_VERTEX_SHADER;
                 break;
             default:
             case 1:
-                printf("fragment shader");
                 shaderType = GL_FRAGMENT_SHADER;
                 break;
         }
@@ -224,20 +222,25 @@ extern "C" {
 
     CAMLprim value
     caml_glLinkProgram(value vProgram) {
+        CAMLparam1(vProgram);
         unsigned int shaderProgram = (unsigned int)vProgram;
         glLinkProgram(shaderProgram);
 
-        int success;
+        GLint success;
         glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 
-        char infoLog[512];
-        if (!success) {
-            glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-            printf("link failed: %s\n", infoLog);
+        if (success == GL_TRUE) {
+            CAMLreturn(Val_int(0));
         } else {
-            printf("link success!\n");
+            char infoLog[512];
+            glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+
+            CAMLlocal2(failure, log);
+            failure = caml_alloc(1, 0);
+            log = caml_copy_string(infoLog);
+            Store_field(failure, 0, log);
+            CAMLreturn(failure);
         }
-        return Val_unit;
     }
 
     CAMLprim value
