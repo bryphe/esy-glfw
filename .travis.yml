@@ -15,7 +15,6 @@ matrix:
            - libxi-dev
            - libegl1-mesa-dev
            - mesa-utils
-           - xfvb
   - os: osx # OSX 10.12
     node_js: 8
 
