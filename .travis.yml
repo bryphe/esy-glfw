@@ -14,6 +14,7 @@ matrix:
            - libxcursor-dev
            - libxi-dev
            - libegl1-mesa-dev
+           - mesa-utils
   - os: osx # OSX 10.12
     node_js: 8
 
