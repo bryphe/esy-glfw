@@ -19,7 +19,11 @@ let initShaderProgram = (vsSource, fsSource) => {
   let shaderProgram = glCreateProgram();
   let () = glAttachShader(shaderProgram, vsShader);
   let _ = glAttachShader(shaderProgram, fsShader);
-  let _ = glLinkProgram(shaderProgram);
+  let result = glLinkProgram(shaderProgram);
+  switch (result) {
+  | LinkSuccess => print_endline("Shader linked successfully.");
+  | LinkFailure(v) => print_endline("Failed to link shader: " ++ v);
+  };
   shaderProgram;
 };
 

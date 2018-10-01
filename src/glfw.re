@@ -60,8 +60,11 @@ external glCreateProgram: unit => program = "caml_glCreateProgram";
 external glAttachShader: (program, shader) => unit = "caml_glAttachShader";
 external glUseProgram: program => unit = "caml_glUseProgram";
 
-/* TODO: Add link result return */
-external glLinkProgram: program => unit = "caml_glLinkProgram";
+type shaderLinkResult =
+| LinkSuccess
+| LinkFailure(string);
+
+external glLinkProgram: program => shaderLinkResult = "caml_glLinkProgram";
 
 type attribLocation;
 external glGetAttribLocation: (program, string) => attribLocation =
