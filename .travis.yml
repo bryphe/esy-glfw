@@ -13,6 +13,7 @@ matrix:
            - libxinerama-dev
            - libxcursor-dev
            - libxi-dev
+           - libegl1-mesa-dev
   - os: osx # OSX 10.12
     node_js: 8
 
