@@ -48,19 +48,16 @@ let run = () => {
 
         attribute vec3 aVertexPosition;
         attribute vec4 aVertexColor;
-        attribute vec2 aVertexTexCoord;
 
         uniform mat4 uProjectionMatrix;
         uniform mat4 uViewMatrix;
         uniform mat4 uWorldMatrix;
 
         varying lowp vec4 vColor;
-        varying lowp vec2 vTexCoord;
 
         void main() {
             gl_Position = uProjectionMatrix * uViewMatrix * uWorldMatrix * vec4(aVertexPosition, 1.0);
             vColor = aVertexColor;
-            vTexCoord = aVertexTexCoord;
         }
     |};
   print_endline(vsSource);
@@ -70,9 +67,6 @@ let run = () => {
         #endif
 
         varying lowp vec4 vColor;
-        varying lowp vec2 vTexCoord;
-
-        uniform sampler2D texture;
 
         void main() {
             gl_FragColor = vColor;
