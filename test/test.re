@@ -33,8 +33,6 @@ let () = {
         | _ => assert(false);
         }
     });
-
-    assert(false);
 };
 
 /* Compilation Failure test */
