@@ -12,7 +12,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include <image.h>
+#include <reglfw_image.h>
 
 extern "C" {
 
@@ -289,7 +289,7 @@ extern "C" {
 
     CAMLprim value
     caml_glTexImage2D(value vTextureType, value vTexturePixelDataFormat, value vTexturePixelDataType, value vImage) {
-        ImageInfo *pImage = (ImageInfo *)vImage;
+        ReglfwImageInfo *pImage = (ReglfwImageInfo *)vImage;
         glTexImage2D(
                 variantToTextureType(vTextureType), 
                 0,

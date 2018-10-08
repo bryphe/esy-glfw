@@ -15,3 +15,7 @@
     (targets c_flags.sexp cxx_flags.sexp flags.sexp)
     (deps (:discover ../config/discover.exe))
     (action (run %{discover})))
+
+(install
+    (section include)
+    (files reglfw_image.h))

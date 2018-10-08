@@ -1,6 +1,6 @@
 
 extern "C" {
-    struct ImageInfo {
+    struct ReglfwImageInfo {
         int width;
         int height;
         int numChannels;

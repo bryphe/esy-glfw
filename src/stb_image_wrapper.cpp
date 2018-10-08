@@ -6,8 +6,7 @@
 #include <caml/callback.h>
 
 #include "stb_image.h"
-
-#include "image.h"
+#include "reglfw_image.h"
 
 extern "C" {
 
@@ -28,7 +27,7 @@ extern "C" {
             caml_callback(vFailure, caml_copy_string("Unable to load image."));
         } else {
             printf("Load result - width: %d height: %d numChannels: %d\n", width, height, numChannels);
-            struct ImageInfo* pImageInfo = (ImageInfo *)malloc(sizeof(ImageInfo));
+            struct ReglfwImageInfo* pImageInfo = (ReglfwImageInfo *)malloc(sizeof(ImageInfo));
             pImageInfo->width = width;
             pImageInfo->height = height;
             pImageInfo->numChannels = numChannels;
@@ -41,7 +40,7 @@ extern "C" {
 
     CAMLprim value
     caml_stb_image_debug_print(value vImage) {
-        ImageInfo *pImage = (ImageInfo*)vImage;
+        ReglfwImageInfo *pImage = (ReglfwImageInfo*)vImage;
 
         printf("Debug - width: %d height: %d numChannels: %d\n", pImage->width, pImage->height, pImage->numChannels);
         return Val_unit;
