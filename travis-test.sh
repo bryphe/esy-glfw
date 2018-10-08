@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-TRAVIS_OS_NAME=$(uname -s)
-echo Travis build - detected OS is: "$TRAVIS_OS_NAME"
+OS_NAME=$(uname -s)
+echo Travis build - detected OS is: "$OS_NAME"
 
 set -e
 
-if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+if [[ "$OS_NAME" == "Linux" ]]; then
   # Initialize display driver
   DISPLAY=:99.0
   export DISPLAY
