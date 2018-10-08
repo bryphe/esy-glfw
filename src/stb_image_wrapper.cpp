@@ -31,6 +31,7 @@ extern "C" {
             pImageInfo->width = width;
             pImageInfo->height = height;
             pImageInfo->numChannels = numChannels;
+            pImageInfo->channelSize = 1;
             pImageInfo->data = data;
             caml_callback(vSuccess, (value)pImageInfo);
         }
