@@ -3,7 +3,7 @@
 echo Travis build - detected OS is: "$TRAVIS_OS_NAME"
 set -e
 
-if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+# if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
   # Initialize display driver
   DISPLAY=:99
   export DISPLAY
@@ -11,8 +11,9 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
   export LIBGL_ALWAYS_SOFTWARE
   sh -e /etc/init.d/xvfb :99 -screen 0 1024x768x24 +extension GLX +render -noreset start
   sleep 5
+
   glxinfo
-fi
+# fi
 
 # https://stackoverflow.com/questions/28837117/travis-ci-run-lwjgl-tests-in-non-headless-environment
 # - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1400x900x24 -ac +extension GLX +render
