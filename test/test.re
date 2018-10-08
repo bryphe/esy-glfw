@@ -73,8 +73,10 @@ let () = {
 
         switch (result) {
         | LinkSuccess => assert(true);
-        | LinkFailure(_) => assert(false);
-        }
+        | LinkFailure(msg) =>
+            print_endline("[Unexpected link failure] " ++ msg);
+            assert(false);
+        };
     });
 };
 
