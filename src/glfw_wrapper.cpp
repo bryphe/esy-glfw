@@ -56,9 +56,14 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    void error_callback(int code, const char *szError) {
+        printf("[ERROR %d] %s\n", code, szError);
+    }
+
     CAMLprim value
     caml_glfwInit(value unit)
     {
+        glfwSetErrorCallback(error_callback);
         int ret = glfwInit();
         return Val_bool(ret);
     }
