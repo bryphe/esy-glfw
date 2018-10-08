@@ -13,8 +13,9 @@ matrix:
            - libxinerama-dev
            - libxcursor-dev
            - libxi-dev
-           - libegl1-mesa-dev
+           - libegl2-mesa-dev
            - mesa-utils
+           - mesa-utils-extra
   - os: osx # OSX 10.12
     node_js: 8
 
@@ -31,7 +32,7 @@ install:
 - travis_wait esy install
 script:
 - travis_wait 30 esy build
-- esy b dune runtest
+- ./travis-test.sh
 cache:
   timeout: 360
   directories:
