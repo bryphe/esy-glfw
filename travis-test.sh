@@ -5,11 +5,11 @@ set -e
 
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
   # Initialize display driver
-  DISPLAY=:99.0
+  DISPLAY=:99
   export DISPLAY
   LIBGL_ALWAYS_SOFTWARE=1
   export LIBGL_ALWAYS_SOFTWARE
-  sh -e /etc/init.d/xvfb start
+  sh -e /etc/init.d/xvfb :99 -screen 0 1024x768x24 +extension GLX +render -noreset
   sleep 5
   glxinfo
 fi
