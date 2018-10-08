@@ -18,21 +18,12 @@ matrix:
            - mesa-utils-extra
   - os: osx # OSX 10.12
     node_js: 8
-
-
-before_install:
-# - export DISPLAY=:99
-# - export LIBGL_ALWAYS_SOFTWARE=1
-# https://stackoverflow.com/questions/28837117/travis-ci-run-lwjgl-tests-in-non-headless-environment
-# - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1400x900x24 -ac +extension GLX +render
-# - sleep 5
-# - glxinfo
 install:
 - travis_retry npm install -g esy@0.2.11
 - travis_wait esy install
 script:
 - travis_wait 30 esy build
-- ./travis-test.sh
+- esy b ./travis-test.sh
 cache:
   timeout: 360
   directories:
