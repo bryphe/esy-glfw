@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export TRAVIS_OS_NAME = $(uname -s)
+TRAVIS_OS_NAME=$(uname -s)
 echo Travis build - detected OS is: "$TRAVIS_OS_NAME"
 
 set -e
