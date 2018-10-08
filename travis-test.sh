@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 
+echo $TRAVIS_OS_NAME = "$(uname -s)"
+
 echo Travis build - detected OS is: "$TRAVIS_OS_NAME"
 set -e
 
-# if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+
   # Initialize display driver
   DISPLAY=:99.0
   export DISPLAY
   LIBGL_ALWAYS_SOFTWARE=1
   export LIBGL_ALWAYS_SOFTWARE
   echo Starting daemon...
+
   # /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x32 +extension GLX +render
   sh -e /etc/init.d/xvfb start
   sleep 5
@@ -17,7 +21,11 @@ set -e
 
   echo running glxinfo...
   glxinfo
-# fi
+
+  # Only run tests on Linux, for now-
+  dune runtest
+elif
+  echo "Tests not supported on $TRAVIS_OS_NAME currently."
+fi
 
 
-dune runtest
