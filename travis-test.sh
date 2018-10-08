@@ -5,7 +5,7 @@ set -e
 
 # if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
   # Initialize display driver
-  DISPLAY=:99.o
+  DISPLAY=:99.0
   export DISPLAY
   LIBGL_ALWAYS_SOFTWARE=1
   export LIBGL_ALWAYS_SOFTWARE
