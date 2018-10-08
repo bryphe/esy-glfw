@@ -9,7 +9,7 @@ set -e
   export DISPLAY
   LIBGL_ALWAYS_SOFTWARE=1
   export LIBGL_ALWAYS_SOFTWARE
-  sh -e /etc/init.d/xvfb :99 -screen 0 1024x768x24 +extension GLX +render -noreset start
+  sh -e /etc/init.d/xvfb start
   sleep 5
 
   glxinfo
