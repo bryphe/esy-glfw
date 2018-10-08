@@ -10,7 +10,8 @@ set -e
   LIBGL_ALWAYS_SOFTWARE=1
   export LIBGL_ALWAYS_SOFTWARE
   echo Starting daemon...
-  /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x32 +extension GLX +render
+  # /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x32 +extension GLX +render
+  sh -e /etc/init.d/xvfb start
   sleep 5
   echo xfb started
 
