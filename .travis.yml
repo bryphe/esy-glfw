@@ -36,5 +36,4 @@ script:
 cache:
   timeout: 360
   directories:
-  - "$HOME/.esy/source-tarballs"
-  - "$HOME/.esy/i"
+  - "$HOME/.esy"
