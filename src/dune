@@ -17,5 +17,5 @@
     (action (run %{discover})))
 
 (install
-    (section include)
-    (files reglfw_image.h))
+    (section toplevel)
+    (files reglfw_image.h as include/reglfw_image.h))
