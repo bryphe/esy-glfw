@@ -18,7 +18,7 @@ let vertexShaderSource = {|
 let fragmentShaderSource = {|
     void main() {
         gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-    };
+    }
 |};
 
 /* Compilation Success test */
@@ -62,8 +62,17 @@ let () = {
         glShaderSource(vertexShader, vertexShaderSource);
         glShaderSource(fragmentShader, fragmentShaderSource);
 
-        let _ = glCompileShader(vertexShader);
-        let _ = glCompileShader(fragmentShader);
+        let vertexCompileResult = glCompileShader(vertexShader);
+        switch (vertexCompileResult) {
+        | CompilationSuccess => print_endline("Vertex shader compiled successfully.");
+        | CompilationFailure(msg) => print_endline("Vertex shader failed to compile with: " ++ msg);
+        };
+
+        let fragmentCompileResult = glCompileShader(fragmentShader);
+        switch (fragmentCompileResult) {
+        | CompilationSuccess => print_endline("Fragment shader compiled successfully.");
+        | CompilationFailure(msg) => print_endline("Fragment shader failed to compile with: " ++ msg);
+        };
 
         let program = glCreateProgram();
         let _ = glAttachShader(program, vertexShader);
@@ -73,8 +82,10 @@ let () = {
 
         switch (result) {
         | LinkSuccess => assert(true);
-        | LinkFailure(_) => assert(false);
-        }
+        | LinkFailure(msg) =>
+            print_endline("[Unexpected link failure] " ++ msg);
+            assert(false);
+        };
     });
 };
 
