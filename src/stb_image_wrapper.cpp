@@ -21,7 +21,11 @@ extern "C" {
     caml_stb_image_load(value vPath, value vSuccess, value vFailure) {
         CAMLparam3(vPath, vSuccess, vFailure);
         int width, height, numChannels;
-        unsigned char *data = stbi_load("test.jpg", &width, &height, &numChannels, 0);
+        
+        char* path = String_val(vPath);
+        printf("Loading image %s\n", path);
+
+        unsigned char *data = stbi_load(path, &width, &height, &numChannels, 0);
 
         if (!data) {
             caml_callback(vFailure, caml_copy_string("Unable to load image."));
