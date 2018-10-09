@@ -132,7 +132,7 @@ external glTexParameteri:
   (textureType, textureParameter, textureParameterValue) => unit =
   "caml_glTexParameteri";
 external glTexImage2D:
-  (textureType, texturePixelDataFormat, glType, Image.t) => unit =
+  (textureType, glType, Image.t) => unit =
   "caml_glTexImage2D";
 external glGenerateMipmap: textureType => unit = "caml_glGenerateMipmap";
 

@@ -96,18 +96,6 @@ extern "C" {
         }
     }
 
-    GLenum variantToTexturePixelDataFormat(value vVal) {
-        switch (Int_val(vVal)) {
-            case 0:
-                return GL_RGB;
-            case 1:
-                return GL_RGBA;
-            default:
-                warn ("Unexpected texture pixel data format!");
-                return 0;
-        }
-    }
-
     GLenum variantToTexturePixelDataType(value vVal) {
         return GL_UNSIGNED_BYTE;
     }
@@ -306,16 +294,34 @@ extern "C" {
     }
 
     CAMLprim value
-    caml_glTexImage2D(value vTextureType, value vTexturePixelDataFormat, value vTexturePixelDataType, value vImage) {
+    caml_glTexImage2D(value vTextureType, value vTexturePixelDataType, value vImage) {
+
         ReglfwImageInfo *pImage = (ReglfwImageInfo *)vImage;
+
+        GLenum channels;
+        switch (pImage->numChannels) {
+            case 1:
+                channels = GL_ALPHA;
+                break;
+            case 2:
+                channels = GL_LUMINANCE_ALPHA;
+                break;
+            case 3:
+                channels = GL_RGB;
+                break;
+            case 4:
+            default:
+                channels = GL_RGBA;
+        }
+
         glTexImage2D(
                 variantToTextureType(vTextureType), 
                 0,
-                GL_RGB,
+                channels,
                 pImage->width,
                 pImage->height,
                 0,
-                variantToTexturePixelDataFormat(vTexturePixelDataFormat), 
+                channels,
                 variantToTexturePixelDataType(vTexturePixelDataType), 
                 pImage->data);
         return Val_unit;

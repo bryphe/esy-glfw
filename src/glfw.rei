@@ -105,7 +105,7 @@ let glBindTexture: (textureType, texture) => unit;
 let glTexParameteri:
   (textureType, textureParameter, textureParameterValue) => unit;
 let glTexImage2D:
-  (textureType, texturePixelDataFormat, glType, Image.t) => unit;
+  (textureType, glType, Image.t) => unit;
 let glGenerateMipmap: textureType => unit;
 
 type bufferType =
