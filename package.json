@@ -19,7 +19,7 @@
     "ocaml": "~4.6.0"
   },
   "resolutions": {
-    "esy-cmake": "github:bryphe/esy-cmake#8afd4a1",
+    "esy-cmake": "github:bryphe/esy-cmake#5a40a8e",
     "@opam/menhir": "20171013",
     "@opam/re": "1.8.0"
   },
