@@ -13,13 +13,7 @@
     "install": [
         "esy-installer"
     ],
-    "buildsInSource":"_build",
-    "exportedEnv": {
-        "REGLFW_INCLUDE_PATH": {
-            "val": "#{self.install / 'include'}",
-            "scope": "global"
-        }
-    }
+    "buildsInSource":"_build"
   },
   "peerDependencies": {
     "ocaml": "~4.6.0"
