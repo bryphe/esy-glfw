@@ -46,6 +46,18 @@ extern "C" {
         }
     }
 
+    GLenum variantToPixelAlignmentParameter(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_PACK_ALIGNMENT;
+            case 1:
+                return GL_UNPACK_ALIGNMENT;
+            default:
+                warn ("Unexpected pixel alignment parameter type!");
+                return GL_PACK_ALIGNMENT;
+        }
+    }
+
     GLenum variantToTextureType(value vVal) {
         switch (Int_val(vVal)) {
             case 0:
@@ -270,6 +282,12 @@ extern "C" {
         int uloc = (int)vUniformLocation;
 
         glUniformMatrix4fv(uloc, 1, GL_FALSE, mat4);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glPixelStorei(value vPixelAlignmentParameter, value vParam) {
+        glPixelStorei(variantToPixelAlignmentParameter(vPixelAlignmentParameter), Int_val(vParam));
         return Val_unit;
     }
 

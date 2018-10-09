@@ -12,7 +12,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include <image.h>
+#include <reglfw_image.h>
 
 extern "C" {
 

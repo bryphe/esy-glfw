@@ -71,6 +71,12 @@ type uniformLocation;
 let glGetUniformLocation: (program, string) => uniformLocation;
 let glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit;
 
+type pixelAlignmentParameter =
+  | GL_PACK_ALIGNMENT
+  | GL_UNPACK_ALIGNMENT;
+
+let glPixelStorei: (pixelAlignmentParameter, int) => unit;
+
 type textureType =
   | GL_TEXTURE_2D;
 

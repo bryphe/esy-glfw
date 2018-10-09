@@ -97,6 +97,12 @@ external glGetUniformLocation: (program, string) => uniformLocation =
 external glUniformMatrix4fv: (uniformLocation, Mat4.t) => /* todo */ unit =
   "caml_glUniformMatrix4fv";
 
+type pixelAlignmentParameter =
+  | GL_PACK_ALIGNMENT
+  | GL_UNPACK_ALIGNMENT;
+
+external glPixelStorei:  (pixelAlignmentParameter, int) => unit = "caml_glPixelStorei";
+
 type texture;
 type textureType =
   | GL_TEXTURE_2D;

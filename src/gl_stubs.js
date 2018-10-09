@@ -144,6 +144,13 @@ function caml_glCreateTexture() {
     return joo_global_object.gl.createTexture();
 }
 
+// Provides: caml_glPixelStorei
+function caml_glPixelStorei(param, val) {
+    var pixelAlignment = joo_global_object.variantToPixelAlignmentParameter[param];
+
+    return joo_global_object.gl.pixelStorei(pixelAlignment, val);
+}
+
 // Provides: caml_glBindTexture
 function caml_glBindTexture(vTextureType, vTexture) {
     var textureType = joo_global_object.variantToTextureType[vTextureType];

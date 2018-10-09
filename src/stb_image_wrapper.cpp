@@ -27,7 +27,7 @@ extern "C" {
             caml_callback(vFailure, caml_copy_string("Unable to load image."));
         } else {
             printf("Load result - width: %d height: %d numChannels: %d\n", width, height, numChannels);
-            struct ReglfwImageInfo* pImageInfo = (ReglfwImageInfo *)malloc(sizeof(ImageInfo));
+            struct ReglfwImageInfo* pImageInfo = (ReglfwImageInfo *)malloc(sizeof(ReglfwImageInfo));
             pImageInfo->width = width;
             pImageInfo->height = height;
             pImageInfo->numChannels = numChannels;

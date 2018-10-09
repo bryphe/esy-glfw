@@ -65,3 +65,5 @@ _build
 **/.merlin
 
 *.install
+
+_esy/

@@ -41,6 +41,9 @@ let run = () => {
   let width = ref(800);
   let height = ref(600);
 
+  /* Update pack alignment to allow single-channel images */
+  glPixelStorei(GL_PACK_ALIGNMENT, 1);
+
   let%lwt img = Image.load("test.jpg");
   Image.debug_print(img);
   let vsSource = {|

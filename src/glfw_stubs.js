@@ -130,6 +130,11 @@ function caml_glfwMakeContextCurrent(win) {
         '3': gl.TEXTURE_MAG_FILTER,
     };
 
+    joo_global_object.variantToPixelAlignmentParameter = {
+        '0': gl.PACK_ALIGNMENT,
+        '1': gl.UNPACK_ALIGNMENT,
+    };
+
     joo_global_object.variantToTextureParameterValue = {
         '0': gl.REPEAT,
         '1': gl.LINEAR
