@@ -70,12 +70,8 @@ let glGetAttribLocation: (program, string) => attribLocation;
 type uniformLocation;
 let glGetUniformLocation: (program, string) => uniformLocation;
 
-let glUniform1f: (uniformLocation, float) => unit;
-let glUniform2f: (uniformLocation, float, float) => unit;
-let glUniform3f: (uniformLocation, float, float, float) => unit;
 let glUniform3fv: (uniformLocation, Vec3.t) => unit;
-let glUniform4f: (uniformLocation: float, float, float, float) => unit;
-/* let glUniform4fv: (uniformationLocation: Vec4.t) */
+let glUniform4f: (uniformLocation, float, float, float, float) => unit;
 let glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit;
 
 type pixelAlignmentParameter =

@@ -125,7 +125,7 @@ function caml_glGetUniformLocation(program, uniformName) {
 }
 
 // Provides: caml_glUniform3fv
-function caml_glUniform4f(uniformLocation, v) {
+function caml_glUniform3fv(uniformLocation, v) {
     return joo_global_object.gl.uniform3fv(uniformLocation, v);
 }
 

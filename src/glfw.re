@@ -95,7 +95,7 @@ type uniformLocation;
 external glGetUniformLocation: (program, string) => uniformLocation =
   "caml_glGetUniformLocation";
 external glUniform3fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv";
-external glUniform4f: (uniformLocation, float, float, float) => unit = "caml_glUniform4f";
+external glUniform4f: (uniformLocation, float, float, float, float) => unit = "caml_glUniform4f";
 external glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit =
   "caml_glUniformMatrix4fv";
 
