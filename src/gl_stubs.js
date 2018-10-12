@@ -124,6 +124,16 @@ function caml_glGetUniformLocation(program, uniformName) {
     return joo_global_object.gl.getUniformLocation(program, uniformName)
 }
 
+// Provides: caml_glUniform3fv
+function caml_glUniform4f(uniformLocation, v) {
+    return joo_global_object.gl.uniform3fv(uniformLocation, v);
+}
+
+// Provides: caml_glUniform4f
+function caml_glUniform4f(uniformLocation, f0, f1, f2, f3) {
+    return joo_global_object.gl.uniform4f(uniformLocation, f0, f1, f2, f3);
+}
+
 // Provides: caml_glUniformMatrix4fv
 function caml_glUniformMatrix4fv(uniformLocation, uniformValue) {
     return joo_global_object.gl.uniformMatrix4fv(uniformLocation, false, uniformValue);
