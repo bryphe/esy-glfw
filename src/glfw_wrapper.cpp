@@ -24,6 +24,28 @@ extern "C" {
     static WindowInfo* sActiveWindows[255];
     static int sActiveWindowCount = 0;
 
+    int variantToWindowHint(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GLFW_RESIZABLE;
+            case 1:
+                return GLFW_VISIBLE;
+            case 2:
+                return GLFW_DECORATED;
+            case 3:
+                return GLFW_FOCUSED;
+            case 4:
+                return GLFW_AUTO_ICONIFY;
+            case 5:
+                return GLFW_FLOATING;
+            case 6:
+                return GLFW_MAXIMIZED;
+            default:
+                warn("Unexpected window hint type.");
+                return 0;
+        }
+    }
+
     WindowInfo* getWindowInfoFromWindow(GLFWwindow *w) {
         WindowInfo *pInfo;
         for (int i = 0; i < sActiveWindowCount; i++) {
@@ -103,6 +125,14 @@ extern "C" {
         char *szTitle = String_val(vTitle);
         printf(" - Setting title: %s\n", szTitle);
         glfwSetWindowTitle(pWindowInfo->pWindow, szTitle);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glfwSetWindowHint(value vHint, value vVal) {
+        int windowHint = variantToWindowHint(vHint);
+        int val = Bool_val(vVal) ? GLFW_TRUE : GLFW_FALSE;
+        glfwWindowHint(windowHint, val);
         return Val_unit;
     }
 
