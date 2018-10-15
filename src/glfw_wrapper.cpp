@@ -41,7 +41,7 @@ extern "C" {
             case 6:
                 return GLFW_MAXIMIZED;
             default:
-                warn("Unexpected window hint type.");
+                printf("Unexpected window hint type.\n");
                 return 0;
         }
     }
@@ -129,7 +129,7 @@ extern "C" {
     }
 
     CAMLprim value
-    caml_glfwSetWindowHint(value vHint, value vVal) {
+    caml_glfwWindowHint(value vHint, value vVal) {
         int windowHint = variantToWindowHint(vHint);
         int val = Bool_val(vVal) ? GLFW_TRUE : GLFW_FALSE;
         glfwWindowHint(windowHint, val);

@@ -17,7 +17,7 @@ external glfwSetWindowSize: (window, int, int) => unit =
 external glfwMaximizeWindow: (window) => unit = "caml_glfwMaximizeWindow";
 external glfwSetWindowTitle: (window, string) => unit = "caml_glfwSetWindowTitle";
 
-type windowHints =
+type windowHint =
 | GLFW_RESIZABLE
 | GLFW_VISIBLE
 | GLFW_DECORATED

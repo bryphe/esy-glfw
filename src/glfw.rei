@@ -13,7 +13,7 @@ let glfwSetWindowSize: (window, int, int) => unit;
 let glfwMaximizeWindow: (window) => unit;
 let glfwSetWindowTitle: (window, string) => unit;
 
-type windowHints =
+type windowHint =
 | GLFW_RESIZABLE
 | GLFW_VISIBLE
 | GLFW_DECORATED

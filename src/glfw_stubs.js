@@ -95,6 +95,11 @@ function caml_glfwSetWindowTitle(w, title) {
     document.title = t;
 }
 
+// Provides: caml_glfwWindowHint
+function caml_glfwWindowHint(hint, val) {
+    joo_global_object.console.warn("Unsupported API: glfwWindowHint");
+}
+
 // Provides: caml_glfwSetFramebufferSizeCallback
 function caml_glfwSetFramebufferSizeCallback(w, callback) {
     w.onSetFramebufferSize = callback;
