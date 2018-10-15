@@ -180,6 +180,11 @@ function caml_glfwSwapBuffers() {
     // no op
 }
 
+// Provides: caml_glfwSwapInterval
+function caml_glfwSwapInterval(swapInterval) {
+    joo_global_object.console.warn("glfwSwapInterval not supported in WebGL");
+}
+
 // Provides: caml_glfwTerminate
 function caml_glfwTerminate() {
     // no op

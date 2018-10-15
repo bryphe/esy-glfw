@@ -38,6 +38,10 @@ let run = () => {
 
   glViewport(0, 0, 800, 600);
 
+  /* glfwSwapInterval sets the 'swap interval' - also known as vsync / vertical synchronization */
+  /* A setting of 0 disables vsync, unless it is overridden by a driver or a user setting */
+  glfwSwapInterval(0);
+
   let width = ref(800);
   let height = ref(600);
 
