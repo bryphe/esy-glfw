@@ -98,6 +98,12 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwSwapInterval(value vInterval) {
+        glfwSwapInterval(Int_val(vInterval));
+        return Val_unit;
+    }
+
+    CAMLprim value
     caml_glfwSetWindowTitle(value vWindow, value vTitle) {
         WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
         char *szTitle = String_val(vTitle);

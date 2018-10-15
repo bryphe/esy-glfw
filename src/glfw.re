@@ -16,6 +16,7 @@ external glfwSetWindowSize: (window, int, int) => unit =
   "caml_glfwSetWindowSize";
 external glfwMaximizeWindow: (window) => unit = "caml_glfwMaximizeWindow";
 external glfwSetWindowTitle: (window, string) => unit = "caml_glfwSetWindowTitle";
+[@noalloc] external glfwSwapInterval: int => unit = "caml_glfwSwapInterval";
 
 type glfwRenderLoopCallback = float => bool;
 
