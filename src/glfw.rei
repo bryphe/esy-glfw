@@ -13,6 +13,8 @@ let glfwSetWindowSize: (window, int, int) => unit;
 let glfwMaximizeWindow: (window) => unit;
 let glfwSetWindowTitle: (window, string) => unit;
 let glfwSwapInterval: int => unit;
+let glfwGetTime: unit => float;
+let glfwSetTime: float => unit;
 
 type windowHint =
 | GLFW_RESIZABLE

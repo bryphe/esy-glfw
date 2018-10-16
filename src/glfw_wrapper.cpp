@@ -183,6 +183,27 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    double
+    caml_glfwGetTime() {
+        return glfwGetTime();
+    }
+
+    CAMLprim value
+    caml_glfwGetTime_byte() {
+        return caml_copy_double(caml_glfwGetTime());
+    }
+
+    void
+    caml_glfwSetTime(double t) {
+        glfwSetTime(t);
+    }
+
+    CAMLprim value
+    caml_glfwSetTime_byte(value vTime) {
+        glfwSetTime(Double_val(vTime));
+        return Val_unit;
+    }
+
     CAMLprim value
     caml_printFrameBufferSize(value window)
     {

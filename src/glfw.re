@@ -18,6 +18,9 @@ external glfwMaximizeWindow: (window) => unit = "caml_glfwMaximizeWindow";
 external glfwSetWindowTitle: (window, string) => unit = "caml_glfwSetWindowTitle";
 [@noalloc] external glfwSwapInterval: int => unit = "caml_glfwSwapInterval";
 
+[@noalloc] external glfwGetTime: unit => ([@unboxed] float) = "caml_glfwGetTime_byte" "caml_glfwGetTime";
+[@noalloc] external glfwSetTime: ([@unboxed] float) => unit = "caml_glfwSetTime_byte" "caml_glfwSetTime";
+
 type windowHint =
 | GLFW_RESIZABLE
 | GLFW_VISIBLE
