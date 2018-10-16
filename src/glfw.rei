@@ -23,11 +23,44 @@ type windowHint =
 | GLFW_FLOATING
 | GLFW_MAXIMIZED;
 
+type glfwMouseButton =
+| GLFW_MOUSE_BUTTON_LEFT
+| GLFW_MOUSE_BUTTON_MIDDLE
+| GLFW_MOUSE_BUTTON_RIGHT
+| GLFW_MOUSE_BUTTON_LAST
+
+type glfwButtonState =
+| GLFW_PRESS
+| GLFW_RELEASE
+
+type glfwModifierKey =
+| GLFW_MOD_SHIFT
+| GLFW_MOD_CONTROL
+| GLFW_MOD_ALT
+| GLFW_MOD_SUPER
+
 let glfwWindowHint: (windowHint, bool) => unit;
 
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
 let glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit;
+
+/* type glfwCursorPosCallback = (window, float, float) => unit; */
+/* let glfwSetCursorPosCallback: (window, glfwCursorPosCallback) => unit; */
+
+type glfwCursorPos = {
+    mouseX: float,
+    mouseY: float
+};
+let glfwGetCursorPos: window => glfwCursorPos;
+
+/* type glfwMouseButtonCallback = (window, glfwMouseButton, glfwButtonState, array(glfwModifierKey)) => unit; */
+/* let glfwSetMouseButtonCallback = (window, glfwMouseButtonCallback) => unit; */
+
+/* let glfwGetMouseButton = (window, glfwMouseButton) => glfwButtonState; */
+
+/* let glfwScrollCallback = (window, float, float) => unit; */
+/* type glfwSetScrollCallback = (window, glfwScrollCallback) => unit; */
 
 let printFrameBufferSize: window => unit;
 

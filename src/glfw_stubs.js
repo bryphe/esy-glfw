@@ -9,14 +9,27 @@ function caml_glfwInit() {
     // no-op
 
     joo_global_object.window.addEventListener("resize", function () {
-        console.log("RESIZE");
         var wins = joo_global_object._activeWindows;
         for (var i = 0; i < wins.length; i++) {
-            console.log("notifying");
             wins[i]._notifyResize();
         }
     });
+
+    joo_global_object._mouseState = {};
+    joo_global_object.window.addEventListener("mousemove", function (e) {
+        joo_global_object._mouseState.x = e.pageX;
+        joo_global_object._mouseState.y = e.pageY;
+    });
 };
+
+// Provides: caml_glfwGetCursorPos
+// Requires: caml_js_to_array
+function caml_glfwGetCursorPos(w) {
+    // TODO: Window parameter is currently ignored, but 
+    // we should calculate the mouse position relative to it.
+
+    return caml_js_to_array([joo_global_object._mouseState.x, joo_global_object._mouseState.y]);
+}
 
 // Provides: caml_test_callback_success
 function caml_test_callback_success(s, f) {
@@ -37,6 +50,7 @@ function caml_glfwJavascriptRenderLoop(loopFunc) {
 }
 
 // Provides: caml_test_callback_failure
+// Requires: caml_js_to_string
 function caml_test_callback_failure(s, f) {
     f(caml_js_to_string("failed"));
 }

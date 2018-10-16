@@ -184,6 +184,22 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwGetCursorPos(value vWindow) {
+        CAMLparam1(vWindow);
+        CAMLlocal1(ret);
+
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+
+        double xpos, ypos;
+        glfwGetCursorPos(pWinInfo->pWindow, &xpos, &ypos);
+
+        ret = caml_alloc(2 * Double_wosize, Double_array_tag);
+        Store_double_field(ret, 0, xpos);
+        Store_double_field(ret, 1, ypos);
+        CAMLreturn(ret);
+    }
+
+    CAMLprim value
     caml_printFrameBufferSize(value window)
     {
         WindowInfo* wd = (WindowInfo*)window;
