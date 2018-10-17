@@ -165,8 +165,6 @@ let run = () => {
 
     let time = glfwGetTime();
     print_endline ("Time: " ++ string_of_float(time));
- 
-    glfwSetTime(0.);
   };
 
   glfwSetFramebufferSizeCallback(

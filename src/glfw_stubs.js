@@ -6,7 +6,10 @@ function caml_print_hello(stub) {
 
 //Provides: caml_glfwInit
 function caml_glfwInit() {
-    // no-op
+    joo_global_object._time = {
+        start: Date.now(),
+        offset: 0,
+    };
 
     joo_global_object.window.addEventListener("resize", function () {
         console.log("RESIZE");
@@ -17,6 +20,17 @@ function caml_glfwInit() {
         }
     });
 };
+
+// Provides: caml_glfwGetTime_byte
+function caml_glfwGetTime_byte() {
+    return (joo_global_object._time.offset + (Date.now() - joo_global_object._time.start)) / 1000;
+}
+
+// Provides: caml_glfwSetTime_byte
+function caml_glfwSetTime_byte(t) {
+    joo_global_object._time.offset = t * 1000;
+    joo_global_object._time.start = Date.now();
+}
 
 // Provides: caml_test_callback_success
 function caml_test_callback_success(s, f) {
