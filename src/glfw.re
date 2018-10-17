@@ -70,8 +70,8 @@ external glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit =
   "caml_glfwSetFramebufferSizeCallback";
 
-/* type glfwCursorPosCallback = (window, float, float) => unit; */
-/* external glfwSetCursorPosCallback: (window, glfwCursorPosCallback) => unit = "caml_glfwSetCursorPosCallback"; */
+type glfwCursorPosCallback = (window, float, float) => unit;
+external glfwSetCursorPosCallback: (window, glfwCursorPosCallback) => unit = "caml_glfwSetCursorPosCallback";
 
 type glfwCursorPos = {
     mouseX: float,

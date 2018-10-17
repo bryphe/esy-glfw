@@ -167,6 +167,10 @@ let run = () => {
     glfwSwapBuffers(w);
   };
 
+  glfwSetCursorPosCallback(w, (_w, x, y) => {
+        print_endline ("Mouse position from callback: " ++ string_of_float(x) ++ ", " ++ string_of_float(y));
+  });
+
   glfwSetFramebufferSizeCallback(
     w,
     (_, w, h) => {

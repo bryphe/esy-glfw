@@ -45,8 +45,8 @@ type glfwFramebufferSizeCallback = (window, int, int) => unit;
 let glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit;
 
-/* type glfwCursorPosCallback = (window, float, float) => unit; */
-/* let glfwSetCursorPosCallback: (window, glfwCursorPosCallback) => unit; */
+type glfwCursorPosCallback = (window, float, float) => unit;
+let glfwSetCursorPosCallback: (window, glfwCursorPosCallback) => unit;
 
 type glfwCursorPos = {
     mouseX: float,

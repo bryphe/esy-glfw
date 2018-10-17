@@ -19,6 +19,14 @@ function caml_glfwInit() {
     joo_global_object.window.addEventListener("mousemove", function (e) {
         joo_global_object._mouseState.x = e.pageX;
         joo_global_object._mouseState.y = e.pageY;
+
+        var wins = joo_global_object._activeWindows;
+        for (var i = 0; i < wins.length; i++) {
+            var win = wins[i];
+            if (win.onCursorPos) {
+                win.onCursorPos(win, e.pageX, e.pageY);
+            }
+        }
     });
 };
 
@@ -74,6 +82,7 @@ function caml_glfwCreateWindow(width, height, title) {
         title: title,
         isMaximized: false,
         onSetFramebufferSize: null,
+        onCursorPos: null,
     };
 
     var notifyResize = function () {
@@ -117,6 +126,11 @@ function caml_glfwWindowHint(hint, val) {
 // Provides: caml_glfwSetFramebufferSizeCallback
 function caml_glfwSetFramebufferSizeCallback(w, callback) {
     w.onSetFramebufferSize = callback;
+}
+
+// Provides: caml_glfwSetCursorPosCallback
+function caml_glfwSetCursorPosCallback(w, callback) {
+    w.onCursorPos = callback;
 }
 
 // Provides: caml_glfwMaximizeWindow

@@ -19,6 +19,7 @@ extern "C" {
     struct WindowInfo {
         GLFWwindow* pWindow;
         value vSetFramebufferSizeCallback;
+        value vSetCursorPosCallback;
     };
 
     static WindowInfo* sActiveWindows[255];
@@ -94,6 +95,15 @@ extern "C" {
         }
     }
 
+    void cursor_pos_callback(GLFWwindow *pWin, double xPos, double yPos) {
+        // Is there a window info?
+        WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
+
+        if (pWinInfo && pWinInfo->vSetCursorPosCallback != Val_unit) {
+            (void) caml_callback3((value)pWinInfo->vSetCursorPosCallback, ((value)(void *)pWinInfo), caml_copy_double(xPos), caml_copy_double(yPos));
+        }
+    }
+
     CAMLprim value
     caml_glfwCreateWindow(value iWidth, value iHeight, value sTitle)
     {
@@ -110,8 +120,10 @@ extern "C" {
       struct WindowInfo* pWindowInfo = (WindowInfo *)malloc(sizeof(WindowInfo));
       pWindowInfo->pWindow = wd;
       pWindowInfo->vSetFramebufferSizeCallback = Val_unit;
+      pWindowInfo->vSetCursorPosCallback = Val_unit;
 
       glfwSetFramebufferSizeCallback(wd, framebuffer_size_callback);
+      glfwSetCursorPosCallback(wd, cursor_pos_callback);
 
       sActiveWindows[sActiveWindowCount] = pWindowInfo;
       sActiveWindowCount++;
@@ -178,6 +190,24 @@ extern "C" {
             // collector knows it is being used.
             pWinInfo->vSetFramebufferSizeCallback = vCallback;
             caml_register_global_root(&(pWinInfo->vSetFramebufferSizeCallback));
+        }
+
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_glfwSetCursorPosCallback(value vWindow, value vCallback) {
+        CAMLparam2(vWindow, vCallback);
+
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+
+        if (pWinInfo) {
+            // TODO: Recycle existing callback if any!
+
+            // We need to mark the closure as being a global root, so the garbage
+            // collector knows it is being used.
+            pWinInfo->vSetCursorPosCallback = vCallback;
+            caml_register_global_root(&(pWinInfo->vSetCursorPosCallback));
         }
 
         CAMLreturn(Val_unit);
