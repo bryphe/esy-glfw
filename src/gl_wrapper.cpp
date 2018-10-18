@@ -349,11 +349,29 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glUniform2fv(value vUniformLocation, value vVec2) {
+        float *vec2 = (float *)(Data_custom_val(vVec2));
+        int uloc = (int)vUniformLocation;
+
+        glUniform2fv(uloc, 1, vec2);
+        return Val_unit;
+    }
+
+    CAMLprim value
     caml_glUniform3fv(value vUniformLocation, value vVec3) {
         float *vec3 = (float *)(Data_custom_val(vVec3));
         int uloc = (int)vUniformLocation;
 
         glUniform3fv(uloc, 1, vec3);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform4fv(value vUniformLocation, value vVec4) {
+        float *vec4 = (float *)(Data_custom_val(vVec4));
+        int uloc = (int)vUniformLocation;
+
+        glUniform4fv(uloc, 1, vec4);
         return Val_unit;
     }
 

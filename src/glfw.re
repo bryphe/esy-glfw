@@ -120,9 +120,9 @@ external glUniform2i: (uniformLocation, int, int) => unit = "caml_glUniform2i";
 external glUniform3i: (uniformLocation, int, int, int) => unit = "caml_glUniform3i";
 external glUniform4i: (uniformLocation, int, int, int, int) => unit = "caml_glUniform4i";
 
-/* external glUniform2fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv"; */
+external glUniform2fv: (uniformLocation, Vec2.t) => unit = "caml_glUniform2fv";
 external glUniform3fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv";
-/* external glUniform4fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv"; */
+external glUniform4fv: (uniformLocation, Vec4.t) => unit = "caml_glUniform4fv";
 
 external glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit =
   "caml_glUniformMatrix4fv";

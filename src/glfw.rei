@@ -94,7 +94,9 @@ let glUniform2i: (uniformLocation, int, int) => unit;
 let glUniform3i: (uniformLocation, int, int, int) => unit;
 let glUniform4i: (uniformLocation, int, int, int, int) => unit;
 
+let glUniform2fv: (uniformLocation, Vec2.t) => unit;
 let glUniform3fv: (uniformLocation, Vec3.t) => unit;
+let glUniform4fv: (uniformLocation, Vec4.t) => unit;
 
 let glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit;
 
