@@ -109,8 +109,21 @@ external glGetAttribLocation: (program, string) => attribLocation =
 type uniformLocation;
 external glGetUniformLocation: (program, string) => uniformLocation =
   "caml_glGetUniformLocation";
-external glUniform3fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv";
+
+external glUniform1f: (uniformLocation, float) => unit = "caml_glUniform1f";
+external glUniform2f: (uniformLocation, float, float) => unit = "caml_glUniform2f";
+external glUniform3f: (uniformLocation, float, float, float) => unit = "caml_glUniform3f";
 external glUniform4f: (uniformLocation, float, float, float, float) => unit = "caml_glUniform4f";
+
+external glUniform1i: (uniformLocation, int) => unit = "caml_glUniform1i";
+external glUniform2i: (uniformLocation, int, int) => unit = "caml_glUniform2i";
+external glUniform3i: (uniformLocation, int, int, int) => unit = "caml_glUniform3i";
+external glUniform4i: (uniformLocation, int, int, int, int) => unit = "caml_glUniform4i";
+
+/* external glUniform2fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv"; */
+external glUniform3fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv";
+/* external glUniform4fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv"; */
+
 external glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit =
   "caml_glUniformMatrix4fv";
 

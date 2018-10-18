@@ -124,14 +124,49 @@ function caml_glGetUniformLocation(program, uniformName) {
     return joo_global_object.gl.getUniformLocation(program, uniformName)
 }
 
-// Provides: caml_glUniform3fv
-function caml_glUniform3fv(uniformLocation, v) {
-    return joo_global_object.gl.uniform3fv(uniformLocation, v);
+// Provides: caml_glUniform1f
+function caml_glUniform1f(uniformLocation, f0) {
+    return joo_global_object.gl.uniform1f(uniformLocation, f0);
+}
+
+// Provides: caml_glUniform2f
+function caml_glUniform2f(uniformLocation, f0, f1) {
+    return joo_global_object.gl.uniform2f(uniformLocation, f0, f1);
+}
+
+// Provides: caml_glUniform3f
+function caml_glUniform3f(uniformLocation, f0, f1, f2) {
+    return joo_global_object.gl.uniform3f(uniformLocation, f0, f1, f2);
 }
 
 // Provides: caml_glUniform4f
 function caml_glUniform4f(uniformLocation, f0, f1, f2, f3) {
     return joo_global_object.gl.uniform4f(uniformLocation, f0, f1, f2, f3);
+}
+
+// Provides: caml_glUniform1i
+function caml_glUniform1i(uniformLocation, f0) {
+    return joo_global_object.gl.uniform1i(uniformLocation, f0);
+}
+
+// Provides: caml_glUniform2i
+function caml_glUniform2i(uniformLocation, f0, f1) {
+    return joo_global_object.gl.uniform2i(uniformLocation, f0, f1);
+}
+
+// Provides: caml_glUniform3i
+function caml_glUniform3i(uniformLocation, f0, f1, f2) {
+    return joo_global_object.gl.uniform3i(uniformLocation, f0, f1, f2);
+}
+
+// Provides: caml_glUniform4i
+function caml_glUniform4i(uniformLocation, f0, f1, f2, f3) {
+    return joo_global_object.gl.uniform4i(uniformLocation, f0, f1, f2, f3);
+}
+
+// Provides: caml_glUniform3fv
+function caml_glUniform3fv(uniformLocation, v) {
+    return joo_global_object.gl.uniform3fv(uniformLocation, v);
 }
 
 // Provides: caml_glUniformMatrix4fv

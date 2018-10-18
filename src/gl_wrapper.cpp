@@ -265,11 +265,32 @@ extern "C" {
     }
 
     CAMLprim value
-    caml_glUniform3fv(value vUniformLocation, value vVec3) {
-        float *vec3 = (float *)(Data_custom_val(vVec3));
-        int uloc = (int)vUniformLocation;
+    caml_glUniform1f(value vUniformLocation, value v0) {
+        float f0 = Double_val(v0);
+        int iUniformLocation = (int)vUniformLocation;
 
-        glUniform3fv(uloc, 1, vec3);
+        glUniform1f(iUniformLocation, f0);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform2f(value vUniformLocation, value v0, value v1) {
+        float f0 = Double_val(v0);
+        float f1 = Double_val(v1);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform2f(iUniformLocation, f0, f1);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform3f(value vUniformLocation, value v0, value v1, value v2) {
+        float f0 = Double_val(v0);
+        float f1 = Double_val(v1);
+        float f2 = Double_val(v2);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform3f(iUniformLocation, f0, f1, f2);
         return Val_unit;
     }
 
@@ -282,6 +303,57 @@ extern "C" {
         int iUniformLocation = (int)vUniformLocation;
 
         glUniform4f(iUniformLocation, f0, f1, f2, f3);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform1i(value vUniformLocation, value v0) {
+        int i0 = Int_val(v0);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform1i(iUniformLocation, i0);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform2i(value vUniformLocation, value v0, value v1) {
+        int i0 = Int_val(v0);
+        int i1 = Int_val(v1);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform2i(iUniformLocation, i0, i1);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform3i(value vUniformLocation, value v0, value v1, value v2) {
+        int i0 = Int_val(v0);
+        int i1 = Int_val(v1);
+        int i2 = Int_val(v2);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform3i(iUniformLocation, i0, i1, i2);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform4i(value vUniformLocation, value v0, value v1, value v2, value v3) {
+        int i0 = Int_val(v0);
+        int i1 = Int_val(v1);
+        int i2 = Int_val(v2);
+        int i3 = Int_val(v3);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform4i(iUniformLocation, i0, i1, i2, i3);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform3fv(value vUniformLocation, value vVec3) {
+        float *vec3 = (float *)(Data_custom_val(vVec3));
+        int uloc = (int)vUniformLocation;
+
+        glUniform3fv(uloc, 1, vec3);
         return Val_unit;
     }
 
