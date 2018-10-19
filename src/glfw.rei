@@ -62,6 +62,7 @@ type enableOptions =
   | GL_BLEND;
 
 let glEnable: enableOptions => unit;
+let glDisable: enableOptions => unit;
 
 type depthFunctions =
   | GL_LEQUAL;

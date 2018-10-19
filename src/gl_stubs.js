@@ -105,6 +105,12 @@ function caml_glEnable(option) {
     joo_global_object.gl.enable(enableOption);
 }
 
+// Provides: caml_glDisable
+function caml_glDisable(option) {
+    var enableOption = joo_global_object.variantToEnableOption[option];
+    joo_global_object.gl.disable(enableOption);
+}
+
 // Provides: caml_glLinkProgram
 function caml_glLinkProgram(program) {
     joo_global_object.gl.linkProgram(program);

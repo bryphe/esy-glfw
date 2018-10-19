@@ -174,6 +174,12 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glDisable(value vEnableOptions) {
+        glDisable(variantToEnableOption(vEnableOptions));
+        return Val_unit;
+    }
+
+    CAMLprim value
     caml_glDepthFunc(value vDepthFunc) {
         glDepthFunc(GL_LEQUAL);
         return Val_unit;

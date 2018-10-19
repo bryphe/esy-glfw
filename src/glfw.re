@@ -79,7 +79,8 @@ type enableOptions =
   | GL_DEPTH_TEST
   | GL_BLEND;
 
-external glEnable: enableOptions => unit = "caml_glEnable";
+[@noalloc] external glEnable: enableOptions => unit = "caml_glEnable";
+[@noalloc] external glDisable: enableOptions => unit = "caml_glDisable";
 
 type depthFunctions =
   | GL_LEQUAL;
