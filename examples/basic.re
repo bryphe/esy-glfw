@@ -78,7 +78,7 @@ let run = () => {
         varying lowp vec4 vColor;
 
         void main() {
-            gl_FragColor = vColor;
+            gl_FragColor = vec4(vColor.r, vColor.g, vColor.b, 0.5);
             // gl_FragColor = vec4(vTexCoord, 0.0, 1.0);
             //gl_FragColor = texture2D(texture, vTexCoord);
         }
@@ -121,6 +121,9 @@ let run = () => {
     glClearColor(0.0, 0., 0., 1.);
     glClearDepth(1.0);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthFunc(GL_LEQUAL);
 
     glUseProgram(shaderProgram);

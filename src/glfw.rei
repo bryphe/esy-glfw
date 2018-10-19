@@ -58,7 +58,8 @@ let glCompileShader: shader => shaderCompilationResult;
 let glDeleteShader: shader => unit;
 
 type enableOptions =
-  | GL_DEPTH_TEST;
+  | GL_DEPTH_TEST
+  | GL_BLEND;
 
 let glEnable: enableOptions => unit;
 
@@ -66,6 +67,14 @@ type depthFunctions =
   | GL_LEQUAL;
 
 let glDepthFunc: depthFunctions => unit;
+
+type blendFunc =
+  | GL_ZERO
+  | GL_ONE
+  | GL_SRC_ALPHA
+  | GL_ONE_MINUS_SRC_ALPHA;
+
+let glBlendFunc: (blendFunc, blendFunc) => unit;
 
 type program;
 

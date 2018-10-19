@@ -81,23 +81,28 @@ function caml_glDepthFunc(df) {
     joo_global_object.gl.depthFunc(joo_global_object.gl.LEQUAL);
 }
 
+// Provides: caml_glBlendFunc
+function caml_glBlendFunc(src, dest) {
+    joo_global_object.gl.blendFunc(joo_global_object.variantToBlendFunc[src], joo_global_object.variantToBlendFunc[dest]);
+}
+
 // Provides: caml_glDrawArrays
 function caml_glDrawArrays(vDrawMode, first, count) {
-    var drawMode = variantToDrawMode[vDrawMode];
+    var drawMode = joo_global_object.variantToDrawMode[vDrawMode];
     joo_global_object.gl.drawArrays(drawMode, first, count);
 }
 
 // Provides: caml_glDrawElements
 function caml_glDrawElements(vDrawMode, count, vDataType, first) {
-    var drawMode = variantToDrawMode[vDrawMode];
+    var drawMode = joo_global_object.variantToDrawMode[vDrawMode];
     var dataType = joo_global_object.variantToGlType[vDataType];
     joo_global_object.gl.drawElements(drawMode, count, dataType, first);
 }
 
 // Provides: caml_glEnable
 function caml_glEnable(option) {
-    // TODO: Use params
-    joo_global_object.gl.enable(joo_global_object.gl.DEPTH_TEST)
+    var enableOption = joo_global_object.variantToEnableOption[option];
+    joo_global_object.gl.enable(enableOption);
 }
 
 // Provides: caml_glLinkProgram

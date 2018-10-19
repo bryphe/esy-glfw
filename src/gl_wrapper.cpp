@@ -20,6 +20,34 @@ extern "C" {
         printf("[WARNING]: %s\n", message);
     }
 
+    GLenum variantToBlendFunc(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_ZERO;
+            case 1:
+                return GL_ONE;
+            case 2:
+                return GL_SRC_ALPHA;
+            case 3:
+                return GL_ONE_MINUS_SRC_ALPHA;
+            default:
+                warn("Unexpected option for glBlendFunc");
+                return 0;
+        }
+    }
+    
+    GLenum variantToEnableOption(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_DEPTH_TEST;
+            case 1:
+                return GL_BLEND;
+            default:
+                warn("Unexpected option for glEnable");
+                return 0;
+        }
+    }
+
     GLenum variantToType(value vVal) {
         switch (Int_val(vVal)) {
             case 0:
@@ -141,13 +169,19 @@ extern "C" {
 
     CAMLprim value
     caml_glEnable(value vEnableOptions) {
-        glEnable(GL_DEPTH_TEST);
+        glEnable(variantToEnableOption(vEnableOptions));
         return Val_unit;
     }
 
     CAMLprim value
     caml_glDepthFunc(value vDepthFunc) {
         glDepthFunc(GL_LEQUAL);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glBlendFunc(value vSrcFunc, value vDestFunc) {
+        glBlendFunc(variantToBlendFunc(vSrcFunc), variantToBlendFunc(vDestFunc));
         return Val_unit;
     }
 

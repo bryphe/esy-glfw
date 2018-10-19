@@ -142,6 +142,18 @@ function caml_glfwMakeContextCurrent(win) {
         '0': gl.TEXTURE_2D,
     };
 
+    joo_global_object.variantToEnableOption = {
+        '0': gl.DEPTH_TEST,
+        '1': gl.BLEND,
+    };
+
+    joo_global_object.variantToBlendFunc = {
+        '0': gl.ZERO,
+        '1': gl.ONE,
+        '2': gl.SRC_ALPHA,
+        '3': gl.ONE_MINUS_SRC_ALPHA,
+    };
+
     joo_global_object.variantToTextureParameter = {
         '0': gl.TEXTURE_WRAP_S,
         '1': gl.TEXTURE_WRAP_T,
