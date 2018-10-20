@@ -1,4 +1,5 @@
 // Provides: caml_stb_image_load
+// Requires: caml_js_to_string
 function caml_stb_image_load(imgName, onSuccess, onFailure) {
     var image = new joo_global_object.Image();
     image.onload = function () {
@@ -6,7 +7,7 @@ function caml_stb_image_load(imgName, onSuccess, onFailure) {
     };
 
     image.onerror = function (err) {
-        console.log("failed to load");
+        joo_global_object.console.log("failed to load");
         onFailure(caml_js_to_string("failed to load image: " + err.toString()));
     };
 
@@ -15,7 +16,7 @@ function caml_stb_image_load(imgName, onSuccess, onFailure) {
 
 // Provides: caml_stb_image_debug_print
 function caml_stb_image_debug_print(img) {
-    console.log("Image width: " + img.width + " Image height: " + img.height);
+    joo_global_object.console.log("Image width: " + img.width + " Image height: " + img.height);
 }
 
 // Provides: caml_stb_image_dimensions
