@@ -26,6 +26,11 @@ function caml_glfwSetTime_byte(t) {
     joo_global_object._time.start = Date.now();
 }
 
+// Provides caml_glfwDefaultWindowHints
+function caml_glfwDefaultWindowHints(w) {
+    joo_global_object.console.warn("glfwDefaultWindowHints not implemented in WebGL");
+}
+
 // Provides caml_glfwShowWindow
 function caml_glfwShowWindow(w) {
     joo_global_object.console.warn("glfwShowWindow not implemented in WebGL");

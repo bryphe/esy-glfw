@@ -32,6 +32,7 @@ type windowHint =
 | GLFW_FLOATING
 | GLFW_MAXIMIZED;
 
+[@noalloc] external glfwDefaultWindowHints: unit => unit = "caml_glfwDefaultWindowHints";
 [@noalloc] external glfwWindowHint: (windowHint, bool) => unit = "caml_glfwWindowHint";
 
 type glfwRenderLoopCallback = float => bool;

@@ -135,6 +135,12 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwDefaultWindowHints() {
+        glfwDefaultWindowHints();
+        return Val_unit;
+    }
+
+    CAMLprim value
     caml_glfwWindowHint(value vHint, value vVal) {
         int windowHint = variantToWindowHint(vHint);
         int val = Bool_val(vVal) ? GLFW_TRUE : GLFW_FALSE;

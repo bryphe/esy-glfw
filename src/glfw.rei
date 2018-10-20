@@ -27,6 +27,7 @@ type windowHint =
 | GLFW_FLOATING
 | GLFW_MAXIMIZED;
 
+let glfwDefaultWindowHints: unit => unit;
 let glfwWindowHint: (windowHint, bool) => unit;
 
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
