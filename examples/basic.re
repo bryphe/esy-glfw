@@ -49,7 +49,9 @@ let run = () => {
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
   let%lwt img = Image.load("test.jpg");
-  Image.debug_print(img);
+  let dimensions = Image.getDimensions(img);
+  print_endline ("- width: " ++ string_of_int(dimensions.width) ++ " - height: " ++ string_of_int(dimensions.height));
+
   let vsSource = {|
         #ifndef GL_ES
         #define lowp
@@ -165,9 +167,6 @@ let run = () => {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
     glfwSwapBuffers(w);
-
-    let time = glfwGetTime();
-    print_endline ("Time: " ++ string_of_float(time));
   };
 
   glfwSetFramebufferSizeCallback(

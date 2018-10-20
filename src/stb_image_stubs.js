@@ -1,9 +1,7 @@
 // Provides: caml_stb_image_load
 function caml_stb_image_load(imgName, onSuccess, onFailure) {
     var image = new joo_global_object.Image();
-    console.log("stubby");
     image.onload = function () {
-        console.log("laoded!");
         onSuccess(image);
     };
 
@@ -18,4 +16,9 @@ function caml_stb_image_load(imgName, onSuccess, onFailure) {
 // Provides: caml_stb_image_debug_print
 function caml_stb_image_debug_print(img) {
     console.log("Image width: " + img.width + " Image height: " + img.height);
+}
+
+// Provides: caml_stb_image_dimensions
+function caml_stb_image_dimensions(img) {
+    return [0, img.width, img.height];
 }

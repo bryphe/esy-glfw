@@ -11,13 +11,6 @@
 extern "C" {
 
     CAMLprim value
-    caml_stb_image_print_hello(value unit)
-    {
-        printf("Hello with stb headers!! \n");
-        return Val_unit;
-    }
-
-    CAMLprim value
     caml_stb_image_load(value vPath, value vSuccess, value vFailure) {
         CAMLparam3(vPath, vSuccess, vFailure);
         int width, height, numChannels;
@@ -41,6 +34,19 @@ extern "C" {
         }
 
         CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_stb_image_dimensions(value vImage) {
+        CAMLparam1(vImage);
+        CAMLlocal1(ret);
+        ReglfwImageInfo *pImage = (ReglfwImageInfo*)vImage;
+
+        ret = caml_alloc(2, 0);
+        Store_field(ret, 0, Val_int(pImage->width));
+        Store_field(ret, 1, Val_int(pImage->height));
+
+        CAMLreturn(ret);
     }
 
     CAMLprim value

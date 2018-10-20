@@ -1,17 +1,21 @@
 /* Image loading / handling */
 
-external stb_print_hello: unit => unit = "caml_stb_image_print_hello";
-
-type image;
-type t = image;
+type t;
 
 exception ImageLoadException(string);
 
-type successCallback = image => unit;
+type successCallback = t => unit;
 type failureCallback = string => unit;
 
 external raw_load: (string, successCallback, failureCallback) => unit = "caml_stb_image_load";
-external debug_print: image => unit = "caml_stb_image_debug_print";
+external debug_print: t => unit = "caml_stb_image_debug_print";
+
+type dimensions = {
+    width: int,
+    height: int,
+};
+
+external getDimensions: (t) => dimensions = "caml_stb_image_dimensions";
 
 let load = (imgName) => {
     let (promise, resolver) = Lwt.task();
