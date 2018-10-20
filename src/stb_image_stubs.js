@@ -23,3 +23,9 @@ function caml_stb_image_debug_print(img) {
 function caml_stb_image_dimensions(img) {
     return [0, img.width, img.height];
 }
+
+// Provides: caml_stb_image_from_color
+function caml_stb_image_from_color(r, g, b, a) {
+    var pixel = new joo_global_object.Uint8Array([r, g, b, a]);
+    return pixel;
+}

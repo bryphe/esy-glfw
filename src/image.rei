@@ -11,5 +11,6 @@ type dimensions = {
 };
 
 let load: (string) => Lwt.t(t);
+let fromColor: (int, int, int, int) => t;
 let getDimensions: t => dimensions;
 let debug_print: t => unit;

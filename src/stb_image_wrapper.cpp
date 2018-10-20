@@ -50,6 +50,29 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_stb_image_from_color(value vR, value vG, value vB, value vA) {
+        unsigned char r = (unsigned char)Int_val(vR);
+        unsigned char g = (unsigned char)Int_val(vG);
+        unsigned char b = (unsigned char)Int_val(vB);
+        unsigned char a = (unsigned char)Int_val(vA);
+
+        unsigned char *data = (unsigned char *)malloc(sizeof(unsigned char) * 4);
+        data[0] = r;
+        data[1] = g;
+        data[2] = b;
+        data[3] = a;
+
+        struct ReglfwImageInfo* pImageInfo = (ReglfwImageInfo *)malloc(sizeof(ReglfwImageInfo));
+        pImageInfo->width = 1;
+        pImageInfo->height = 1;
+        pImageInfo->numChannels = 4;
+        pImageInfo->channelSize = 1;
+        pImageInfo->data = data;
+
+        return (value)pImageInfo;
+    }
+
+    CAMLprim value
     caml_stb_image_debug_print(value vImage) {
         ReglfwImageInfo *pImage = (ReglfwImageInfo*)vImage;
 

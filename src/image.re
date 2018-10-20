@@ -10,6 +10,8 @@ type failureCallback = string => unit;
 external raw_load: (string, successCallback, failureCallback) => unit = "caml_stb_image_load";
 external debug_print: t => unit = "caml_stb_image_debug_print";
 
+external fromColor: (int, int, int, int) => t = "caml_stb_image_from_color";
+
 type dimensions = {
     width: int,
     height: int,
