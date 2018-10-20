@@ -233,7 +233,7 @@ function caml_glTexParameteri(vTextureType, vTextureParameter, vTextureParameter
 }
 
 // Provides: caml_glTexImage2D
-function caml_glTexImage2D(vTextureType, vTexturePixelDataFormat, vTexturePixelDataType, vImage) {
+function caml_glTexImage2D(vTextureType, vImage) {
     var textureType = joo_global_object.variantToTextureType[vTextureType];
     joo_global_object.gl.texImage2D(textureType, 0, joo_global_object.gl.RGBA, joo_global_object.gl.RGBA, joo_global_object.gl.UNSIGNED_BYTE, vImage);
 }

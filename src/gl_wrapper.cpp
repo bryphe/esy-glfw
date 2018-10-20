@@ -124,10 +124,6 @@ extern "C" {
         }
     }
 
-    GLenum variantToTexturePixelDataType(value vVal) {
-        return GL_UNSIGNED_BYTE;
-    }
-
     GLenum variantToDrawMode(value vDrawMode) {
         switch (Int_val(vDrawMode)) {
             case 0:
@@ -445,7 +441,7 @@ extern "C" {
     }
 
     CAMLprim value
-    caml_glTexImage2D(value vTextureType, value vTexturePixelDataType, value vImage) {
+    caml_glTexImage2D(value vTextureType, value vImage) {
 
         ReglfwImageInfo *pImage = (ReglfwImageInfo *)vImage;
 
@@ -473,7 +469,7 @@ extern "C" {
                 pImage->height,
                 0,
                 channels,
-                variantToTexturePixelDataType(vTexturePixelDataType), 
+                GL_UNSIGNED_BYTE,  // TODO: Support for floating-point textures!
                 pImage->data);
         return Val_unit;
     }
