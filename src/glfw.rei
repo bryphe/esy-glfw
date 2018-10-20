@@ -18,6 +18,26 @@ let glfwSwapInterval: int => unit;
 let glfwGetTime: unit => float;
 let glfwSetTime: float => unit;
 
+module Monitor {
+    type t;
+
+    type position = {
+        x: int,
+        y: int,
+    };
+}
+
+module VideoMode {
+    type t = {
+        width: int,
+        height: int,
+    };
+}
+
+let glfwGetPrimaryMonitor: unit => Monitor.t;
+let glfwGetVideoMode: Monitor.t => VideoMode.t;
+let glfwGetMonitorPos: Monitor.t => Monitor.position;
+
 type windowHint =
 | GLFW_RESIZABLE
 | GLFW_VISIBLE

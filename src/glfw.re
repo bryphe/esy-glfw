@@ -23,6 +23,26 @@ external glfwSetWindowTitle: (window, string) => unit = "caml_glfwSetWindowTitle
 [@noalloc] external glfwGetTime: unit => ([@unboxed] float) = "caml_glfwGetTime_byte" "caml_glfwGetTime";
 [@noalloc] external glfwSetTime: ([@unboxed] float) => unit = "caml_glfwSetTime_byte" "caml_glfwSetTime";
 
+module Monitor {
+    type t;
+
+    type position = {
+        x: int,
+        y: int,
+    };
+}
+
+module VideoMode {
+    type t = {
+        width: int,
+        height: int,
+    };
+}
+
+[@noalloc] external glfwGetPrimaryMonitor: unit => Monitor.t = "caml_glfwGetPrimaryMonitor";
+external glfwGetVideoMode: Monitor.t => VideoMode.t = "caml_glfwGetVideoMode";
+external glfwGetMonitorPos: Monitor.t => Monitor.position = "caml_glfwGetMonitorPos";
+
 type windowHint =
 | GLFW_RESIZABLE
 | GLFW_VISIBLE

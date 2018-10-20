@@ -211,6 +211,27 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwGetPrimaryMonitor()
+    {
+        return (value)glfwGetPrimaryMonitor();
+    }
+
+    CAMLprim value
+    caml_glfwGetVideoMode(value vMonitor) 
+    {
+        CAMLparam1(vMonitor);
+        CAMLlocal1(ret);
+        GLFWmonitor* pMonitor = (GLFWmonitor*)vMonitor;
+        GLFWvidmode* pVidMode = glfwGetVideoMode(pMonitor);
+
+        ret = caml_alloc(2, 0);
+        Store_field(ret, 0, Val_int(pVidMode->width));
+        Store_field(ret, 1, Val_int(pVidMode->height));
+
+        CAMLreturn(ret);
+    }
+
+    CAMLprim value
     caml_printFrameBufferSize(value window)
     {
         WindowInfo* wd = (WindowInfo*)window;
