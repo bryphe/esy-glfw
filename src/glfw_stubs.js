@@ -1,9 +1,3 @@
-//Provides: caml_print_hello
-function caml_print_hello(stub) {
-    console.log("Hello!");
-    console.dir(stub);
-}
-
 //Provides: caml_glfwInit
 function caml_glfwInit() {
     joo_global_object._time = {
@@ -30,6 +24,16 @@ function caml_glfwGetTime_byte() {
 function caml_glfwSetTime_byte(t) {
     joo_global_object._time.offset = t * 1000;
     joo_global_object._time.start = Date.now();
+}
+
+// Provides caml_glfwShowWindow
+function caml_glfwShowWindow(w) {
+    joo_global_object.console.warn("glfwShowWindow not implemented in WebGL");
+}
+
+// Provides caml_glfwHideWindow
+function caml_glfwHideWindow(w) {
+    joo_global_object.console.warn("glfwHideWindow not implemented in WebGL");
 }
 
 // Provides: caml_test_callback_success
