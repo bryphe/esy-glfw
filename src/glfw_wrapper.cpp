@@ -224,14 +224,14 @@ extern "C" {
 
     CAMLprim value
     caml_glfwShowWindow(value vWindow) {
-        WindowInfo *wd = (WindowInfo *)window;
+        WindowInfo *wd = (WindowInfo *)vWindow;
         glfwShowWindow(wd->pWindow);
         return Val_unit;
     }
 
     CAMLprim value
-    caml_glfwHideWinodw(value vWindow) {
-        WindowInfo *wd = (WindowInfo *)window;
+    caml_glfwHideWindow(value vWindow) {
+        WindowInfo *wd = (WindowInfo *)vWindow;
         glfwHideWindow(wd->pWindow);
         return Val_unit;
     }
