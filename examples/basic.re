@@ -32,7 +32,10 @@ let run = () => {
   let w = glfwCreateWindow(100, 50, "test");
   glfwMakeContextCurrent(w);
 
-  glfwSetWindowPos(w, 100, 200);
+  let monitor = glfwGetCurrentMonitor();
+  let vidMode = glfwGetVideoMode(monitor);
+
+  glfwSetWindowPos(w, (vidMode.width - 800) / 2, (vidMode.height - 600) / 2);
   glfwSetWindowSize(w, 800, 600);
   glfwSetWindowTitle(w, "reason-glfw example");
 
