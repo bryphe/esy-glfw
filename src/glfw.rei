@@ -71,22 +71,11 @@ type glfwFramebufferSizeCallback = (window, int, int) => unit;
 let glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit;
 
-type glfwCursorPosCallback = (window, float, float) => unit;
-let glfwSetCursorPosCallback: (window, glfwCursorPosCallback) => unit;
-
 type glfwCursorPos = {
     mouseX: float,
     mouseY: float
 };
 let glfwGetCursorPos: window => glfwCursorPos;
-
-/* type glfwMouseButtonCallback = (window, glfwMouseButton, glfwButtonState, array(glfwModifierKey)) => unit; */
-/* let glfwSetMouseButtonCallback = (window, glfwMouseButtonCallback) => unit; */
-
-/* let glfwGetMouseButton = (window, glfwMouseButton) => glfwButtonState; */
-
-/* let glfwScrollCallback = (window, float, float) => unit; */
-/* type glfwSetScrollCallback = (window, glfwScrollCallback) => unit; */
 
 let printFrameBufferSize: window => unit;
 

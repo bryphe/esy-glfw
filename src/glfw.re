@@ -98,9 +98,6 @@ external glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit =
   "caml_glfwSetFramebufferSizeCallback";
 
-type glfwCursorPosCallback = (window, float, float) => unit;
-external glfwSetCursorPosCallback: (window, glfwCursorPosCallback) => unit = "caml_glfwSetCursorPosCallback";
-
 type glfwCursorPos = {
     mouseX: float,
     mouseY: float
@@ -116,8 +113,6 @@ let glfwGetCursorPos = (w) => {
     };
     v;
 };
-
-/* external glfwGetMouseButton = (window, glfwMouseButton) => glfwButtonState = "caml_glfwGetMouseButton"; */
 
 /* GL */
 type shader;
