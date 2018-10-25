@@ -14,9 +14,36 @@ external glfwTerminate: unit => unit = "caml_glfwTerminate";
 external glfwSwapBuffers: window => unit = "caml_glfwSwapBuffers";
 external glfwSetWindowSize: (window, int, int) => unit =
   "caml_glfwSetWindowSize";
+[@noalloc] external glfwSetWindowPos: (window, int, int) => unit =
+  "caml_glfwSetWindowPos";
+[@noalloc] external glfwShowWindow: (window) => unit = "caml_glfwShowWindow";
+[@noalloc] external glfwHideWindow: (window) => unit = "caml_glfwHideWindow";
 external glfwMaximizeWindow: (window) => unit = "caml_glfwMaximizeWindow";
 external glfwSetWindowTitle: (window, string) => unit = "caml_glfwSetWindowTitle";
 [@noalloc] external glfwSwapInterval: int => unit = "caml_glfwSwapInterval";
+
+[@noalloc] external glfwGetTime: unit => ([@unboxed] float) = "caml_glfwGetTime_byte" "caml_glfwGetTime";
+[@noalloc] external glfwSetTime: ([@unboxed] float) => unit = "caml_glfwSetTime_byte" "caml_glfwSetTime";
+
+module Monitor {
+    type t;
+
+    type position = {
+        x: int,
+        y: int,
+    };
+}
+
+module VideoMode {
+    type t = {
+        width: int,
+        height: int,
+    };
+}
+
+[@noalloc] external glfwGetPrimaryMonitor: unit => Monitor.t = "caml_glfwGetPrimaryMonitor";
+external glfwGetVideoMode: Monitor.t => VideoMode.t = "caml_glfwGetVideoMode";
+external glfwGetMonitorPos: Monitor.t => Monitor.position = "caml_glfwGetMonitorPos";
 
 type windowHint =
 | GLFW_RESIZABLE
@@ -43,6 +70,7 @@ type glfwButtonState =
 | GLFW_PRESS
 | GLFW_RELEASE;
 
+[@noalloc] external glfwDefaultWindowHints: unit => unit = "caml_glfwDefaultWindowHints";
 [@noalloc] external glfwWindowHint: (windowHint, bool) => unit = "caml_glfwWindowHint";
 
 type glfwRenderLoopCallback = float => bool;
@@ -110,14 +138,24 @@ external glShaderSource: (shader, string) => unit = "caml_glShaderSource";
 external glViewport: (int, int, int, int) => unit = "caml_glViewport";
 
 type enableOptions =
-  | GL_DEPTH_TEST;
+  | GL_DEPTH_TEST
+  | GL_BLEND;
 
-external glEnable: enableOptions => unit = "caml_glEnable";
+[@noalloc] external glEnable: enableOptions => unit = "caml_glEnable";
+[@noalloc] external glDisable: enableOptions => unit = "caml_glDisable";
 
 type depthFunctions =
   | GL_LEQUAL;
 
 external glDepthFunc: depthFunctions => unit = "caml_glDepthFunc";
+
+type blendFunc =
+  | GL_ZERO
+  | GL_ONE
+  | GL_SRC_ALPHA
+  | GL_ONE_MINUS_SRC_ALPHA;
+
+[@noalloc] external glBlendFunc: (blendFunc, blendFunc) => unit = "caml_glBlendFunc";
 
 /* TODO: Add compile result return */
 external glCompileShader: shader => shaderCompilationResult =
@@ -143,8 +181,21 @@ external glGetAttribLocation: (program, string) => attribLocation =
 type uniformLocation;
 external glGetUniformLocation: (program, string) => uniformLocation =
   "caml_glGetUniformLocation";
-external glUniform3fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv";
+
+external glUniform1f: (uniformLocation, float) => unit = "caml_glUniform1f";
+external glUniform2f: (uniformLocation, float, float) => unit = "caml_glUniform2f";
+external glUniform3f: (uniformLocation, float, float, float) => unit = "caml_glUniform3f";
 external glUniform4f: (uniformLocation, float, float, float, float) => unit = "caml_glUniform4f";
+
+external glUniform1i: (uniformLocation, int) => unit = "caml_glUniform1i";
+external glUniform2i: (uniformLocation, int, int) => unit = "caml_glUniform2i";
+external glUniform3i: (uniformLocation, int, int, int) => unit = "caml_glUniform3i";
+external glUniform4i: (uniformLocation, int, int, int, int) => unit = "caml_glUniform4i";
+
+external glUniform2fv: (uniformLocation, Vec2.t) => unit = "caml_glUniform2fv";
+external glUniform3fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv";
+external glUniform4fv: (uniformLocation, Vec4.t) => unit = "caml_glUniform4fv";
+
 external glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit =
   "caml_glUniformMatrix4fv";
 
@@ -183,7 +234,7 @@ external glTexParameteri:
   (textureType, textureParameter, textureParameterValue) => unit =
   "caml_glTexParameteri";
 external glTexImage2D:
-  (textureType, glType, Image.t) => unit =
+  (textureType, Image.t) => unit =
   "caml_glTexImage2D";
 external glGenerateMipmap: textureType => unit = "caml_glGenerateMipmap";
 

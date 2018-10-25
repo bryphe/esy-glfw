@@ -21,7 +21,8 @@
   "resolutions": {
     "esy-cmake": "github:bryphe/esy-cmake#5a40a8e",
     "@opam/menhir": "20171013",
-    "@opam/re": "1.8.0"
+    "@opam/re": "1.8.0",
+    "refmterr": "github:bryphe/BetterErrors#76500c2"
   },
   "dependencies": {
     "@opam/dune": "*",

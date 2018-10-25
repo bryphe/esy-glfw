@@ -81,23 +81,34 @@ function caml_glDepthFunc(df) {
     joo_global_object.gl.depthFunc(joo_global_object.gl.LEQUAL);
 }
 
+// Provides: caml_glBlendFunc
+function caml_glBlendFunc(src, dest) {
+    joo_global_object.gl.blendFunc(joo_global_object.variantToBlendFunc[src], joo_global_object.variantToBlendFunc[dest]);
+}
+
 // Provides: caml_glDrawArrays
 function caml_glDrawArrays(vDrawMode, first, count) {
-    var drawMode = variantToDrawMode[vDrawMode];
+    var drawMode = joo_global_object.variantToDrawMode[vDrawMode];
     joo_global_object.gl.drawArrays(drawMode, first, count);
 }
 
 // Provides: caml_glDrawElements
 function caml_glDrawElements(vDrawMode, count, vDataType, first) {
-    var drawMode = variantToDrawMode[vDrawMode];
+    var drawMode = joo_global_object.variantToDrawMode[vDrawMode];
     var dataType = joo_global_object.variantToGlType[vDataType];
     joo_global_object.gl.drawElements(drawMode, count, dataType, first);
 }
 
 // Provides: caml_glEnable
 function caml_glEnable(option) {
-    // TODO: Use params
-    joo_global_object.gl.enable(joo_global_object.gl.DEPTH_TEST)
+    var enableOption = joo_global_object.variantToEnableOption[option];
+    joo_global_object.gl.enable(enableOption);
+}
+
+// Provides: caml_glDisable
+function caml_glDisable(option) {
+    var enableOption = joo_global_object.variantToEnableOption[option];
+    joo_global_object.gl.disable(enableOption);
 }
 
 // Provides: caml_glLinkProgram
@@ -124,14 +135,59 @@ function caml_glGetUniformLocation(program, uniformName) {
     return joo_global_object.gl.getUniformLocation(program, uniformName)
 }
 
-// Provides: caml_glUniform3fv
-function caml_glUniform3fv(uniformLocation, v) {
-    return joo_global_object.gl.uniform3fv(uniformLocation, v);
+// Provides: caml_glUniform1f
+function caml_glUniform1f(uniformLocation, f0) {
+    return joo_global_object.gl.uniform1f(uniformLocation, f0);
+}
+
+// Provides: caml_glUniform2f
+function caml_glUniform2f(uniformLocation, f0, f1) {
+    return joo_global_object.gl.uniform2f(uniformLocation, f0, f1);
+}
+
+// Provides: caml_glUniform3f
+function caml_glUniform3f(uniformLocation, f0, f1, f2) {
+    return joo_global_object.gl.uniform3f(uniformLocation, f0, f1, f2);
 }
 
 // Provides: caml_glUniform4f
 function caml_glUniform4f(uniformLocation, f0, f1, f2, f3) {
     return joo_global_object.gl.uniform4f(uniformLocation, f0, f1, f2, f3);
+}
+
+// Provides: caml_glUniform1i
+function caml_glUniform1i(uniformLocation, f0) {
+    return joo_global_object.gl.uniform1i(uniformLocation, f0);
+}
+
+// Provides: caml_glUniform2i
+function caml_glUniform2i(uniformLocation, f0, f1) {
+    return joo_global_object.gl.uniform2i(uniformLocation, f0, f1);
+}
+
+// Provides: caml_glUniform3i
+function caml_glUniform3i(uniformLocation, f0, f1, f2) {
+    return joo_global_object.gl.uniform3i(uniformLocation, f0, f1, f2);
+}
+
+// Provides: caml_glUniform4i
+function caml_glUniform4i(uniformLocation, f0, f1, f2, f3) {
+    return joo_global_object.gl.uniform4i(uniformLocation, f0, f1, f2, f3);
+}
+
+// Provides: caml_glUniform2fv
+function caml_glUniform2fv(uniformLocation, v) {
+    return joo_global_object.gl.uniform2fv(uniformLocation, v);
+}
+
+// Provides: caml_glUniform3fv
+function caml_glUniform3fv(uniformLocation, v) {
+    return joo_global_object.gl.uniform3fv(uniformLocation, v);
+}
+
+// Provides: caml_glUniform4fv
+function caml_glUniform4fv(uniformLocation, v) {
+    return joo_global_object.gl.uniform4fv(uniformLocation, v);
 }
 
 // Provides: caml_glUniformMatrix4fv
@@ -177,7 +233,7 @@ function caml_glTexParameteri(vTextureType, vTextureParameter, vTextureParameter
 }
 
 // Provides: caml_glTexImage2D
-function caml_glTexImage2D(vTextureType, vTexturePixelDataFormat, vTexturePixelDataType, vImage) {
+function caml_glTexImage2D(vTextureType, vImage) {
     var textureType = joo_global_object.variantToTextureType[vTextureType];
     joo_global_object.gl.texImage2D(textureType, 0, joo_global_object.gl.RGBA, joo_global_object.gl.RGBA, joo_global_object.gl.UNSIGNED_BYTE, vImage);
 }

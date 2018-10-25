@@ -147,10 +147,23 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwDefaultWindowHints() {
+        glfwDefaultWindowHints();
+        return Val_unit;
+    }
+
+    CAMLprim value
     caml_glfwWindowHint(value vHint, value vVal) {
         int windowHint = variantToWindowHint(vHint);
         int val = Bool_val(vVal) ? GLFW_TRUE : GLFW_FALSE;
         glfwWindowHint(windowHint, val);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glfwSetWindowPos(value vWindow, value vX, value vY) {
+        WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
+        glfwSetWindowPos(pWindowInfo->pWindow, Int_val(vX), Int_val(vY));
         return Val_unit;
     }
 
@@ -193,6 +206,64 @@ extern "C" {
         }
 
         CAMLreturn(Val_unit);
+    }
+
+    double
+    caml_glfwGetTime() {
+        return glfwGetTime();
+    }
+
+    CAMLprim value
+    caml_glfwGetTime_byte() {
+        return caml_copy_double(caml_glfwGetTime());
+    }
+
+    void
+    caml_glfwSetTime(double t) {
+        glfwSetTime(t);
+    }
+
+    CAMLprim value
+    caml_glfwSetTime_byte(value vTime) {
+        glfwSetTime(Double_val(vTime));
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glfwGetPrimaryMonitor()
+    {
+        return (value)glfwGetPrimaryMonitor();
+    }
+
+    CAMLprim value
+    caml_glfwGetVideoMode(value vMonitor) 
+    {
+        CAMLparam1(vMonitor);
+        CAMLlocal1(ret);
+        GLFWmonitor* pMonitor = (GLFWmonitor*)vMonitor;
+        const GLFWvidmode* pVidMode = glfwGetVideoMode(pMonitor);
+
+        ret = caml_alloc(2, 0);
+        Store_field(ret, 0, Val_int(pVidMode->width));
+        Store_field(ret, 1, Val_int(pVidMode->height));
+
+        CAMLreturn(ret);
+    }
+
+    CAMLprim value
+    caml_glfwGetMonitorPos(value vMonitor) {
+        CAMLparam1(vMonitor);
+        CAMLlocal1(ret);
+        GLFWmonitor* pMonitor = (GLFWmonitor*)vMonitor;
+
+        int xPos, yPos;
+        glfwGetMonitorPos(pMonitor, &xPos, &yPos);
+
+        ret = caml_alloc(2, 0);
+        Store_field(ret, 0, Val_int(xPos));
+        Store_field(ret, 1, Val_int(yPos));
+
+        CAMLreturn(ret);
     }
 
     CAMLprim value
@@ -245,6 +316,20 @@ extern "C" {
         WindowInfo *wd = (WindowInfo *)window;
         int val = glfwWindowShouldClose(wd->pWindow);
         return Val_bool(val);
+    }
+
+    CAMLprim value
+    caml_glfwShowWindow(value vWindow) {
+        WindowInfo *wd = (WindowInfo *)vWindow;
+        glfwShowWindow(wd->pWindow);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glfwHideWindow(value vWindow) {
+        WindowInfo *wd = (WindowInfo *)vWindow;
+        glfwHideWindow(wd->pWindow);
+        return Val_unit;
     }
 
     CAMLprim value

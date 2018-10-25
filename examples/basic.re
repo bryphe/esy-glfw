@@ -32,8 +32,11 @@ let run = () => {
   let w = glfwCreateWindow(100, 50, "test");
   glfwMakeContextCurrent(w);
 
-  glfwSetWindowSize(w, 800, 600);
+  let monitor = glfwGetPrimaryMonitor();
+  let vidMode = glfwGetVideoMode(monitor);
 
+  glfwSetWindowPos(w, (vidMode.width - 800) / 2, (vidMode.height - 600) / 2);
+  glfwSetWindowSize(w, 800, 600);
   glfwSetWindowTitle(w, "reason-glfw example");
 
   glViewport(0, 0, 800, 600);
@@ -49,7 +52,9 @@ let run = () => {
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
   let%lwt img = Image.load("test.jpg");
-  Image.debug_print(img);
+  let dimensions = Image.getDimensions(img);
+  print_endline ("- width: " ++ string_of_int(dimensions.width) ++ " - height: " ++ string_of_int(dimensions.height));
+
   let vsSource = {|
         #ifndef GL_ES
         #define lowp
@@ -78,7 +83,7 @@ let run = () => {
         varying lowp vec4 vColor;
 
         void main() {
-            gl_FragColor = vColor;
+            gl_FragColor = vec4(vColor.r, vColor.g, vColor.b, 0.5);
             // gl_FragColor = vec4(vTexCoord, 0.0, 1.0);
             //gl_FragColor = texture2D(texture, vTexCoord);
         }
@@ -121,6 +126,9 @@ let run = () => {
     glClearColor(0.0, 0., 0., 1.);
     glClearDepth(1.0);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthFunc(GL_LEQUAL);
 
     glUseProgram(shaderProgram);
@@ -184,7 +192,7 @@ let run = () => {
     },
   );
 
-  glfwMaximizeWindow(w);
+  /* glfwMaximizeWindow(w); */
 
   glfwRenderLoop((_t) => {
     render();

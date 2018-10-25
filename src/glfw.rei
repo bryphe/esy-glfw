@@ -9,10 +9,35 @@ let glfwWindowShouldClose: window => bool;
 let glfwPollEvents: unit => unit;
 let glfwTerminate: unit => unit;
 let glfwSwapBuffers: window => unit;
+let glfwSetWindowPos: (window, int, int) => unit;
 let glfwSetWindowSize: (window, int, int) => unit;
 let glfwMaximizeWindow: (window) => unit;
 let glfwSetWindowTitle: (window, string) => unit;
+let glfwShowWindow: (window) => unit;
+let glfwHideWindow: (window) => unit;
 let glfwSwapInterval: int => unit;
+let glfwGetTime: unit => float;
+let glfwSetTime: float => unit;
+
+module Monitor {
+    type t;
+
+    type position = {
+        x: int,
+        y: int,
+    };
+}
+
+module VideoMode {
+    type t = {
+        width: int,
+        height: int,
+    };
+}
+
+let glfwGetPrimaryMonitor: unit => Monitor.t;
+let glfwGetVideoMode: Monitor.t => VideoMode.t;
+let glfwGetMonitorPos: Monitor.t => Monitor.position;
 
 type windowHint =
 | GLFW_RESIZABLE
@@ -39,6 +64,7 @@ type glfwModifierKey =
 | GLFW_MOD_ALT
 | GLFW_MOD_SUPER
 
+let glfwDefaultWindowHints: unit => unit;
 let glfwWindowHint: (windowHint, bool) => unit;
 
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
@@ -89,14 +115,24 @@ let glCompileShader: shader => shaderCompilationResult;
 let glDeleteShader: shader => unit;
 
 type enableOptions =
-  | GL_DEPTH_TEST;
+  | GL_DEPTH_TEST
+  | GL_BLEND;
 
 let glEnable: enableOptions => unit;
+let glDisable: enableOptions => unit;
 
 type depthFunctions =
   | GL_LEQUAL;
 
 let glDepthFunc: depthFunctions => unit;
+
+type blendFunc =
+  | GL_ZERO
+  | GL_ONE
+  | GL_SRC_ALPHA
+  | GL_ONE_MINUS_SRC_ALPHA;
+
+let glBlendFunc: (blendFunc, blendFunc) => unit;
 
 type program;
 
@@ -115,8 +151,20 @@ let glGetAttribLocation: (program, string) => attribLocation;
 type uniformLocation;
 let glGetUniformLocation: (program, string) => uniformLocation;
 
-let glUniform3fv: (uniformLocation, Vec3.t) => unit;
+let glUniform1f: (uniformLocation, float) => unit;
+let glUniform2f: (uniformLocation, float, float) => unit;
+let glUniform3f: (uniformLocation, float, float, float) => unit;
 let glUniform4f: (uniformLocation, float, float, float, float) => unit;
+
+let glUniform1i: (uniformLocation, int) => unit;
+let glUniform2i: (uniformLocation, int, int) => unit;
+let glUniform3i: (uniformLocation, int, int, int) => unit;
+let glUniform4i: (uniformLocation, int, int, int, int) => unit;
+
+let glUniform2fv: (uniformLocation, Vec2.t) => unit;
+let glUniform3fv: (uniformLocation, Vec3.t) => unit;
+let glUniform4fv: (uniformLocation, Vec4.t) => unit;
+
 let glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit;
 
 type pixelAlignmentParameter =
@@ -153,7 +201,7 @@ let glBindTexture: (textureType, texture) => unit;
 let glTexParameteri:
   (textureType, textureParameter, textureParameterValue) => unit;
 let glTexImage2D:
-  (textureType, glType, Image.t) => unit;
+  (textureType, Image.t) => unit;
 let glGenerateMipmap: textureType => unit;
 
 type bufferType =

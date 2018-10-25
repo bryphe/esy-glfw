@@ -1,12 +1,9 @@
-//Provides: caml_print_hello
-function caml_print_hello(stub) {
-    console.log("Hello!");
-    console.dir(stub);
-}
-
 //Provides: caml_glfwInit
 function caml_glfwInit() {
-    // no-op
+    joo_global_object._time = {
+        start: Date.now(),
+        offset: 0,
+    };
 
     joo_global_object.window.addEventListener("resize", function () {
         var wins = joo_global_object._activeWindows;
@@ -37,6 +34,48 @@ function caml_glfwGetCursorPos(w) {
     // we should calculate the mouse position relative to it.
 
     return caml_js_to_array([joo_global_object._mouseState.x, joo_global_object._mouseState.y]);
+}
+
+// Provides: caml_glfwGetTime_byte
+function caml_glfwGetTime_byte() {
+    return (joo_global_object._time.offset + (Date.now() - joo_global_object._time.start)) / 1000;
+}
+
+// Provides: caml_glfwSetTime_byte
+function caml_glfwSetTime_byte(t) {
+    joo_global_object._time.offset = t * 1000;
+    joo_global_object._time.start = Date.now();
+}
+
+// Provides: caml_glfwGetPrimaryMonitor
+function caml_glfwGetPrimaryMonitor() {
+    // No-op
+}
+
+// Provides: caml_glfwGetVideoMode
+function caml_glfwGetVideoMode() {
+    var win = joo_global_object.window;
+    return [0, win.innerWidth, win.innerHeight];
+};
+
+// Provides: caml_glfwGetMonitorPos
+function caml_glfwGetMonitorPos() {
+    return [0, 0, 0];
+};
+
+// Provides caml_glfwDefaultWindowHints
+function caml_glfwDefaultWindowHints(w) {
+    joo_global_object.console.warn("glfwDefaultWindowHints not implemented in WebGL");
+}
+
+// Provides caml_glfwShowWindow
+function caml_glfwShowWindow(w) {
+    joo_global_object.console.warn("glfwShowWindow not implemented in WebGL");
+}
+
+// Provides caml_glfwHideWindow
+function caml_glfwHideWindow(w) {
+    joo_global_object.console.warn("glfwHideWindow not implemented in WebGL");
 }
 
 // Provides: caml_test_callback_success
@@ -102,6 +141,12 @@ function caml_glfwCreateWindow(width, height, title) {
     return w;
 };
 
+// Provides: caml_glfwSetWindowPos
+function caml_glfwSetWindowPos(w, x, y) {
+    var canvas = w.canvas;
+    canvas.style.transform = "translate(" + x.toString() + "px, " + y.toString() + "px)";
+}
+
 // Provides: caml_glfwSetWindowSize
 function caml_glfwSetWindowSize(w, width, height) {
     var canvas = w.canvas;
@@ -154,6 +199,18 @@ function caml_glfwMakeContextCurrent(win) {
 
     joo_global_object.variantToTextureType = {
         '0': gl.TEXTURE_2D,
+    };
+
+    joo_global_object.variantToEnableOption = {
+        '0': gl.DEPTH_TEST,
+        '1': gl.BLEND,
+    };
+
+    joo_global_object.variantToBlendFunc = {
+        '0': gl.ZERO,
+        '1': gl.ONE,
+        '2': gl.SRC_ALPHA,
+        '3': gl.ONE_MINUS_SRC_ALPHA,
     };
 
     joo_global_object.variantToTextureParameter = {
