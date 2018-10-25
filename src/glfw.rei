@@ -9,6 +9,7 @@ let glfwWindowShouldClose: window => bool;
 let glfwPollEvents: unit => unit;
 let glfwTerminate: unit => unit;
 let glfwSwapBuffers: window => unit;
+let glfwSetWindowPos: (window, int, int) => unit;
 let glfwSetWindowSize: (window, int, int) => unit;
 let glfwMaximizeWindow: (window) => unit;
 let glfwSetWindowTitle: (window, string) => unit;

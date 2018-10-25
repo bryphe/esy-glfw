@@ -149,6 +149,13 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwSetWindowPos(value vWindow, value vX, value vY) {
+        WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
+        glfwSetWindowPos(pWindowInfo->pWindow, Int_val(vX), Int_val(vY));
+        return Val_unit;
+    }
+
+    CAMLprim value
     caml_glfwSetWindowSize(value vWindow, value vWidth, value vHeight) {
         WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
         glfwSetWindowSize(pWindowInfo->pWindow, Int_val(vWidth), Int_val(vHeight));
