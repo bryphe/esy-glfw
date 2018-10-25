@@ -33,7 +33,7 @@ function caml_glfwGetPrimaryMonitor() {
 
 // Provides: caml_glfwGetVideoMode
 function caml_glfwGetVideoMode() {
-    let win = joo_global_object.window;
+    var win = joo_global_object.window;
     return [0, win.innerWidth, win.innerHeight];
 };
 

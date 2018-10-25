@@ -32,7 +32,7 @@ let run = () => {
   let w = glfwCreateWindow(100, 50, "test");
   glfwMakeContextCurrent(w);
 
-  let monitor = glfwGetCurrentMonitor();
+  let monitor = glfwGetPrimaryMonitor();
   let vidMode = glfwGetVideoMode(monitor);
 
   glfwSetWindowPos(w, (vidMode.width - 800) / 2, (vidMode.height - 600) / 2);

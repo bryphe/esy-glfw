@@ -229,7 +229,7 @@ extern "C" {
         CAMLparam1(vMonitor);
         CAMLlocal1(ret);
         GLFWmonitor* pMonitor = (GLFWmonitor*)vMonitor;
-        GLFWvidmode* pVidMode = glfwGetVideoMode(pMonitor);
+        const GLFWvidmode* pVidMode = glfwGetVideoMode(pMonitor);
 
         ret = caml_alloc(2, 0);
         Store_field(ret, 0, Val_int(pVidMode->width));
@@ -248,10 +248,10 @@ extern "C" {
         glfwGetMonitorPos(pMonitor, &xPos, &yPos);
 
         ret = caml_alloc(2, 0);
-        Store_field(ret, 0, Val_int(x));
-        Store_field(ret, 1, Val_int(y));
+        Store_field(ret, 0, Val_int(xPos));
+        Store_field(ret, 1, Val_int(yPos));
 
-        CAMLreturn ret;
+        CAMLreturn(ret);
     }
 
     CAMLprim value
