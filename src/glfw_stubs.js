@@ -6,10 +6,8 @@ function caml_glfwInit() {
     };
 
     joo_global_object.window.addEventListener("resize", function () {
-        console.log("RESIZE");
         var wins = joo_global_object._activeWindows;
         for (var i = 0; i < wins.length; i++) {
-            console.log("notifying");
             wins[i]._notifyResize();
         }
     });
@@ -76,6 +74,7 @@ function caml_glfwJavascriptRenderLoop(loopFunc) {
 }
 
 // Provides: caml_test_callback_failure
+// Requires: caml_js_to_string
 function caml_test_callback_failure(s, f) {
     f(caml_js_to_string("failed"));
 }
@@ -167,7 +166,7 @@ function caml_glfwMaximizeWindow(w) {
 function caml_glfwMakeContextCurrent(win) {
     var context = win.canvas.getContext('webgl');
     var gl = context;
-    window.__glfw__gl__ = context;
+    joo_global_object.window.__glfw__gl__ = context;
 
     joo_global_object.variantToTextureType = {
         '0': gl.TEXTURE_2D,
@@ -223,7 +222,6 @@ function caml_glfwMakeContextCurrent(win) {
         '1': gl.TRIANGLE_STRIP
     }
 
-    console.log("set context to: " + win.title)
     joo_global_object.gl = context;
 }
 
