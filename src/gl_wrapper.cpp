@@ -14,6 +14,9 @@
 
 #include <reglfw_image.h>
 
+// From: https://stackoverflow.com/questions/23177229/how-to-cast-int-to-const-glvoid
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
 extern "C" {
 
     void warn(const char *message) {
@@ -542,7 +545,7 @@ extern "C" {
        GLenum dataType = variantToType(vGlType);
        unsigned int count = Int_val(vCount);
        unsigned int first = Int_val(vFirst);
-       glDrawElements(drawMode, vCount, dataType, (void *)first);
+       glDrawElements(drawMode, vCount, dataType, BUFFER_OFFSET(first));
        return Val_unit;
     }
 
