@@ -14,6 +14,8 @@ external glfwTerminate: unit => unit = "caml_glfwTerminate";
 external glfwSwapBuffers: window => unit = "caml_glfwSwapBuffers";
 external glfwSetWindowSize: (window, int, int) => unit =
   "caml_glfwSetWindowSize";
+[@noalloc] external glfwSetWindowPos: (window, int, int) => unit =
+  "caml_glfwSetWindowPos";
 [@noalloc] external glfwShowWindow: (window) => unit = "caml_glfwShowWindow";
 [@noalloc] external glfwHideWindow: (window) => unit = "caml_glfwHideWindow";
 external glfwMaximizeWindow: (window) => unit = "caml_glfwMaximizeWindow";

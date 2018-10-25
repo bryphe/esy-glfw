@@ -102,6 +102,12 @@ function caml_glfwCreateWindow(width, height, title) {
     return w;
 };
 
+// Provides: caml_glfwSetWindowPos
+function caml_glfwSetWindowPos(w, x, y) {
+    var canvas = w.canvas;
+    canvas.style.transform = "translate(" + x.toString() + "px, " + y.toString() + "px)";
+}
+
 // Provides: caml_glfwSetWindowSize
 function caml_glfwSetWindowSize(w, width, height) {
     var canvas = w.canvas;

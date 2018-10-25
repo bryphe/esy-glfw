@@ -32,8 +32,8 @@ let run = () => {
   let w = glfwCreateWindow(100, 50, "test");
   glfwMakeContextCurrent(w);
 
+  glfwSetWindowPos(w, 100, 200);
   glfwSetWindowSize(w, 800, 600);
-
   glfwSetWindowTitle(w, "reason-glfw example");
 
   glViewport(0, 0, 800, 600);
@@ -182,7 +182,7 @@ let run = () => {
     },
   );
 
-  glfwMaximizeWindow(w);
+  /* glfwMaximizeWindow(w); */
 
   glfwRenderLoop((_t) => {
     render();
