@@ -26,6 +26,22 @@ function caml_glfwSetTime_byte(t) {
     joo_global_object._time.start = Date.now();
 }
 
+// Provides: caml_glfwGetPrimaryMonitor
+function caml_glfwGetPrimaryMonitor() {
+    // No-op
+}
+
+// Provides: caml_glfwGetVideoMode
+function caml_glfwGetVideoMode() {
+    let win = joo_global_object.window;
+    return [0, win.innerWidth, win.innerHeight];
+};
+
+// Provides: caml_glfwGetMonitorPos
+function caml_glfwGetMonitorPos() {
+    return [0, 0, 0];
+};
+
 // Provides caml_glfwDefaultWindowHints
 function caml_glfwDefaultWindowHints(w) {
     joo_global_object.console.warn("glfwDefaultWindowHints not implemented in WebGL");
