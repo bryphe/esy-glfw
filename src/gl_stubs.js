@@ -36,6 +36,7 @@ function caml_glBufferData(target, data, usage) {
 }
 
 // Provides: caml_glCompileShader
+// Requires: caml_js_to_string
 function caml_glCompileShader(shader) {
     joo_global_object.gl.compileShader(shader);
 
@@ -44,7 +45,7 @@ function caml_glCompileShader(shader) {
     if (result) {
         return 0;
     } else {
-        var log = gl.getShaderInfoLog(shader);
+        var log = joo_global_object.gl.getShaderInfoLog(shader);
         return [0, caml_js_to_string(log)];
     }
 }
@@ -112,6 +113,7 @@ function caml_glDisable(option) {
 }
 
 // Provides: caml_glLinkProgram
+// Requires: caml_js_to_string
 function caml_glLinkProgram(program) {
     joo_global_object.gl.linkProgram(program);
 
@@ -120,7 +122,7 @@ function caml_glLinkProgram(program) {
     if (result) {
         return 0;
     } else {
-        var log = gl.getProgramInfoLog(shader);
+        var log = joo_global_object.gl.getProgramInfoLog(program);
         return [0, caml_js_to_string(log)];
     }
 }

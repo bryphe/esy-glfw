@@ -257,7 +257,6 @@ function caml_glfwMakeContextCurrent(win) {
         '1': gl.TRIANGLE_STRIP
     }
 
-    console.log("set context to: " + win.title)
     joo_global_object.gl = context;
 }
 
