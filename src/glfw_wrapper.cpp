@@ -19,7 +19,7 @@ extern "C" {
     struct WindowInfo {
         GLFWwindow* pWindow;
         value vSetFramebufferSizeCallback;
-        value vSetCursorCallback;
+        value vSetCursorPosCallback;
         value vCharCallback;
     };
 
@@ -102,6 +102,7 @@ extern "C" {
 
         if (pWinInfo && pWinInfo->vSetCursorPosCallback != Val_unit) {
             (void) caml_callback3((value)pWinInfo->vSetCursorPosCallback, ((value)(void *)pWinInfo), caml_copy_double(xPos), caml_copy_double(yPos));
+        }
     }
 
     void char_callback(GLFWwindow *pWin, unsigned int codepoint) {
