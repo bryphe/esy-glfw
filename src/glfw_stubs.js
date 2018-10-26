@@ -12,6 +12,7 @@ function caml_glfwInit() {
         }
     });
 
+<<<<<<< HEAD
     joo_global_object._mouseState = {};
     joo_global_object.window.addEventListener("mousemove", function (e) {
         var activeWindow = joo_global_object._activeWindow;
@@ -23,6 +24,15 @@ function caml_glfwInit() {
             var win = wins[i];
             if (win.onCursorPos) {
                 win.onCursorPos(win, e.pageX - win.x, e.pageY - win.y);
+=======
+    joo_global_object.window.addEventListener("keypress", function (keyEvent) {
+
+        if (keyEvent.key && keyEvent.key.length === 1) {
+            var codepoint = keyEvent.key.codePointAt(0);
+            var wins = joo_global_object._activeWindows;
+            for (var i = 0; i < wins.length; i++) {
+                wins[i]._notifyChar(codepoint);
+>>>>>>> master
             }
         }
     });
@@ -122,9 +132,19 @@ function caml_glfwCreateWindow(width, height, title) {
         title: title,
         isMaximized: false,
         onSetFramebufferSize: null,
+<<<<<<< HEAD
         onCursorPos: null,
         x: 0,
         y: 0,
+=======
+        onChar: null,
+    };
+
+    var notifyChar = function (codepoint) {
+        if (w.onChar) {
+            w.onChar(w, codepoint);
+        }
+>>>>>>> master
     };
 
     var notifyResize = function () {
@@ -139,6 +159,7 @@ function caml_glfwCreateWindow(width, height, title) {
     };
 
     w._notifyResize = notifyResize;
+    w._notifyChar = notifyChar;
 
     joo_global_object._activeWindows.push(w);
     return w;
@@ -178,9 +199,15 @@ function caml_glfwSetFramebufferSizeCallback(w, callback) {
     w.onSetFramebufferSize = callback;
 }
 
+<<<<<<< HEAD
 // Provides: caml_glfwSetCursorPosCallback
 function caml_glfwSetCursorPosCallback(w, callback) {
     w.onCursorPos = callback;
+=======
+// Provides: caml_glfwSetCharCallback
+function caml_glfwSetCharCallback(w, callback) {
+    w.onChar = callback;
+>>>>>>> master
 }
 
 // Provides: caml_glfwMaximizeWindow
