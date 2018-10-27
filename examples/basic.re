@@ -183,6 +183,15 @@ let run = () => {
     glfwSwapBuffers(w);
   };
 
+  glfwSetKeyCallback(w, (_w, _key, _scancode, buttonState, m) => {
+    /* let controlPressed = Modifier.isCtrlPressed(m); */
+    let shiftPressed = string_of_bool(Modifier.isShiftPressed(m));
+    /* let altPressed = Modifier.isAltPressed(m); */
+
+
+    print_endline ("KEY: " ++ string_of_int(_scancode) ++ " | shift: " ++ shiftPressed ++ "| state: " ++ ButtonState.show(buttonState));
+  });
+
   glfwSetCharCallback(w, (_w, codepoint) => {
     print_endline ("CHAR: " ++ string_of_int(codepoint) ++ " | " ++ String.make(1, Uchar.to_char(Uchar.of_int(codepoint))));
   });

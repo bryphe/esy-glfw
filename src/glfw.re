@@ -1,5 +1,7 @@
 open Reglm;
 
+module Key = Glfw_key;
+
 type window;
 
 /* GLFW */
@@ -89,15 +91,21 @@ type glfwMouseButton =
 | GLFW_MOUSE_BUTTON_RIGHT
 | GLFW_MOUSE_BUTTON_LAST
 
-type glfwModifierKey =
-| GLFW_MOD_SHIFT
-| GLFW_MOD_CONTROL
-| GLFW_MOD_ALT
-| GLFW_MOD_SUPER;
+module ButtonState {
+    type t =
+    | GLFW_PRESS
+    | GLFW_RELEASE
+    | GLFW_REPEAT;
 
-type glfwButtonState =
-| GLFW_PRESS
-| GLFW_RELEASE;
+    let show = (bs) => {
+        switch (bs) {
+            | GLFW_PRESS => "press"
+            | GLFW_RELEASE => "release"
+            | GLFW_REPEAT => "repeat";
+        }
+    };
+}
+
 
 [@noalloc] external glfwDefaultWindowHints: unit => unit = "caml_glfwDefaultWindowHints";
 [@noalloc] external glfwWindowHint: (windowHint, bool) => unit = "caml_glfwWindowHint";
@@ -124,6 +132,19 @@ let glfwRenderLoop = (callback) => {
 
 type glfwCharCallback = (window, int) => unit;
 external glfwSetCharCallback: (window, glfwCharCallback) => unit = "caml_glfwSetCharCallback";
+
+/* Internal implementation of glfwKeyCallback, since we need to cast some of
+integers to types */
+type _glfwKeyCallback= (window, int, int, ButtonState.t, int) =>unit;
+external _glfwSetKeyCallback: (window, _glfwKeyCallback) => unit = "caml_glfwSetKeyCallback";
+
+type glfwKeyCallback = (window, Key.t, int, ButtonState.t, Modifier.t) => unit;
+
+let glfwSetKeyCallback = (window, callback) => {
+    _glfwSetKeyCallback(window, (w, k, scancode, buttonState, modifier) => {
+        callback(w, Key.of_int(k), scancode, buttonState, Modifier.of_int(modifier));
+    })
+};
 
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
 external glfwSetFramebufferSizeCallback:

@@ -20,6 +20,7 @@ extern "C" {
         GLFWwindow* pWindow;
         value vSetFramebufferSizeCallback;
         value vSetCursorPosCallback;
+        value vKeyCallback;
         value vCharCallback;
     };
 
@@ -45,6 +46,20 @@ extern "C" {
             default:
                 printf("Unexpected window hint type.\n");
                 return 0;
+        }
+    }
+
+    value buttonStateToVariant(int state) {
+        switch(state) {
+        case GLFW_PRESS:
+            return Val_int(0);
+        case GLFW_RELEASE:
+            return Val_int(1);
+        case GLFW_REPEAT:
+            return Val_int(2);
+        default:
+            printf("Unexpected button state");
+            return Val_int(0);
         }
     }
 
@@ -96,6 +111,21 @@ extern "C" {
         }
     }
 
+    void key_callback(GLFWwindow *pWin, int key, int scancode, int action, int mods) {
+        WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
+        if (pWinInfo && pWinInfo->vKeyCallback != Val_unit) {
+            value* pArgs = (value *)malloc(sizeof(value) * 5);
+            pArgs[0] = (value)pWinInfo;
+            pArgs[1] = Val_int(key);
+            pArgs[2] = Val_int(scancode);
+            pArgs[3] = buttonStateToVariant(action);
+            pArgs[4] = Val_int(mods);
+
+            (void) caml_callbackN((value)pWinInfo->vKeyCallback, 5, pArgs);
+            free(pArgs);
+        }
+    }
+
     void cursor_pos_callback(GLFWwindow *pWin, double xPos, double yPos) {
         // Is there a window info?
         WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
@@ -131,10 +161,12 @@ extern "C" {
       pWindowInfo->vSetFramebufferSizeCallback = Val_unit;
       pWindowInfo->vSetCursorPosCallback = Val_unit;
       pWindowInfo->vCharCallback = Val_unit;
+      pWindowInfo->vKeyCallback = Val_unit;
 
       glfwSetFramebufferSizeCallback(wd, framebuffer_size_callback);
       glfwSetCursorPosCallback(wd, cursor_pos_callback);
       glfwSetCharCallback(wd, char_callback);
+      glfwSetKeyCallback(wd, key_callback);
 
       sActiveWindows[sActiveWindowCount] = pWindowInfo;
       sActiveWindowCount++;
@@ -152,7 +184,6 @@ extern "C" {
     caml_glfwSetWindowTitle(value vWindow, value vTitle) {
         WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
         char *szTitle = String_val(vTitle);
-        printf(" - Setting title: %s\n", szTitle);
         glfwSetWindowTitle(pWindowInfo->pWindow, szTitle);
         return Val_unit;
     }
@@ -232,6 +263,24 @@ extern "C" {
             // collector knows it is being used.
             pWinInfo->vCharCallback = vCallback;
             caml_register_global_root(&(pWinInfo->vCharCallback));
+        }
+
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_glfwSetKeyCallback(value vWindow, value vCallback) {
+        CAMLparam2(vWindow, vCallback);
+
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+
+        if (pWinInfo) {
+            // TODO: Recycle existing callback if any!
+
+            // We need to mark the closure as being a global root, so the garbage
+            // collector knows it is being used.
+            pWinInfo->vKeyCallback = vCallback;
+            caml_register_global_root(&(pWinInfo->vKeyCallback));
         }
 
         CAMLreturn(Val_unit);

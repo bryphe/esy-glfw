@@ -1,5 +1,7 @@
 open Reglm;
 
+module Key = Glfw_key;
+
 type window;
 
 let glfwInit: unit => bool;
@@ -65,21 +67,23 @@ type glfwMouseButton =
 | GLFW_MOUSE_BUTTON_RIGHT
 | GLFW_MOUSE_BUTTON_LAST
 
-type glfwButtonState =
-| GLFW_PRESS
-| GLFW_RELEASE
+module ButtonState {
+    type t =
+    | GLFW_PRESS
+    | GLFW_RELEASE
+    | GLFW_REPEAT;
 
-type glfwModifierKey =
-| GLFW_MOD_SHIFT
-| GLFW_MOD_CONTROL
-| GLFW_MOD_ALT
-| GLFW_MOD_SUPER
+    let show: t => string;
+}
 
 let glfwDefaultWindowHints: unit => unit;
 let glfwWindowHint: (windowHint, bool) => unit;
 
 type glfwCharCallback = (window, int) => unit;
 let glfwSetCharCallback: (window, glfwCharCallback) => unit;
+
+type glfwKeyCallback = (window, Key.t, int, ButtonState.t, Modifier.t) => unit;
+let glfwSetKeyCallback: (window, glfwKeyCallback) => unit;
 
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
 let glfwSetFramebufferSizeCallback:
