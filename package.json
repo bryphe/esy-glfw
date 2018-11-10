@@ -34,7 +34,7 @@
     "@opam/lwt": "^4.0.0",
     "@opam/lwt_ppx": "^1.1.0",
     "esy-cmake": "*",
-    "reason-gl-matrix": "bryphe/reason-gl-matrix"
+    "reason-gl-matrix": "^0.2.0"
   },
   "devDependencies": {
     "ocaml": "~4.6.0"
