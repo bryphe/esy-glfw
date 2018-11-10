@@ -188,7 +188,6 @@ let run = () => {
     let shiftPressed = string_of_bool(Modifier.isShiftPressed(m));
     /* let altPressed = Modifier.isAltPressed(m); */
 
-
     print_endline ("KEY: " ++ string_of_int(_scancode) ++ " | shift: " ++ shiftPressed ++ "| state: " ++ ButtonState.show(buttonState));
   });
 
