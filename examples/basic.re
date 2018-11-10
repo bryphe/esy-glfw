@@ -145,10 +145,10 @@ let run = () => {
     Mat4.fromTranslation(m, v);
 
     let rot = Mat4.create();
-    Mat4.rotate(rot, delta^, Vec3.create(0., 0., 1.));
+    Mat4.rotate(rot, Angle.from_radians(delta^), Vec3.create(0., 0., 1.));
 
     let yRot = Mat4.create();
-    Mat4.rotate(rot, delta^ *. 0.7, Vec3.create(0., 1., 0.));
+    Mat4.rotate(rot, Angle.from_radians(delta^ *. 0.7), Vec3.create(0., 1., 0.));
 
     Mat4.multiply(rot, m, rot);
     Mat4.multiply(rot, yRot, rot);
@@ -184,11 +184,11 @@ let run = () => {
   };
 
   glfwSetKeyCallback(w, (_w, _key, _scancode, buttonState, m) => {
-    /* let controlPressed = Modifier.isCtrlPressed(m); */
+    let controlPressed = string_of_bool(Modifier.isControlPressed(m));
     let shiftPressed = string_of_bool(Modifier.isShiftPressed(m));
     /* let altPressed = Modifier.isAltPressed(m); */
 
-    print_endline ("KEY: " ++ string_of_int(_scancode) ++ " | shift: " ++ shiftPressed ++ "| state: " ++ ButtonState.show(buttonState));
+    print_endline ("KEY: " ++ string_of_int(Obj.magic(_key)) ++ "| ctrl: " ++ controlPressed ++ " | shift: " ++ shiftPressed ++ "| state: " ++ ButtonState.show(buttonState));
   });
 
   glfwSetCharCallback(w, (_w, codepoint) => {
