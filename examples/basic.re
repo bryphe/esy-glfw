@@ -145,10 +145,10 @@ let run = () => {
     Mat4.fromTranslation(m, v);
 
     let rot = Mat4.create();
-    Mat4.rotate(rot, delta^, Vec3.create(0., 0., 1.));
+    Mat4.rotate(rot, Angle.from_radians(delta^), Vec3.create(0., 0., 1.));
 
     let yRot = Mat4.create();
-    Mat4.rotate(rot, delta^ *. 0.7, Vec3.create(0., 1., 0.));
+    Mat4.rotate(rot, Angle.from_radians(delta^ *. 0.7), Vec3.create(0., 1., 0.));
 
     Mat4.multiply(rot, m, rot);
     Mat4.multiply(rot, yRot, rot);
