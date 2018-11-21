@@ -55,6 +55,9 @@ let run = () => {
   let dimensions = Image.getDimensions(img);
   print_endline ("- width: " ++ string_of_int(dimensions.width) ++ " - height: " ++ string_of_int(dimensions.height));
 
+  let frameBufferSize = glfwGetFramebufferSize(w);
+  print_endline ("framebuffersize: " ++ string_of_int(frameBufferSize.width) ++ "x" ++ string_of_int(frameBufferSize.height))
+
   let vsSource = {|
         #ifndef GL_ES
         #define lowp
@@ -89,6 +92,7 @@ let run = () => {
         }
     |};
   print_endline(fsSource);
+
 
   /* Populate buffers for the cube geometry */
   let vArray = Float32Array.of_array(Cube.positions);

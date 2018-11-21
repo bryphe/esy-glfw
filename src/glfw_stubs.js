@@ -74,6 +74,14 @@ function caml_glfwGetMonitorPos() {
     return [0, 0, 0];
 };
 
+// Provides: caml_glfwGetFramebufferSize
+function caml_glfwGetFramebufferSize(w) {
+    var width = w.canvas.width;
+    var height = w.canvas.height;
+    var pixelRatio = joo_global_object.window.devicePixelRatio;
+    return [0, width * pixelRatio, height * pixelRatio];
+}
+
 // Provides: caml_glfwDefaultWindowHints
 function caml_glfwDefaultWindowHints(w) {
     joo_global_object.console.warn("glfwDefaultWindowHints not implemented in WebGL");
