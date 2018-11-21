@@ -19,7 +19,7 @@ matrix:
   - os: osx # OSX 10.12
     node_js: 8
 install:
-- travis_retry npm install -g esy@0.3.0
+- travis_retry npm install -g esy@0.4.0
 - travis_wait esy install
 script:
 - travis_wait 40 esy build

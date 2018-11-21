@@ -1,0 +1,40 @@
+# Cross-platform build pipeline + NPM publish
+
+name: $(Build.SourceVersion)
+jobs:
+- job: Linux
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - script: sudo apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libegl1-mesa-dev mesa-utils mesa-utils-extra ragel xvfb
+  - template: esy-build-steps.yml
+
+- job: MacOS
+  pool:
+    vmImage: 'macOS 10.13'
+  steps:
+  - script: brew update
+  - script: brew install libpng
+  - template: esy-build-steps.yml
+
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - template: esy-build-steps.yml
+
+- job: Release
+  displayName: Release
+  dependsOn:
+      - Linux
+      - MacOS
+      - Windows
+  condition: succeeded()
+  pool:
+     vmImage: ubuntu-16.04
+  steps:
+    - task: PublishBuildArtifacts@1
+      displayName: 'Release Package'
+      inputs:
+          PathtoPublish: '.'
+          ArtifictName: npm-package

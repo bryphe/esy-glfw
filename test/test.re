@@ -126,3 +126,55 @@ let () = {
         }
     });
 };
+
+/* Modifier key test */
+let () = {
+
+    let () = {
+        let m = Modifier.of_int(1);
+        assert(Modifier.isShiftPressed(m) == true);
+        assert(Modifier.isAltPressed(m) == false);
+        assert(Modifier.isControlPressed(m) == false);
+        assert(Modifier.isSuperPressed(m) == false);
+    };
+
+    let () = {
+        let m = Modifier.of_int(2);
+        assert(Modifier.isShiftPressed(m) == false);
+        assert(Modifier.isControlPressed(m) == true);
+        assert(Modifier.isAltPressed(m) == false);
+        assert(Modifier.isSuperPressed(m) == false);
+    };
+
+    let () = {
+        let m = Modifier.of_int(3);
+        assert(Modifier.isShiftPressed(m) == true);
+        assert(Modifier.isControlPressed(m) == true);
+        assert(Modifier.isAltPressed(m) == false);
+        assert(Modifier.isSuperPressed(m) == false);
+    };
+
+    let () = {
+        let m = Modifier.of_int(4);
+        assert(Modifier.isShiftPressed(m) == false);
+        assert(Modifier.isControlPressed(m) == false);
+        assert(Modifier.isAltPressed(m) == true);
+        assert(Modifier.isSuperPressed(m) == false);
+    };
+
+    let () = {
+        let m = Modifier.of_int(8);
+        assert(Modifier.isShiftPressed(m) == false);
+        assert(Modifier.isControlPressed(m) == false);
+        assert(Modifier.isAltPressed(m) == false);
+        assert(Modifier.isSuperPressed(m) == true);
+    };
+
+    let () = {
+        let m = Modifier.of_int(15);
+        assert(Modifier.isShiftPressed(m) == true);
+        assert(Modifier.isAltPressed(m) == true);
+        assert(Modifier.isControlPressed(m) == true);
+        assert(Modifier.isSuperPressed(m) == true);
+    };
+};

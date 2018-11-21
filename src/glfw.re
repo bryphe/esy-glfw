@@ -1,5 +1,7 @@
 open Reglm;
 
+module Key = Glfw_key;
+
 type window;
 
 /* GLFW */
@@ -14,9 +16,65 @@ external glfwTerminate: unit => unit = "caml_glfwTerminate";
 external glfwSwapBuffers: window => unit = "caml_glfwSwapBuffers";
 external glfwSetWindowSize: (window, int, int) => unit =
   "caml_glfwSetWindowSize";
+[@noalloc] external glfwSetWindowPos: (window, int, int) => unit =
+  "caml_glfwSetWindowPos";
+[@noalloc] external glfwShowWindow: (window) => unit = "caml_glfwShowWindow";
+[@noalloc] external glfwHideWindow: (window) => unit = "caml_glfwHideWindow";
 external glfwMaximizeWindow: (window) => unit = "caml_glfwMaximizeWindow";
 external glfwSetWindowTitle: (window, string) => unit = "caml_glfwSetWindowTitle";
 [@noalloc] external glfwSwapInterval: int => unit = "caml_glfwSwapInterval";
+
+[@noalloc] external glfwGetTime: unit => ([@unboxed] float) = "caml_glfwGetTime_byte" "caml_glfwGetTime";
+[@noalloc] external glfwSetTime: ([@unboxed] float) => unit = "caml_glfwSetTime_byte" "caml_glfwSetTime";
+
+module Modifier {
+    type t = int;
+
+    let _mod_shift = 0x0001;
+    let _mod_control = 0x0002;
+    let _mod_alt = 0x0004;
+    let _mod_super = 0x0008;
+
+    let of_int = (x: int) => {
+        x
+    };
+
+    let isShiftPressed = (m: t) => {
+        (m land _mod_shift) == _mod_shift;
+    };
+
+    let isControlPressed = (m: t) => {
+        (m land _mod_control) == _mod_control;
+    };
+
+    let isAltPressed = (m: t) => {
+        (m land _mod_alt) == _mod_alt;
+    };
+
+    let isSuperPressed = (m: t) => {
+        (m land _mod_super) == _mod_super;
+    };
+}
+
+module Monitor {
+    type t;
+
+    type position = {
+        x: int,
+        y: int,
+    };
+}
+
+module VideoMode {
+    type t = {
+        width: int,
+        height: int,
+    };
+}
+
+[@noalloc] external glfwGetPrimaryMonitor: unit => Monitor.t = "caml_glfwGetPrimaryMonitor";
+external glfwGetVideoMode: Monitor.t => VideoMode.t = "caml_glfwGetVideoMode";
+external glfwGetMonitorPos: Monitor.t => Monitor.position = "caml_glfwGetMonitorPos";
 
 type windowHint =
 | GLFW_RESIZABLE
@@ -33,16 +91,23 @@ type glfwMouseButton =
 | GLFW_MOUSE_BUTTON_RIGHT
 | GLFW_MOUSE_BUTTON_LAST
 
-type glfwModifierKey =
-| GLFW_MOD_SHIFT
-| GLFW_MOD_CONTROL
-| GLFW_MOD_ALT
-| GLFW_MOD_SUPER;
+module ButtonState {
+    type t =
+    | GLFW_PRESS
+    | GLFW_RELEASE
+    | GLFW_REPEAT;
 
-type glfwButtonState =
-| GLFW_PRESS
-| GLFW_RELEASE;
+    let show = (bs) => {
+        switch (bs) {
+            | GLFW_PRESS => "press"
+            | GLFW_RELEASE => "release"
+            | GLFW_REPEAT => "repeat";
+        }
+    };
+}
 
+
+[@noalloc] external glfwDefaultWindowHints: unit => unit = "caml_glfwDefaultWindowHints";
 [@noalloc] external glfwWindowHint: (windowHint, bool) => unit = "caml_glfwWindowHint";
 
 type glfwRenderLoopCallback = float => bool;
@@ -65,6 +130,22 @@ let glfwRenderLoop = (callback) => {
     };
 }
 
+type glfwCharCallback = (window, int) => unit;
+external glfwSetCharCallback: (window, glfwCharCallback) => unit = "caml_glfwSetCharCallback";
+
+/* Internal implementation of glfwKeyCallback, since we need to cast some of
+integers to types */
+type _glfwKeyCallback= (window, int, int, ButtonState.t, int) =>unit;
+external _glfwSetKeyCallback: (window, _glfwKeyCallback) => unit = "caml_glfwSetKeyCallback";
+
+type glfwKeyCallback = (window, Key.t, int, ButtonState.t, Modifier.t) => unit;
+
+let glfwSetKeyCallback = (window, callback) => {
+    _glfwSetKeyCallback(window, (w, k, scancode, buttonState, modifier) => {
+        callback(w, Key.of_int(k), scancode, buttonState, Modifier.of_int(modifier));
+    })
+};
+
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
 external glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit =
@@ -76,7 +157,7 @@ external glfwSetCursorPosCallback: (window, glfwCursorPosCallback) => unit = "ca
 type glfwCursorPos = {
     mouseX: float,
     mouseY: float
-};
+
 external caml_glfwGetCursorPos: window => array(float) = "caml_glfwGetCursorPos";
 
 let glfwGetCursorPos = (w) => {
@@ -88,8 +169,6 @@ let glfwGetCursorPos = (w) => {
     };
     v;
 };
-
-/* external glfwGetMouseButton = (window, glfwMouseButton) => glfwButtonState = "caml_glfwGetMouseButton"; */
 
 /* GL */
 type shader;
@@ -110,14 +189,24 @@ external glShaderSource: (shader, string) => unit = "caml_glShaderSource";
 external glViewport: (int, int, int, int) => unit = "caml_glViewport";
 
 type enableOptions =
-  | GL_DEPTH_TEST;
+  | GL_DEPTH_TEST
+  | GL_BLEND;
 
-external glEnable: enableOptions => unit = "caml_glEnable";
+[@noalloc] external glEnable: enableOptions => unit = "caml_glEnable";
+[@noalloc] external glDisable: enableOptions => unit = "caml_glDisable";
 
 type depthFunctions =
   | GL_LEQUAL;
 
 external glDepthFunc: depthFunctions => unit = "caml_glDepthFunc";
+
+type blendFunc =
+  | GL_ZERO
+  | GL_ONE
+  | GL_SRC_ALPHA
+  | GL_ONE_MINUS_SRC_ALPHA;
+
+[@noalloc] external glBlendFunc: (blendFunc, blendFunc) => unit = "caml_glBlendFunc";
 
 /* TODO: Add compile result return */
 external glCompileShader: shader => shaderCompilationResult =
@@ -143,8 +232,21 @@ external glGetAttribLocation: (program, string) => attribLocation =
 type uniformLocation;
 external glGetUniformLocation: (program, string) => uniformLocation =
   "caml_glGetUniformLocation";
-external glUniform3fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv";
+
+external glUniform1f: (uniformLocation, float) => unit = "caml_glUniform1f";
+external glUniform2f: (uniformLocation, float, float) => unit = "caml_glUniform2f";
+external glUniform3f: (uniformLocation, float, float, float) => unit = "caml_glUniform3f";
 external glUniform4f: (uniformLocation, float, float, float, float) => unit = "caml_glUniform4f";
+
+external glUniform1i: (uniformLocation, int) => unit = "caml_glUniform1i";
+external glUniform2i: (uniformLocation, int, int) => unit = "caml_glUniform2i";
+external glUniform3i: (uniformLocation, int, int, int) => unit = "caml_glUniform3i";
+external glUniform4i: (uniformLocation, int, int, int, int) => unit = "caml_glUniform4i";
+
+external glUniform2fv: (uniformLocation, Vec2.t) => unit = "caml_glUniform2fv";
+external glUniform3fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv";
+external glUniform4fv: (uniformLocation, Vec4.t) => unit = "caml_glUniform4fv";
+
 external glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit =
   "caml_glUniformMatrix4fv";
 
@@ -183,7 +285,7 @@ external glTexParameteri:
   (textureType, textureParameter, textureParameterValue) => unit =
   "caml_glTexParameteri";
 external glTexImage2D:
-  (textureType, glType, Image.t) => unit =
+  (textureType, Image.t) => unit =
   "caml_glTexImage2D";
 external glGenerateMipmap: textureType => unit = "caml_glGenerateMipmap";
 

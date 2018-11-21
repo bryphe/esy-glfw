@@ -20,6 +20,8 @@ extern "C" {
         GLFWwindow* pWindow;
         value vSetFramebufferSizeCallback;
         value vSetCursorPosCallback;
+        value vKeyCallback;
+        value vCharCallback;
     };
 
     static WindowInfo* sActiveWindows[255];
@@ -44,6 +46,20 @@ extern "C" {
             default:
                 printf("Unexpected window hint type.\n");
                 return 0;
+        }
+    }
+
+    value buttonStateToVariant(int state) {
+        switch(state) {
+        case GLFW_PRESS:
+            return Val_int(0);
+        case GLFW_RELEASE:
+            return Val_int(1);
+        case GLFW_REPEAT:
+            return Val_int(2);
+        default:
+            printf("Unexpected button state");
+            return Val_int(0);
         }
     }
 
@@ -95,12 +111,35 @@ extern "C" {
         }
     }
 
+    void key_callback(GLFWwindow *pWin, int key, int scancode, int action, int mods) {
+        WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
+        if (pWinInfo && pWinInfo->vKeyCallback != Val_unit) {
+            value* pArgs = (value *)malloc(sizeof(value) * 5);
+            pArgs[0] = (value)pWinInfo;
+            pArgs[1] = Val_int(key);
+            pArgs[2] = Val_int(scancode);
+            pArgs[3] = buttonStateToVariant(action);
+            pArgs[4] = Val_int(mods);
+
+            (void) caml_callbackN((value)pWinInfo->vKeyCallback, 5, pArgs);
+            free(pArgs);
+        }
+    }
+
     void cursor_pos_callback(GLFWwindow *pWin, double xPos, double yPos) {
         // Is there a window info?
         WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
 
         if (pWinInfo && pWinInfo->vSetCursorPosCallback != Val_unit) {
             (void) caml_callback3((value)pWinInfo->vSetCursorPosCallback, ((value)(void *)pWinInfo), caml_copy_double(xPos), caml_copy_double(yPos));
+        }
+    }
+
+    void char_callback(GLFWwindow *pWin, unsigned int codepoint) {
+        WindowInfo *pWinInfo = getWindowInfoFromWindow(pWin);
+
+        if (pWinInfo && pWinInfo->vCharCallback != Val_unit) {
+            (void) caml_callback2((value)pWinInfo->vCharCallback, ((value)(void *)pWinInfo), Val_int(codepoint));
         }
     }
 
@@ -121,9 +160,13 @@ extern "C" {
       pWindowInfo->pWindow = wd;
       pWindowInfo->vSetFramebufferSizeCallback = Val_unit;
       pWindowInfo->vSetCursorPosCallback = Val_unit;
+      pWindowInfo->vCharCallback = Val_unit;
+      pWindowInfo->vKeyCallback = Val_unit;
 
       glfwSetFramebufferSizeCallback(wd, framebuffer_size_callback);
       glfwSetCursorPosCallback(wd, cursor_pos_callback);
+      glfwSetCharCallback(wd, char_callback);
+      glfwSetKeyCallback(wd, key_callback);
 
       sActiveWindows[sActiveWindowCount] = pWindowInfo;
       sActiveWindowCount++;
@@ -141,8 +184,13 @@ extern "C" {
     caml_glfwSetWindowTitle(value vWindow, value vTitle) {
         WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
         char *szTitle = String_val(vTitle);
-        printf(" - Setting title: %s\n", szTitle);
         glfwSetWindowTitle(pWindowInfo->pWindow, szTitle);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glfwDefaultWindowHints() {
+        glfwDefaultWindowHints();
         return Val_unit;
     }
 
@@ -151,6 +199,13 @@ extern "C" {
         int windowHint = variantToWindowHint(vHint);
         int val = Bool_val(vVal) ? GLFW_TRUE : GLFW_FALSE;
         glfwWindowHint(windowHint, val);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glfwSetWindowPos(value vWindow, value vX, value vY) {
+        WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
+        glfwSetWindowPos(pWindowInfo->pWindow, Int_val(vX), Int_val(vY));
         return Val_unit;
     }
 
@@ -193,6 +248,102 @@ extern "C" {
         }
 
         CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+<<<<<<< HEAD
+=======
+    caml_glfwSetCharCallback(value vWindow, value vCallback) {
+        CAMLparam2(vWindow, vCallback);
+
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+
+        if (pWinInfo) {
+            // TODO: Recycle existing callback if any!
+
+            // We need to mark the closure as being a global root, so the garbage
+            // collector knows it is being used.
+            pWinInfo->vCharCallback = vCallback;
+            caml_register_global_root(&(pWinInfo->vCharCallback));
+        }
+
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_glfwSetKeyCallback(value vWindow, value vCallback) {
+        CAMLparam2(vWindow, vCallback);
+
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+
+        if (pWinInfo) {
+            // TODO: Recycle existing callback if any!
+
+            // We need to mark the closure as being a global root, so the garbage
+            // collector knows it is being used.
+            pWinInfo->vKeyCallback = vCallback;
+            caml_register_global_root(&(pWinInfo->vKeyCallback));
+        }
+
+        CAMLreturn(Val_unit);
+    }
+
+    double
+    caml_glfwGetTime() {
+        return glfwGetTime();
+    }
+
+    CAMLprim value
+    caml_glfwGetTime_byte() {
+        return caml_copy_double(caml_glfwGetTime());
+    }
+
+    void
+    caml_glfwSetTime(double t) {
+        glfwSetTime(t);
+    }
+
+    CAMLprim value
+    caml_glfwSetTime_byte(value vTime) {
+        glfwSetTime(Double_val(vTime));
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glfwGetPrimaryMonitor()
+    {
+        return (value)glfwGetPrimaryMonitor();
+    }
+
+    CAMLprim value
+    caml_glfwGetVideoMode(value vMonitor) 
+    {
+        CAMLparam1(vMonitor);
+        CAMLlocal1(ret);
+        GLFWmonitor* pMonitor = (GLFWmonitor*)vMonitor;
+        const GLFWvidmode* pVidMode = glfwGetVideoMode(pMonitor);
+
+        ret = caml_alloc(2, 0);
+        Store_field(ret, 0, Val_int(pVidMode->width));
+        Store_field(ret, 1, Val_int(pVidMode->height));
+
+        CAMLreturn(ret);
+    }
+
+    CAMLprim value
+    caml_glfwGetMonitorPos(value vMonitor) {
+        CAMLparam1(vMonitor);
+        CAMLlocal1(ret);
+        GLFWmonitor* pMonitor = (GLFWmonitor*)vMonitor;
+
+        int xPos, yPos;
+        glfwGetMonitorPos(pMonitor, &xPos, &yPos);
+
+        ret = caml_alloc(2, 0);
+        Store_field(ret, 0, Val_int(xPos));
+        Store_field(ret, 1, Val_int(yPos));
+
+        CAMLreturn(ret);
     }
 
     CAMLprim value
@@ -245,6 +396,20 @@ extern "C" {
         WindowInfo *wd = (WindowInfo *)window;
         int val = glfwWindowShouldClose(wd->pWindow);
         return Val_bool(val);
+    }
+
+    CAMLprim value
+    caml_glfwShowWindow(value vWindow) {
+        WindowInfo *wd = (WindowInfo *)vWindow;
+        glfwShowWindow(wd->pWindow);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glfwHideWindow(value vWindow) {
+        WindowInfo *wd = (WindowInfo *)vWindow;
+        glfwHideWindow(wd->pWindow);
+        return Val_unit;
     }
 
     CAMLprim value

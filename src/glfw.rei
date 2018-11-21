@@ -1,5 +1,7 @@
 open Reglm;
 
+module Key = Glfw_key;
+
 type window;
 
 let glfwInit: unit => bool;
@@ -9,10 +11,46 @@ let glfwWindowShouldClose: window => bool;
 let glfwPollEvents: unit => unit;
 let glfwTerminate: unit => unit;
 let glfwSwapBuffers: window => unit;
+let glfwSetWindowPos: (window, int, int) => unit;
 let glfwSetWindowSize: (window, int, int) => unit;
 let glfwMaximizeWindow: (window) => unit;
 let glfwSetWindowTitle: (window, string) => unit;
+let glfwShowWindow: (window) => unit;
+let glfwHideWindow: (window) => unit;
 let glfwSwapInterval: int => unit;
+let glfwGetTime: unit => float;
+let glfwSetTime: float => unit;
+
+module Modifier {
+    type t;
+
+    let of_int: int => t;
+
+    let isShiftPressed: t => bool;
+    let isControlPressed: t => bool;
+    let isAltPressed: t => bool;
+    let isSuperPressed: t => bool;
+}
+
+module Monitor {
+    type t;
+
+    type position = {
+        x: int,
+        y: int,
+    };
+}
+
+module VideoMode {
+    type t = {
+        width: int,
+        height: int,
+    };
+}
+
+let glfwGetPrimaryMonitor: unit => Monitor.t;
+let glfwGetVideoMode: Monitor.t => VideoMode.t;
+let glfwGetMonitorPos: Monitor.t => Monitor.position;
 
 type windowHint =
 | GLFW_RESIZABLE
@@ -29,38 +67,33 @@ type glfwMouseButton =
 | GLFW_MOUSE_BUTTON_RIGHT
 | GLFW_MOUSE_BUTTON_LAST
 
-type glfwButtonState =
-| GLFW_PRESS
-| GLFW_RELEASE
+module ButtonState {
+    type t =
+    | GLFW_PRESS
+    | GLFW_RELEASE
+    | GLFW_REPEAT;
 
-type glfwModifierKey =
-| GLFW_MOD_SHIFT
-| GLFW_MOD_CONTROL
-| GLFW_MOD_ALT
-| GLFW_MOD_SUPER
+    let show: t => string;
+}
 
+let glfwDefaultWindowHints: unit => unit;
 let glfwWindowHint: (windowHint, bool) => unit;
+
+type glfwCharCallback = (window, int) => unit;
+let glfwSetCharCallback: (window, glfwCharCallback) => unit;
+
+type glfwKeyCallback = (window, Key.t, int, ButtonState.t, Modifier.t) => unit;
+let glfwSetKeyCallback: (window, glfwKeyCallback) => unit;
 
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
 let glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit;
-
-type glfwCursorPosCallback = (window, float, float) => unit;
-let glfwSetCursorPosCallback: (window, glfwCursorPosCallback) => unit;
 
 type glfwCursorPos = {
     mouseX: float,
     mouseY: float
 };
 let glfwGetCursorPos: window => glfwCursorPos;
-
-/* type glfwMouseButtonCallback = (window, glfwMouseButton, glfwButtonState, array(glfwModifierKey)) => unit; */
-/* let glfwSetMouseButtonCallback = (window, glfwMouseButtonCallback) => unit; */
-
-/* let glfwGetMouseButton = (window, glfwMouseButton) => glfwButtonState; */
-
-/* let glfwScrollCallback = (window, float, float) => unit; */
-/* type glfwSetScrollCallback = (window, glfwScrollCallback) => unit; */
 
 let printFrameBufferSize: window => unit;
 
@@ -89,14 +122,24 @@ let glCompileShader: shader => shaderCompilationResult;
 let glDeleteShader: shader => unit;
 
 type enableOptions =
-  | GL_DEPTH_TEST;
+  | GL_DEPTH_TEST
+  | GL_BLEND;
 
 let glEnable: enableOptions => unit;
+let glDisable: enableOptions => unit;
 
 type depthFunctions =
   | GL_LEQUAL;
 
 let glDepthFunc: depthFunctions => unit;
+
+type blendFunc =
+  | GL_ZERO
+  | GL_ONE
+  | GL_SRC_ALPHA
+  | GL_ONE_MINUS_SRC_ALPHA;
+
+let glBlendFunc: (blendFunc, blendFunc) => unit;
 
 type program;
 
@@ -115,8 +158,20 @@ let glGetAttribLocation: (program, string) => attribLocation;
 type uniformLocation;
 let glGetUniformLocation: (program, string) => uniformLocation;
 
-let glUniform3fv: (uniformLocation, Vec3.t) => unit;
+let glUniform1f: (uniformLocation, float) => unit;
+let glUniform2f: (uniformLocation, float, float) => unit;
+let glUniform3f: (uniformLocation, float, float, float) => unit;
 let glUniform4f: (uniformLocation, float, float, float, float) => unit;
+
+let glUniform1i: (uniformLocation, int) => unit;
+let glUniform2i: (uniformLocation, int, int) => unit;
+let glUniform3i: (uniformLocation, int, int, int) => unit;
+let glUniform4i: (uniformLocation, int, int, int, int) => unit;
+
+let glUniform2fv: (uniformLocation, Vec2.t) => unit;
+let glUniform3fv: (uniformLocation, Vec3.t) => unit;
+let glUniform4fv: (uniformLocation, Vec4.t) => unit;
+
 let glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit;
 
 type pixelAlignmentParameter =
@@ -153,7 +208,7 @@ let glBindTexture: (textureType, texture) => unit;
 let glTexParameteri:
   (textureType, textureParameter, textureParameterValue) => unit;
 let glTexImage2D:
-  (textureType, glType, Image.t) => unit;
+  (textureType, Image.t) => unit;
 let glGenerateMipmap: textureType => unit;
 
 type bufferType =

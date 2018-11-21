@@ -14,10 +14,41 @@
 
 #include <reglfw_image.h>
 
+// From: https://stackoverflow.com/questions/23177229/how-to-cast-int-to-const-glvoid
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
 extern "C" {
 
     void warn(const char *message) {
         printf("[WARNING]: %s\n", message);
+    }
+
+    GLenum variantToBlendFunc(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_ZERO;
+            case 1:
+                return GL_ONE;
+            case 2:
+                return GL_SRC_ALPHA;
+            case 3:
+                return GL_ONE_MINUS_SRC_ALPHA;
+            default:
+                warn("Unexpected option for glBlendFunc");
+                return 0;
+        }
+    }
+    
+    GLenum variantToEnableOption(value vVal) {
+        switch (Int_val(vVal)) {
+            case 0:
+                return GL_DEPTH_TEST;
+            case 1:
+                return GL_BLEND;
+            default:
+                warn("Unexpected option for glEnable");
+                return 0;
+        }
     }
 
     GLenum variantToType(value vVal) {
@@ -96,10 +127,6 @@ extern "C" {
         }
     }
 
-    GLenum variantToTexturePixelDataType(value vVal) {
-        return GL_UNSIGNED_BYTE;
-    }
-
     GLenum variantToDrawMode(value vDrawMode) {
         switch (Int_val(vDrawMode)) {
             case 0:
@@ -141,13 +168,25 @@ extern "C" {
 
     CAMLprim value
     caml_glEnable(value vEnableOptions) {
-        glEnable(GL_DEPTH_TEST);
+        glEnable(variantToEnableOption(vEnableOptions));
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glDisable(value vEnableOptions) {
+        glDisable(variantToEnableOption(vEnableOptions));
         return Val_unit;
     }
 
     CAMLprim value
     caml_glDepthFunc(value vDepthFunc) {
         glDepthFunc(GL_LEQUAL);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glBlendFunc(value vSrcFunc, value vDestFunc) {
+        glBlendFunc(variantToBlendFunc(vSrcFunc), variantToBlendFunc(vDestFunc));
         return Val_unit;
     }
 
@@ -249,7 +288,6 @@ extern "C" {
         char *s;
         s = String_val(vAttributeName);
         int val = glGetAttribLocation(shaderProgram, s);
-        printf("- attribute: %s - loc: %d\n", s, val);
         return (value)val;
     }
 
@@ -260,16 +298,36 @@ extern "C" {
         s = String_val(vAttributeName);
 
         int val = glGetUniformLocation(shaderProgram, s);
-        printf(" -uniform: %s - loc: %d\n", s, val);
         return (value)val;
     }
 
     CAMLprim value
-    caml_glUniform3fv(value vUniformLocation, value vVec3) {
-        float *vec3 = (float *)(Data_custom_val(vVec3));
-        int uloc = (int)vUniformLocation;
+    caml_glUniform1f(value vUniformLocation, value v0) {
+        float f0 = Double_val(v0);
+        int iUniformLocation = (int)vUniformLocation;
 
-        glUniform3fv(uloc, 1, vec3);
+        glUniform1f(iUniformLocation, f0);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform2f(value vUniformLocation, value v0, value v1) {
+        float f0 = Double_val(v0);
+        float f1 = Double_val(v1);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform2f(iUniformLocation, f0, f1);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform3f(value vUniformLocation, value v0, value v1, value v2) {
+        float f0 = Double_val(v0);
+        float f1 = Double_val(v1);
+        float f2 = Double_val(v2);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform3f(iUniformLocation, f0, f1, f2);
         return Val_unit;
     }
 
@@ -282,6 +340,75 @@ extern "C" {
         int iUniformLocation = (int)vUniformLocation;
 
         glUniform4f(iUniformLocation, f0, f1, f2, f3);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform1i(value vUniformLocation, value v0) {
+        int i0 = Int_val(v0);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform1i(iUniformLocation, i0);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform2i(value vUniformLocation, value v0, value v1) {
+        int i0 = Int_val(v0);
+        int i1 = Int_val(v1);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform2i(iUniformLocation, i0, i1);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform3i(value vUniformLocation, value v0, value v1, value v2) {
+        int i0 = Int_val(v0);
+        int i1 = Int_val(v1);
+        int i2 = Int_val(v2);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform3i(iUniformLocation, i0, i1, i2);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform4i(value vUniformLocation, value v0, value v1, value v2, value v3) {
+        int i0 = Int_val(v0);
+        int i1 = Int_val(v1);
+        int i2 = Int_val(v2);
+        int i3 = Int_val(v3);
+        int iUniformLocation = (int)vUniformLocation;
+
+        glUniform4i(iUniformLocation, i0, i1, i2, i3);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform2fv(value vUniformLocation, value vVec2) {
+        float *vec2 = (float *)(Data_custom_val(vVec2));
+        int uloc = (int)vUniformLocation;
+
+        glUniform2fv(uloc, 1, vec2);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform3fv(value vUniformLocation, value vVec3) {
+        float *vec3 = (float *)(Data_custom_val(vVec3));
+        int uloc = (int)vUniformLocation;
+
+        glUniform3fv(uloc, 1, vec3);
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform4fv(value vUniformLocation, value vVec4) {
+        float *vec4 = (float *)(Data_custom_val(vVec4));
+        int uloc = (int)vUniformLocation;
+
+        glUniform4fv(uloc, 1, vec4);
         return Val_unit;
     }
 
@@ -315,7 +442,7 @@ extern "C" {
     }
 
     CAMLprim value
-    caml_glTexImage2D(value vTextureType, value vTexturePixelDataType, value vImage) {
+    caml_glTexImage2D(value vTextureType, value vImage) {
 
         ReglfwImageInfo *pImage = (ReglfwImageInfo *)vImage;
 
@@ -343,7 +470,7 @@ extern "C" {
                 pImage->height,
                 0,
                 channels,
-                variantToTexturePixelDataType(vTexturePixelDataType), 
+                GL_UNSIGNED_BYTE,  // TODO: Support for floating-point textures!
                 pImage->data);
         return Val_unit;
     }
@@ -374,7 +501,6 @@ extern "C" {
     caml_glCreateBuffer(value unit) {
         unsigned int VBO;
         glGenBuffers(1, &VBO);
-        printf("glCreateBuffer: %d \n", VBO);
         return (value)VBO;
     }
 
@@ -416,7 +542,7 @@ extern "C" {
        GLenum dataType = variantToType(vGlType);
        unsigned int count = Int_val(vCount);
        unsigned int first = Int_val(vFirst);
-       glDrawElements(drawMode, vCount, dataType, (void *)first);
+       glDrawElements(drawMode, vCount, dataType, BUFFER_OFFSET(first));
        return Val_unit;
     }
 
