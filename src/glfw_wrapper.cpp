@@ -329,6 +329,23 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwGetFramebufferSize(value vWindow)
+    {
+        CAMLparam1(vWindow);
+        CAMLlocal1(ret);
+        WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
+
+        int width, height;
+        glfwGetFramebufferSize(pWindowInfo->pWindow, &width, &height);
+
+        ret = caml_alloc(2, 0);
+        Store_field(ret, 0, Val_int(width));
+        Store_field(ret, 1, Val_int(height));
+
+        CAMLreturn(ret);
+    }
+
+    CAMLprim value
     caml_glfwGetMonitorPos(value vMonitor) {
         CAMLparam1(vMonitor);
         CAMLlocal1(ret);
