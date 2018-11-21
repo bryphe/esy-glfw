@@ -152,6 +152,9 @@ let glfwSetKeyCallback = (window, callback) =>
     )
   );
 
+type glfwScrollCallback = (window, float, float) => unit;
+external glfwSetScrollCallback: (window, glfwScrollCallback) => unit = "caml_glfwSetScrollCallback";
+
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
 external glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit =

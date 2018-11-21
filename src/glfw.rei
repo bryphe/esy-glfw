@@ -85,6 +85,9 @@ let glfwSetCharCallback: (window, glfwCharCallback) => unit;
 type glfwKeyCallback = (window, Key.t, int, ButtonState.t, Modifier.t) => unit;
 let glfwSetKeyCallback: (window, glfwKeyCallback) => unit;
 
+type glfwScrollCallback = (window, float, float) => unit;
+let glfwSetScrollCallback: (window, glfwScrollCallback) => unit;
+
 type glfwFramebufferSizeCallback = (window, int, int) => unit;
 let glfwSetFramebufferSizeCallback:
   (window, glfwFramebufferSizeCallback) => unit;
