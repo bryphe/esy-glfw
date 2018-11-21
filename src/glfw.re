@@ -168,7 +168,7 @@ let glfwSetKeyCallback = (win, callback) =>
     )
   );
 
-type glfwFramebufferSizeCallback = (Window.t, int, int) => unit;
+type glfwFramebufferSizeCallback = (window, int, int) => unit;
 external glfwSetFramebufferSizeCallback:
   (Window.t, glfwFramebufferSizeCallback) => unit =
   "caml_glfwSetFramebufferSizeCallback";

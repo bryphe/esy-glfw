@@ -36,6 +36,25 @@ function caml_glfwInit() {
             }
         }
     });
+
+    joo_global_object.window.addEventListener("keydown", function (keyEvent) {
+        if (keyEvent.key) {
+            var wins = joo_global_object._activeWindows;
+            for (var i = 0; i < wins.length; i++) {
+                var pressMode = keyEvent.repeat ? 2 : 0;
+                wins[i]._notifyKey(keyEvent, pressMode);
+            }
+        }
+    });
+
+    joo_global_object.window.addEventListener("keyup", function (keyEvent) {
+        if (keyEvent.key) {
+            var wins = joo_global_object._activeWindows;
+            for (var i = 0; i < wins.length; i++) {
+                wins[i]._notifyKey(keyEvent, 1);
+            }
+        }
+    });
 };
 
 // Provides: caml_glfwGetCursorPos
@@ -140,6 +159,7 @@ function caml_glfwCreateWindow(width, height, title) {
         title: title,
         isMaximized: false,
         onSetFramebufferSize: null,
+        onKey: null,
         onChar: null,
         onCursorPos: null,
         x: 0,
@@ -151,6 +171,22 @@ function caml_glfwCreateWindow(width, height, title) {
             w.onChar(w, codepoint);
         }
     };
+
+    var notifyKey = function (keyEvent, pressMode) {
+        if (w.onKey) {
+
+            if (keyEvent.key && keyEvent.key.length == 1) {
+                var code = keyEvent.key.toUpperCase().charCodeAt(0);
+                var modifier = 0;
+                modifier = keyEvent.shiftKey ? modifier + 1 : modifier;
+                modifier = keyEvent.ctrlKey ? modifier + 2 : modifier;
+                modifier = keyEvent.altKey ? modifier + 4 : modifier;
+                modifier = keyEvent.metaKey ? modifier + 8 : modifier
+
+                w.onKey(w, code, keyEvent.location, pressMode, modifier);
+            };
+        }
+    }
 
     var notifyResize = function () {
         if (w.isMaximized) {
@@ -165,6 +201,7 @@ function caml_glfwCreateWindow(width, height, title) {
 
     w._notifyResize = notifyResize;
     w._notifyChar = notifyChar;
+    w._notifyKey = notifyKey;
 
     joo_global_object._activeWindows.push(w);
     return w;
@@ -212,6 +249,11 @@ function caml_glfwSetCursorPosCallback(w, callback) {
 // Provides: caml_glfwSetCharCallback
 function caml_glfwSetCharCallback(w, callback) {
     w.onChar = callback;
+}
+
+// Provides: caml_glfwSetKeyCallback
+function caml_glfwSetKeyCallback(w, callback) {
+    w.onKey = callback;
 }
 
 // Provides: caml_glfwMaximizeWindow

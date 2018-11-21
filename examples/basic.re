@@ -194,8 +194,6 @@ let run = () => {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
 
-    /* let pos = glfwGetCursorPos(w); */
-    /* print_endline ("Mouse position : " ++ string_of_float(pos.mouseX) ++ ", " ++ string_of_float(pos.mouseY)); */
     glfwSwapBuffers(w);
   };
 
