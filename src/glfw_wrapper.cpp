@@ -251,8 +251,6 @@ extern "C" {
     }
 
     CAMLprim value
-<<<<<<< HEAD
-=======
     caml_glfwSetCharCallback(value vWindow, value vCallback) {
         CAMLparam2(vWindow, vCallback);
 

@@ -21,8 +21,8 @@ let initShaderProgram = (vsSource, fsSource) => {
   let _ = glAttachShader(shaderProgram, fsShader);
   let result = glLinkProgram(shaderProgram);
   switch (result) {
-  | LinkSuccess => print_endline("Shader linked successfully.");
-  | LinkFailure(v) => print_endline("Failed to link shader: " ++ v);
+  | LinkSuccess => print_endline("Shader linked successfully.")
+  | LinkFailure(v) => print_endline("Failed to link shader: " ++ v)
   };
   shaderProgram;
 };
@@ -53,7 +53,12 @@ let run = () => {
 
   let%lwt img = Image.load("test.jpg");
   let dimensions = Image.getDimensions(img);
-  print_endline ("- width: " ++ string_of_int(dimensions.width) ++ " - height: " ++ string_of_int(dimensions.height));
+  print_endline(
+    "- width: "
+    ++ string_of_int(dimensions.width)
+    ++ " - height: "
+    ++ string_of_int(dimensions.height),
+  );
 
   let vsSource = {|
         #ifndef GL_ES
@@ -122,14 +127,13 @@ let run = () => {
     let time = Unix.gettimeofday();
     delta := delta^ +. time -. prevTime^;
     prevTime := time;
-/* type glfwMouseButtonCallback = (window, glfwMouseButton, glfwButtonState, array(glfwModifierKey)) => unit; */
-/* let glfwSetMouseButtonCallback = (window, glfwMouseButtonCallback) => unit; */
+    /* type glfwMouseButtonCallback = (window, glfwMouseButton, glfwButtonState, array(glfwModifierKey)) => unit; */
+    /* let glfwSetMouseButtonCallback = (window, glfwMouseButtonCallback) => unit; */
 
-/* let glfwGetMouseButton = (window, glfwMouseButton) => glfwButtonState; */
+    /* let glfwGetMouseButton = (window, glfwMouseButton) => glfwButtonState; */
 
-/* let glfwScrollCallback = (window, float, float) => unit; */
-/* type glfwSetScrollCallback = (window, glfwScrollCallback) => unit; */
-
+    /* let glfwScrollCallback = (window, float, float) => unit; */
+    /* type glfwSetScrollCallback = (window, glfwScrollCallback) => unit; */
 
     glClearColor(0.0, 0., 0., 1.);
     glClearDepth(1.0);
@@ -148,7 +152,11 @@ let run = () => {
     Mat4.rotate(rot, Angle.from_radians(delta^), Vec3.create(0., 0., 1.));
 
     let yRot = Mat4.create();
-    Mat4.rotate(rot, Angle.from_radians(delta^ *. 0.7), Vec3.create(0., 1., 0.));
+    Mat4.rotate(
+      rot,
+      Angle.from_radians(delta^ *. 0.7),
+      Vec3.create(0., 1., 0.),
+    );
 
     Mat4.multiply(rot, m, rot);
     Mat4.multiply(rot, yRot, rot);
@@ -177,30 +185,45 @@ let run = () => {
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
-  
+
     let pos = glfwGetCursorPos(w);
-    print_endline ("Mouse position : " ++ string_of_float(pos.mouseX) ++ ", " ++ string_of_float(pos.mouseY));
+    print_endline(
+      "Mouse position : "
+      ++ string_of_float(pos.mouseX)
+      ++ ", "
+      ++ string_of_float(pos.mouseY),
+    );
     glfwSwapBuffers(w);
   };
 
-  glfwSetCursorPosCallback(w, (_w, x, y) => {
-        print_endline ("Mouse position from callback: " ++ string_of_float(x) ++ ", " ++ string_of_float(y));
-    /* let pos = glfwGetCursorPos(w); */
-    /* print_endline ("Mouse position : " ++ string_of_float(pos.mouseX) ++ ", " ++ string_of_float(pos.mouseY)); */
-    glfwSwapBuffers(w);
-  };
+  glfwSetKeyCallback(
+    w,
+    (_w, _key, _scancode, buttonState, m) => {
+      let controlPressed = string_of_bool(Modifier.isControlPressed(m));
+      let shiftPressed = string_of_bool(Modifier.isShiftPressed(m));
+      /* let altPressed = Modifier.isAltPressed(m); */
 
-  glfwSetKeyCallback(w, (_w, _key, _scancode, buttonState, m) => {
-    let controlPressed = string_of_bool(Modifier.isControlPressed(m));
-    let shiftPressed = string_of_bool(Modifier.isShiftPressed(m));
-    /* let altPressed = Modifier.isAltPressed(m); */
+      print_endline(
+        "KEY: "
+        ++ string_of_int(Obj.magic(_key))
+        ++ "| ctrl: "
+        ++ controlPressed
+        ++ " | shift: "
+        ++ shiftPressed
+        ++ "| state: "
+        ++ ButtonState.show(buttonState),
+      );
+    },
+  );
 
-    print_endline ("KEY: " ++ string_of_int(Obj.magic(_key)) ++ "| ctrl: " ++ controlPressed ++ " | shift: " ++ shiftPressed ++ "| state: " ++ ButtonState.show(buttonState));
-  });
-
-  glfwSetCharCallback(w, (_w, codepoint) => {
-    print_endline ("CHAR: " ++ string_of_int(codepoint) ++ " | " ++ String.make(1, Uchar.to_char(Uchar.of_int(codepoint))));
-  });
+  glfwSetCharCallback(w, (_w, codepoint) =>
+    print_endline(
+      "CHAR: "
+      ++ string_of_int(codepoint)
+      ++ " | "
+      ++ String.make(1, Uchar.to_char(Uchar.of_int(codepoint))),
+    )
+  );
 
   glfwSetFramebufferSizeCallback(
     w,
@@ -217,12 +240,12 @@ let run = () => {
 
   /* glfwMaximizeWindow(w); */
 
-  glfwRenderLoop((_t) => {
+  glfwRenderLoop(_t => {
     render();
 
     glfwPollEvents();
     glfwWindowShouldClose(w);
-  })
+  });
 
   print_endline("Done!");
   glfwTerminate();
