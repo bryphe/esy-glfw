@@ -74,17 +74,17 @@ function caml_glfwGetMonitorPos() {
     return [0, 0, 0];
 };
 
-// Provides caml_glfwDefaultWindowHints
+// Provides: caml_glfwDefaultWindowHints
 function caml_glfwDefaultWindowHints(w) {
     joo_global_object.console.warn("glfwDefaultWindowHints not implemented in WebGL");
 }
 
-// Provides caml_glfwShowWindow
+// Provides: caml_glfwShowWindow
 function caml_glfwShowWindow(w) {
     joo_global_object.console.warn("glfwShowWindow not implemented in WebGL");
 }
 
-// Provides caml_glfwHideWindow
+// Provides: caml_glfwHideWindow
 function caml_glfwHideWindow(w) {
     joo_global_object.console.warn("glfwHideWindow not implemented in WebGL");
 }
