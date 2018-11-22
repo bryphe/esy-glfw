@@ -48,6 +48,20 @@ function caml_glfwInit() {
         }
     });
 
+    joo_global_object.window.addEventListener("mousedown", function (mouseEvent) {
+        var wins = joo_global_object._activeWindows;
+        for (var i = 0; i < wins.length; i++) {
+            wins[i]._notifyMouseButton(mouseEvent, 0);
+        }
+    });
+
+    joo_global_object.window.addEventListener("mouseup", function (mouseEvent) {
+        var wins = joo_global_object._activeWindows;
+        for (var i = 0; i < wins.length; i++) {
+            wins[i]._notifyMouseButton(mouseEvent, 1);
+        }
+    });
+
     joo_global_object.window.addEventListener("keydown", function (keyEvent) {
         if (keyEvent.key) {
             var wins = joo_global_object._activeWindows;
@@ -173,6 +187,7 @@ function caml_glfwCreateWindow(width, height, title) {
         onKey: null,
         onChar: null,
         onCursorPos: null,
+        onMouseButton: null,
         onScroll: null,
         x: 0,
         y: 0,
@@ -198,7 +213,31 @@ function caml_glfwCreateWindow(width, height, title) {
                 w.onKey(w, code, keyEvent.location, pressMode, modifier);
             };
         }
-    }
+    };
+
+    var notifyMouseButton = function(mouseEvent, pressMode) {
+        if (w.onMouseButton) {
+            var modifier = 0;
+            modifier = mouseEvent.shiftKey ? modifier + 1 : modifier;
+            modifier = mouseEvent.ctrlKey ? modifier + 2 : modifier;
+            modifier = mouseEvent.altKey ? modifier + 4 : modifier;
+            modifier = mouseEvent.metaKey ? modifier + 8 : modifier
+
+            var b = 0;
+            switch(mouseEvent.button) {
+                case 1:
+                    b = 2;
+                    break;
+                case 2:
+                    b = 1;
+                    break;
+                default:
+                    b = mouseEvent.button;
+            };
+
+            w.onMouseButton(w, b, pressMode, modifier);
+        }
+    };
 
     var notifyResize = function () {
         if (w.isMaximized) {
@@ -221,6 +260,7 @@ function caml_glfwCreateWindow(width, height, title) {
     w._notifyChar = notifyChar;
     w._notifyScroll = notifyScroll;
     w._notifyKey = notifyKey;
+    w._notifyMouseButton = notifyMouseButton;
 
     joo_global_object._activeWindows.push(w);
     return w;
@@ -278,6 +318,11 @@ function caml_glfwSetCharCallback(w, callback) {
 // Provides: caml_glfwSetKeyCallback
 function caml_glfwSetKeyCallback(w, callback) {
     w.onKey = callback;
+}
+
+// Provides: caml_glfwSetMouseButtonCallback
+function caml_glfwSetMouseButtonCallback(w, callback) {
+    w.onMouseButton = callback;
 }
 
 // Provides: caml_glfwMaximizeWindow
