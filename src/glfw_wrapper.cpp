@@ -22,6 +22,7 @@ extern "C" {
         value vSetCursorPosCallback;
         value vKeyCallback;
         value vCharCallback;
+        value vScrollCallback;
     };
 
     static WindowInfo* sActiveWindows[255];
@@ -126,6 +127,16 @@ extern "C" {
         }
     }
 
+
+    void scroll_callback(GLFWwindow *pWin, double dblWidth, double dblHeight) {
+        // Is there a window info?
+        WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
+
+        if (pWinInfo && pWinInfo->vScrollCallback != Val_unit) {
+            (void) caml_callback3((value)pWinInfo->vScrollCallback, ((value)(void *)pWinInfo), caml_copy_double(dblWidth), caml_copy_double(dblHeight));
+        }
+    }
+
     void cursor_pos_callback(GLFWwindow *pWin, double xPos, double yPos) {
         // Is there a window info?
         WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
@@ -162,11 +173,13 @@ extern "C" {
       pWindowInfo->vSetCursorPosCallback = Val_unit;
       pWindowInfo->vCharCallback = Val_unit;
       pWindowInfo->vKeyCallback = Val_unit;
+      pWindowInfo->vScrollCallback = Val_unit;
 
       glfwSetFramebufferSizeCallback(wd, framebuffer_size_callback);
       glfwSetCursorPosCallback(wd, cursor_pos_callback);
       glfwSetCharCallback(wd, char_callback);
       glfwSetKeyCallback(wd, key_callback);
+      glfwSetScrollCallback(wd, scroll_callback);
 
       sActiveWindows[sActiveWindowCount] = pWindowInfo;
       sActiveWindowCount++;
@@ -281,6 +294,24 @@ extern "C" {
             // collector knows it is being used.
             pWinInfo->vKeyCallback = vCallback;
             caml_register_global_root(&(pWinInfo->vKeyCallback));
+        }
+
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_glfwSetScrollCallback(value vWindow, value vCallback) {
+        CAMLparam2(vWindow, vCallback);
+
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+
+        if (pWinInfo) {
+            // TODO: Recycle existing callback if any!
+
+            // We need to mark the closure as being a global root, so the garbage
+            // collector knows it is being used.
+            pWinInfo->vScrollCallback = vCallback;
+            caml_register_global_root(&(pWinInfo->vScrollCallback));
         }
 
         CAMLreturn(Val_unit);

@@ -27,6 +27,17 @@ function caml_glfwInit() {
         }
     });
 
+    joo_global_object.window.addEventListener("wheel", function (e) {
+        // TODO: account for deltaMode
+        var deltaX = e.deltaX;
+        var deltaY = e.deltaY;
+
+        var wins = joo_global_object._activeWindows;
+        for (var i = 0; i < wins.length; i++) {
+            wins[i]._notifyScroll(deltaX, deltaY);
+        }
+    });
+
     joo_global_object.window.addEventListener("keypress", function (keyEvent) {
         if (keyEvent.key && keyEvent.key.length === 1) {
             var codepoint = keyEvent.key.codePointAt(0);
@@ -162,6 +173,7 @@ function caml_glfwCreateWindow(width, height, title) {
         onKey: null,
         onChar: null,
         onCursorPos: null,
+        onScroll: null,
         x: 0,
         y: 0,
     };
@@ -199,8 +211,15 @@ function caml_glfwCreateWindow(width, height, title) {
         }
     };
 
+    var notifyScroll = function (x, y) {
+        if (w.onScroll) {
+            w.onScroll(w, x, y);
+        }
+    };
+
     w._notifyResize = notifyResize;
     w._notifyChar = notifyChar;
+    w._notifyScroll = notifyScroll;
     w._notifyKey = notifyKey;
 
     joo_global_object._activeWindows.push(w);
@@ -239,6 +258,11 @@ function caml_glfwWindowHint(hint, val) {
 // Provides: caml_glfwSetFramebufferSizeCallback
 function caml_glfwSetFramebufferSizeCallback(w, callback) {
     w.onSetFramebufferSize = callback;
+}
+
+// Provides: caml_glfwSetScrollCallback
+function caml_glfwSetScrollCallback(w, callback) {
+    w.onScroll = callback;
 }
 
 // Provides: caml_glfwSetCursorPosCallback

@@ -197,6 +197,10 @@ let run = () => {
     glfwSwapBuffers(w);
   };
 
+  glfwSetScrollCallback(w, (_w, deltaX, deltaY) => {
+    print_endline("SCROLL: " ++ string_of_float(deltaX) ++ ", " ++ string_of_float(deltaY));
+  });
+
   glfwSetKeyCallback(
     w,
     (_w, _key, _scancode, buttonState, m) => {
