@@ -248,6 +248,9 @@ let run = () => {
   glfwRenderLoop(_t => {
     render();
 
+    /* Run the GC so we can catch any GC-related crashes early! */
+    Gc.full_major();
+
     glfwPollEvents();
     glfwWindowShouldClose(w);
   });
