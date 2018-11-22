@@ -223,6 +223,10 @@ let run = () => {
     print_endline("SCROLL: " ++ string_of_float(deltaX) ++ ", " ++ string_of_float(deltaY));
   });
 
+  glfwSetCursorPosCallback(w, (_w, x, y) => {
+    print_endline("CURSOR: " ++ string_of_float(x) ++ ", " ++ string_of_float(y));
+  })
+
   glfwSetKeyCallback(
     w,
     (_w, _key, _scancode, buttonState, m) => {

@@ -168,6 +168,9 @@ let glfwSetKeyCallback = (win, callback) =>
     )
   );
 
+type glfwCursorPosCallback = (Window.t, float, float) => unit;
+external glfwSetCursorPosCallback: (Window.t, glfwCursorPosCallback) => unit = "caml_glfwSetCursorPosCallback";
+
 type glfwScrollCallback = (Window.t, float, float) => unit;
 external glfwSetScrollCallback: (Window.t, glfwScrollCallback) => unit = "caml_glfwSetScrollCallback";
 

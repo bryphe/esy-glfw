@@ -92,6 +92,9 @@ module ButtonState {
 let glfwDefaultWindowHints: unit => unit;
 let glfwWindowHint: (windowHint, bool) => unit;
 
+type glfwCursorPosCallback = (Window.t, float, float) => unit;
+let glfwSetCursorPosCallback: (Window.t, glfwCursorPosCallback) => unit;
+
 type glfwCharCallback = (Window.t, int) => unit;
 let glfwSetCharCallback: (Window.t, glfwCharCallback) => unit;
 
