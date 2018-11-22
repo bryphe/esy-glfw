@@ -67,6 +67,29 @@ module Modifier = {
   let isSuperPressed = (m: t) => m land _mod_super == _mod_super;
 };
 
+module MouseButton {
+    type t =
+    | GLFW_MOUSE_LEFT
+    | GLFW_MOUSE_RIGHT
+    | GLFW_MOUSE_MIDDLE
+    | GLFW_MOUSE_BUTTON_4
+    | GLFW_MOUSE_BUTTON_5
+    | GLFW_MOUSE_BUTTON_6
+    | GLFW_MOUSE_BUTTON_7
+    | GLFW_MOUSE_BUTTON_8
+
+    let show = (t) => switch(t) {
+    | GLFW_MOUSE_LEFT => "Left"
+    | GLFW_MOUSE_RIGHT => "Right"
+    | GLFW_MOUSE_MIDDLE => "Middle"
+    | GLFW_MOUSE_BUTTON_4 => "Button4"
+    | GLFW_MOUSE_BUTTON_5 => "Button5"
+    | GLFW_MOUSE_BUTTON_6 => "Button6"
+    | GLFW_MOUSE_BUTTON_7 => "Button7"
+    | GLFW_MOUSE_BUTTON_8 => "Button8"
+    };
+};
+
 module Monitor = {
   type t;
 
@@ -98,12 +121,6 @@ type windowHint =
   | GLFW_AUTO_ICONIFY
   | GLFW_FLOATING
   | GLFW_MAXIMIZED;
-
-type glfwMouseButton =
-  | GLFW_MOUSE_BUTTON_LEFT
-  | GLFW_MOUSE_BUTTON_MIDDLE
-  | GLFW_MOUSE_BUTTON_RIGHT
-  | GLFW_MOUSE_BUTTON_LAST;
 
 module ButtonState = {
   type t =
@@ -167,6 +184,17 @@ let glfwSetKeyCallback = (win, callback) =>
       Modifier.of_int(modifier),
     )
   );
+
+/* Internal implementation of glfwMouseButtonCallback, since we need to cast some integers to types */
+type _glfwMouseButtonCallback = (Window.t, MouseButton.t, ButtonState.t, int) => unit;
+external _glfwSetMouseButtonCallback: (Window.t, _glfwMouseButtonCallback) => unit = "caml_glfwSetMouseButtonCallback";
+
+type glfwMouseButtonCallback = (Window.t, MouseButton.t, ButtonState.t, Modifier.t) => unit;
+let glfwSetMouseButtonCallback = (win, callback) => {
+    _glfwSetMouseButtonCallback(win, (w, m, b, modifier) => {
+        callback(w, m, b, Modifier.of_int(modifier));
+    });
+};
 
 type glfwScrollCallback = (Window.t, float, float) => unit;
 external glfwSetScrollCallback: (Window.t, glfwScrollCallback) => unit = "caml_glfwSetScrollCallback";

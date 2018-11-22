@@ -252,6 +252,21 @@ let run = () => {
     )
   );
 
+  glfwSetMouseButtonCallback(w, (_w, button, buttonState, m) => {
+      let controlPressed = string_of_bool(Modifier.isControlPressed(m));
+      let shiftPressed = string_of_bool(Modifier.isShiftPressed(m));
+      print_endline(
+        "Mouse button: "
+        ++ MouseButton.show(button)
+        ++ "| ctrl: "
+        ++ controlPressed
+        ++ " | shift: "
+        ++ shiftPressed
+        ++ "| state: "
+        ++ ButtonState.show(buttonState),
+      );
+  })
+
   glfwSetFramebufferSizeCallback(
     w,
     (_, w, h) => {

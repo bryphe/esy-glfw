@@ -21,6 +21,7 @@ extern "C" {
         value vSetFramebufferSizeCallback;
         value vSetCursorPosCallback;
         value vKeyCallback;
+        value vMouseButtonCallback;
         value vCharCallback;
         value vScrollCallback;
     };
@@ -127,6 +128,19 @@ extern "C" {
         }
     }
 
+    void mouse_button_callback(GLFWwindow *pWin, int mouseButton, int action, int mods) {
+        WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
+        if (pWinInfo && pWinInfo->vMouseButtonCallback != Val_unit) {
+            value* pArgs = (value *)malloc(sizeof(value) * 4);
+            pArgs[0] = (value)pWinInfo;
+            pArgs[1] = Val_int(mouseButton);
+            pArgs[2] = buttonStateToVariant(action);
+            pArgs[3] = Val_int(mods);
+
+            (void) caml_callbackN((value)pWinInfo->vMouseButtonCallback, 4, pArgs);
+            free(pArgs);
+        }
+    }
 
     void scroll_callback(GLFWwindow *pWin, double dblWidth, double dblHeight) {
         // Is there a window info?
@@ -173,12 +187,14 @@ extern "C" {
       pWindowInfo->vSetCursorPosCallback = Val_unit;
       pWindowInfo->vCharCallback = Val_unit;
       pWindowInfo->vKeyCallback = Val_unit;
+      pWindowInfo->vMouseButtonCallback = Val_unit;
       pWindowInfo->vScrollCallback = Val_unit;
 
       glfwSetFramebufferSizeCallback(wd, framebuffer_size_callback);
       glfwSetCursorPosCallback(wd, cursor_pos_callback);
       glfwSetCharCallback(wd, char_callback);
       glfwSetKeyCallback(wd, key_callback);
+      glfwSetMouseButtonCallback(wd, mouse_button_callback);
       glfwSetScrollCallback(wd, scroll_callback);
 
       sActiveWindows[sActiveWindowCount] = pWindowInfo;
@@ -294,6 +310,24 @@ extern "C" {
             // collector knows it is being used.
             pWinInfo->vKeyCallback = vCallback;
             caml_register_global_root(&(pWinInfo->vKeyCallback));
+        }
+
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_glfwSetMouseButtonCallback(value vWindow, value vCallback) {
+        CAMLparam2(vWindow, vCallback);
+
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+
+        if (pWinInfo) {
+            // TODO: Recycle existing callback if any!
+
+            // We need to mark the closure as being a global root, so the garbage
+            // collector knows it is being used.
+            pWinInfo->vMouseButtonCallback = vCallback;
+            caml_register_global_root(&(pWinInfo->vMouseButtonCallback));
         }
 
         CAMLreturn(Val_unit);

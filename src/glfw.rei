@@ -45,6 +45,20 @@ module Modifier {
     let isSuperPressed: t => bool;
 }
 
+module MouseButton {
+    type t =
+    | GLFW_MOUSE_LEFT
+    | GLFW_MOUSE_RIGHT
+    | GLFW_MOUSE_MIDDLE
+    | GLFW_MOUSE_BUTTON_4
+    | GLFW_MOUSE_BUTTON_5
+    | GLFW_MOUSE_BUTTON_6
+    | GLFW_MOUSE_BUTTON_7
+    | GLFW_MOUSE_BUTTON_8
+
+    let show: t => string;
+};
+
 module Monitor {
     type t;
 
@@ -74,12 +88,6 @@ type windowHint =
 | GLFW_FLOATING
 | GLFW_MAXIMIZED;
 
-type glfwMouseButton =
-| GLFW_MOUSE_BUTTON_LEFT
-| GLFW_MOUSE_BUTTON_MIDDLE
-| GLFW_MOUSE_BUTTON_RIGHT
-| GLFW_MOUSE_BUTTON_LAST
-
 module ButtonState {
     type t =
     | GLFW_PRESS
@@ -100,6 +108,9 @@ let glfwSetKeyCallback: (Window.t, glfwKeyCallback) => unit;
 
 type glfwScrollCallback = (Window.t, float, float) => unit;
 let glfwSetScrollCallback: (Window.t, glfwScrollCallback) => unit;
+
+type glfwMouseButtonCallback = (Window.t, MouseButton.t, ButtonState.t, Modifier.t) => unit;
+let glfwSetMouseButtonCallback: (Window.t, glfwMouseButtonCallback) => unit;
 
 type glfwFramebufferSizeCallback = (Window.t, int, int) => unit;
 let glfwSetFramebufferSizeCallback:
