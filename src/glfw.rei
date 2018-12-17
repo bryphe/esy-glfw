@@ -2,19 +2,7 @@ open Reglm;
 
 module Key = Glfw_key;
 
-module Window {
-    type t;
-
-    type windowSize = {
-        width: int,
-        height: int,
-    };
-
-    type frameBufferSize = {
-        width: int,
-        height: int
-    };
-}
+open Glfw_types;
 
 let glfwInit: unit => bool;
 let glfwCreateWindow: (int, int, string) => Window.t;
@@ -115,9 +103,11 @@ let glfwSetScrollCallback: (Window.t, glfwScrollCallback) => unit;
 type glfwMouseButtonCallback = (Window.t, MouseButton.t, ButtonState.t, Modifier.t) => unit;
 let glfwSetMouseButtonCallback: (Window.t, glfwMouseButtonCallback) => unit;
 
-type glfwFramebufferSizeCallback = (Window.t, int, int) => unit;
 let glfwSetFramebufferSizeCallback:
   (Window.t, glfwFramebufferSizeCallback) => unit;
+
+let glfwSetWindowSizeCallback:
+  (Window.t, glfwWindowSizeCallback) => unit;
 
 type glfwCursorPos = {
     mouseX: float,

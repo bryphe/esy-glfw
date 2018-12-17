@@ -276,13 +276,26 @@ let run = () => {
     (_, w, h) => {
       glViewport(0, 0, w, h);
       print_endline(
-        "Size changed: " ++ string_of_int(w) ++ ", " ++ string_of_int(h),
+        "Framebuffer size changed: " ++ string_of_int(w) ++ ", " ++ string_of_int(h),
       );
       width := w;
       height := h;
       render();
     },
   );
+
+  glfwSetWindowSizeCallback(
+    w,
+    (_, w, h) => {
+      print_endline(
+        "Window size changed: " ++ string_of_int(w) ++ ", " ++ string_of_int(h),
+      );
+      width := w;
+      height := h;
+      render();
+    },
+  );
+
 
   /* glfwMaximizeWindow(w); */
 
