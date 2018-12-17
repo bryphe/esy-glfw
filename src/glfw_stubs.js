@@ -184,6 +184,7 @@ function caml_glfwCreateWindow(width, height, title) {
         title: title,
         isMaximized: false,
         onSetFramebufferSize: null,
+        onSetWindowSize: null,
         onKey: null,
         onChar: null,
         onCursorPos: null,
@@ -244,8 +245,14 @@ function caml_glfwCreateWindow(width, height, title) {
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
 
+            var pixelRatio = joo_global_object.window.devicePixelRatio;
+
             if (w.onSetFramebufferSize) {
-                w.onSetFramebufferSize(w, canvas.offsetWidth, canvas.offsetHeight);
+                w.onSetFramebufferSize(w, canvas.offsetWidth * pixelRatio, canvas.offsetHeight * pixelRatio);
+            }
+
+            if (w.onSetWindowSize) {
+                w.onSetWindowSize(w, canvas.offsetWidth, canvas.offsetHeight);
             }
         }
     };
@@ -293,6 +300,11 @@ function caml_glfwSetWindowTitle(w, title) {
 // Provides: caml_glfwWindowHint
 function caml_glfwWindowHint(hint, val) {
     joo_global_object.console.warn("Unsupported API: glfwWindowHint");
+}
+//
+// Provides: caml_glfwSetWindowSizeCallback
+function caml_glfwSetWindowSizeCallback(w, callback) {
+    w.onSetWindowSize = callback;
 }
 
 // Provides: caml_glfwSetFramebufferSizeCallback
