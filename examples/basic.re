@@ -170,6 +170,10 @@ let run = () => {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
 
+    /* Test scissor functionality */
+    /* glEnable(GL_SCISSOR_TEST); */
+    /* glScissor(200, 200, 200, 200); */
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthFunc(GL_LEQUAL);
 

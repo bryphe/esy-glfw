@@ -126,6 +126,7 @@ let glfwRenderLoop: (glfwRenderLoopCallback) => unit;
 let glClearColor: (float, float, float, float) => unit;
 let glClearDepth: float => unit;
 let glViewport: (int, int, int, int) => unit;
+let glScissor: (int, int, int, int) => unit;
 
 type shader;
 type shaderType =
@@ -156,8 +157,6 @@ type blendFunc =
   | GL_ONE_MINUS_SRC_ALPHA;
 
 let glBlendFunc: (blendFunc, blendFunc) => unit;
-
-type glScissor: (int, int, int, int) => unit;
 
 type program;
 

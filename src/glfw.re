@@ -228,12 +228,11 @@ external glClearDepth: float => unit = "caml_glClearDepth";
 external glCreateShader: shaderType => shader = "caml_glCreateShader";
 external glShaderSource: (shader, string) => unit = "caml_glShaderSource";
 
-external glViewport: (int, int, int, int) => unit = "caml_glViewport";
+[@noalloc] external glViewport: (int, int, int, int) => unit = "caml_glViewport";
+[@noalloc] external glScissor:  (int, int, int, int) => unit = "caml_glScissor"; 
 
 [@noalloc] external glEnable: enableOptions => unit = "caml_glEnable";
 [@noalloc] external glDisable: enableOptions => unit = "caml_glDisable";
-
-[@noalloc] external glScissor:  (int, int, int, int) => unit = "caml_glScissor"; 
 
 type depthFunctions =
   | GL_LEQUAL;
