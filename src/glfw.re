@@ -2,7 +2,7 @@ open Reglm;
 
 module Key = Glfw_key;
 
-open Glfw_types;
+include Glfw_types;
 
 /* GLFW */
 external glfwInit: unit => bool = "caml_glfwInit";

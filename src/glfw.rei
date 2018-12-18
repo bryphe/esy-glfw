@@ -2,7 +2,7 @@ open Reglm;
 
 module Key = Glfw_key;
 
-open Glfw_types;
+include (module type of Glfw_types);
 
 let glfwInit: unit => bool;
 let glfwCreateWindow: (int, int, string) => Window.t;
