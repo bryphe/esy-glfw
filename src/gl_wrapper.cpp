@@ -45,6 +45,8 @@ extern "C" {
                 return GL_DEPTH_TEST;
             case 1:
                 return GL_BLEND;
+            case 2:
+                return GL_SCISSOR_TEST;
             default:
                 warn("Unexpected option for glEnable");
                 return 0;
@@ -177,6 +179,16 @@ extern "C" {
     CAMLprim value
     caml_glDisable(value vEnableOptions) {
         glDisable(variantToEnableOption(vEnableOptions));
+        return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glScissor(value vX, value vY, value vWidth, value vHeight) {
+        int x = Int_val(vX);    
+        int y = Int_val(vY);
+        int width = Int_val(vWidth);
+        int height = Int_val(vHeight);
+        glScissor(x, y, width, height);
         return Val_unit;
     }
 

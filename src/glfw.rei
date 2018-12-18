@@ -141,10 +141,6 @@ let glShaderSource: (shader, string) => unit;
 let glCompileShader: shader => shaderCompilationResult;
 let glDeleteShader: shader => unit;
 
-type enableOptions =
-  | GL_DEPTH_TEST
-  | GL_BLEND;
-
 let glEnable: enableOptions => unit;
 let glDisable: enableOptions => unit;
 
@@ -160,6 +156,8 @@ type blendFunc =
   | GL_ONE_MINUS_SRC_ALPHA;
 
 let glBlendFunc: (blendFunc, blendFunc) => unit;
+
+type glScissor: (int, int, int, int) => unit;
 
 type program;
 

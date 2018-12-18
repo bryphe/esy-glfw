@@ -10,6 +10,11 @@ function caml_glViewport(x, y, width, height) {
     joo_global_object.gl.viewport(x, y , width, height);
 }
 
+// Provides: caml_glScissor
+function caml_glScissor(x, y, width, height) {
+    joo_global_object.gl.scissor(x, y , width, height);
+}
+
 // Provides: caml_glClearDepth
 function caml_glClearDepth(d) {
     joo_global_object.gl.clearDepth(d);

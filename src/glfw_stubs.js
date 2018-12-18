@@ -364,6 +364,7 @@ function caml_glfwMakeContextCurrent(win) {
     joo_global_object.variantToEnableOption = {
         '0': gl.DEPTH_TEST,
         '1': gl.BLEND,
+        '2': gl.SCISSOR_TEST,
     };
 
     joo_global_object.variantToBlendFunc = {
