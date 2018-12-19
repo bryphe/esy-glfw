@@ -122,8 +122,7 @@ function caml_glfwGetMonitorPos() {
 function caml_glfwGetFramebufferSize(w) {
     var width = w.canvas.width;
     var height = w.canvas.height;
-    var pixelRatio = joo_global_object.window.devicePixelRatio;
-    return [0, width * pixelRatio, height * pixelRatio];
+    return [0, width, height];
 }
 
 // Provides: caml_glfwDefaultWindowHints
@@ -173,8 +172,9 @@ function caml_glfwCreateWindow(width, height, title) {
     canvas.style.bottom = "0px";
     canvas.style.width = width.toString() + "px";
     canvas.style.height = height.toString() + "px";
-    canvas.width = width;
-    canvas.height = height;
+    var pixelRatio = joo_global_object.window.devicePixelRatio;
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
 
     joo_global_object._activeWindows = joo_global_object._activeWindows || [];
 
@@ -242,13 +242,13 @@ function caml_glfwCreateWindow(width, height, title) {
 
     var notifyResize = function () {
         if (w.isMaximized) {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-
             var pixelRatio = joo_global_object.window.devicePixelRatio;
 
+            canvas.width = canvas.offsetWidth * pixelRatio;
+            canvas.height = canvas.offsetHeight * pixelRatio;
+
             if (w.onSetFramebufferSize) {
-                w.onSetFramebufferSize(w, canvas.offsetWidth * pixelRatio, canvas.offsetHeight * pixelRatio);
+                w.onSetFramebufferSize(w, canvas.width, canvas.height);
             }
 
             if (w.onSetWindowSize) {
@@ -286,8 +286,9 @@ function caml_glfwSetWindowSize(w, width, height) {
     var canvas = w.canvas;
     canvas.style.width = width.toString() + "px";
     canvas.style.height = height.toString() + "px";
-    canvas.width = width;
-    canvas.height = height;
+    var pixelRatio = joo_global_object.window.devicePixelRatio;
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
 }
 
 // Provides: caml_glfwSetWindowTitle
@@ -340,11 +341,12 @@ function caml_glfwSetMouseButtonCallback(w, callback) {
 // Provides: caml_glfwMaximizeWindow
 function caml_glfwMaximizeWindow(w) {
     if (w && !w.isMaximized) {
+        var pixelRatio = joo_global_object.window.devicePixelRatio;
         var canvas = w.canvas;
         canvas.style.width = "100%";
         canvas.style.height = "100%";
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+        canvas.width = canvas.offsetWidth * pixelRatio;
+        canvas.height = canvas.offsetHeight * pixelRatio;
         w.isMaximized = true;
         w._notifyResize();
     }
