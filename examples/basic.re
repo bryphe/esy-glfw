@@ -248,6 +248,10 @@ let run = () => {
         ++ "| state: "
         ++ ButtonState.show(buttonState),
       );
+
+      if (_key == GLFW_KEY_X) {
+        glfwDestroyWindow(_w);
+      }
     },
   );
 
