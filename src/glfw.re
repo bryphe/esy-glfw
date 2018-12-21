@@ -27,6 +27,7 @@ external glfwGetFramebufferSize: Window.t => Window.frameBufferSize =
 external glfwMaximizeWindow: Window.t => unit = "caml_glfwMaximizeWindow";
 external glfwSetWindowTitle: (Window.t, string) => unit =
   "caml_glfwSetWindowTitle";
+[@noalloc] external glfwDestroyWindow: Window.t => unit = "caml_glfwDestroyWindow"; 
 [@noalloc] external glfwSwapInterval: int => unit = "caml_glfwSwapInterval";
 
 [@noalloc]

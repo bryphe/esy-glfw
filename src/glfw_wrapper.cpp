@@ -516,6 +516,14 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwDestroyWindow(value vWindow) {
+        WindowInfo* wd = (WindowInfo*)vWindow;
+        glfwDestroyWindow(wd->pWindow);
+        /* TODO: unregister any callbacks from OCaml GC - potential memory leak? */
+        free(wd);
+    }
+
+    CAMLprim value
     caml_glfwHideWindow(value vWindow) {
         WindowInfo *wd = (WindowInfo *)vWindow;
         glfwHideWindow(wd->pWindow);

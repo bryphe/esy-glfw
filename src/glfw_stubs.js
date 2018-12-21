@@ -418,6 +418,12 @@ function caml_glfwMakeContextCurrent(win) {
     joo_global_object.gl = context;
 }
 
+// Provides: caml_glfwDestroyWindow
+function caml_glfwDestroyWindow() {
+    // no op
+    // should we destroy the canvas window here?
+}
+
 // Provides: caml_glfwWindowShouldClose
 function caml_glfwWindowShouldClose() {
     return false

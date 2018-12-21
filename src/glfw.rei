@@ -18,6 +18,7 @@ let glfwMaximizeWindow: (Window.t) => unit;
 let glfwSetWindowTitle: (Window.t, string) => unit;
 let glfwShowWindow: (Window.t) => unit;
 let glfwHideWindow: (Window.t) => unit;
+let glfwDestroyWindow: (Window.t) => unit;
 let glfwSwapInterval: int => unit;
 let glfwGetTime: unit => float;
 let glfwSetTime: float => unit;
