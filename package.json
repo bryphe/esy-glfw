@@ -5,10 +5,8 @@
   "license": "MIT",
   "esy": {
     "build": [
-        ["make", "#{os == 'windows' ? 'noop' : 'build-glfw'}", "ROOTDIR=#{self.root}"],
         ["dune", "build", "--root", "."],
-        ["dune", "build", "--root", ".", "./bin_js/test_glfw.bc.js"],
-        ["make", "install", "ROOTDIR=#{self.root}", "LIBDIR=#{self.lib}/reglfw"]
+        ["dune", "build", "--root", ".", "./bin_js/test_glfw.bc.js"]
     ],
     "install": [
         "esy-installer"
@@ -28,10 +26,12 @@
     "@opam/lwt": "^4.0.0",
     "@opam/lwt_ppx": "^1.1.0",
     "esy-cmake": "^0.3.2",
+    "esy-glfw": "*",
     "reason-gl-matrix": "^0.2.0"
   },
   "resolutions": {
-    "@opam/cmdliner": "1.0.2"
+    "@opam/cmdliner": "1.0.2",
+    "esy-glfw": "github:esy-packages/esy-glfw#2c67616"
   },
   "devDependencies": {
     "ocaml": "~4.6.0"
