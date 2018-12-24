@@ -19,7 +19,10 @@ let get_os =
         | "Linux" -> Linux
         | _ -> Unknown
 
-let c_flags = ["-I";  "./../../../include"; "-I"; "./../../../src"]
+
+let c_flags = ["-I"; (Sys.getenv "GLFW_INCLUDE_PATH"); "-I"; "./../../../include"; "-I"; "./../../../src"]
+
+let libPath = "-L" ^ (Sys.getenv "GLFW_LIB_PATH")
 
 let ccopt s = ["-ccopt"; s]
 let cclib s = ["-cclib"; s]
@@ -27,13 +30,11 @@ let cclib s = ["-cclib"; s]
 let flags =
     match get_os with
     | Windows ->  []
-        @ ccopt("-L.")
-        @ ccopt("-L./../../lib-mingw-w64")
+        @ ccopt(libPath)
         @ cclib("-lglfw3")
         @ cclib("-lgdi32")
     | Linux -> []
-        @ ccopt("-L.")
-        @ ccopt("-L./../glfw/src")
+        @ ccopt(libPath)
         @ cclib("-lGL")
         @ cclib("-lGLU")
         @ cclib("-lglfw3")
@@ -43,8 +44,7 @@ let flags =
         @ cclib("-lpthread")
         @ cclib("-lXi")
     | _ -> []
-        @ ccopt("-L.")
-        @ ccopt("-L./../glfw/src")
+        @ ccopt(libPath)
         @ cclib("-lglfw3")
         @ ccopt("-framework OpenGL")
         @ ccopt("-framework Cocoa")
