@@ -116,6 +116,17 @@ type glfwCursorPos = {
 };
 let glfwGetCursorPos: Window.t => glfwCursorPos;
 
+type glfwCursor;
+type glfwCursorShape =
+  | GLFW_ARROW_CURSOR
+  | GLFW_IBEAM_CURSOR
+  | GLFW_CROSSHAIR_CURSOR
+  | GLFW_HAND_CURSOR
+  | GLFW_HRESIZE_CURSOR
+  | GLFW_VRESIZE_CURSOR;
+let glfwCreateStandardCursor: (glfwCursorShape) => glfwCursor;
+let glfwSetCursor: (Window.t, glfwCursor) => unit;
+
 let printFrameBufferSize: Window.t => unit;
 
 type glfwRenderLoopCallback = (float) => bool;

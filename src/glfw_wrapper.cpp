@@ -67,6 +67,23 @@ extern "C" {
         }
     }
 
+    int variantToCursorShape(value shape) {
+      switch(Int_val(shape)) {
+      case 0:
+        return GLFW_ARROW_CURSOR;
+      case 1:
+        return GLFW_IBEAM_CURSOR;
+      case 2:
+        return GLFW_CROSSHAIR_CURSOR;
+      case 3:
+        return GLFW_HAND_CURSOR;
+      case 4:
+        return GLFW_HRESIZE_CURSOR;
+      case 5:
+        return GLFW_VRESIZE_CURSOR;
+      }
+    }
+
     WindowInfo* getWindowInfoFromWindow(GLFWwindow *w) {
         WindowInfo *pInfo;
         for (int i = 0; i < sActiveWindowCount; i++) {
@@ -411,7 +428,7 @@ extern "C" {
     }
 
     CAMLprim value
-    caml_glfwGetVideoMode(value vMonitor) 
+    caml_glfwGetVideoMode(value vMonitor)
     {
         CAMLparam1(vMonitor);
         CAMLlocal1(ret);
@@ -493,6 +510,29 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwCreateStandardCursor(value shape) {
+      GLFWcursor *cursor;
+      cursor = glfwCreateStandardCursor(variantToCursorShape(shape));
+      return (value) cursor;
+    }
+
+    CAMLprim value
+    caml_glfwDestroyCursor(value cursor) {
+      GLFWcursor *cd = (GLFWcursor *) cursor;
+      glfwDestroyCursor(cd);
+      return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glfwSetCursor(value window, value cursor) {
+      CAMLparam2(window, cursor);
+      WindowInfo *wd = (WindowInfo *) window;
+      GLFWcursor *cd = (GLFWcursor *) cursor;
+      glfwSetCursor(wd->pWindow, cd);
+      return Val_unit;
+    }
+
+    CAMLprim value
     caml_printFrameBufferSize(value window)
     {
         WindowInfo* wd = (WindowInfo*)window;
@@ -539,7 +579,7 @@ extern "C" {
     }
 
     CAMLprim value
-    caml_glfwPollEvents(value unit) 
+    caml_glfwPollEvents(value unit)
     {
         glfwPollEvents();
         return Val_unit;

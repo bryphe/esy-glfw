@@ -213,6 +213,32 @@ let glfwGetCursorPos = w => {
   v;
 };
 
+type glfwCursor;
+type glfwCursorShape =
+  | GLFW_ARROW_CURSOR
+  | GLFW_IBEAM_CURSOR
+  | GLFW_CROSSHAIR_CURSOR
+  | GLFW_HAND_CURSOR
+  | GLFW_HRESIZE_CURSOR
+  | GLFW_VRESIZE_CURSOR;
+external caml_glfwCreateStandardCursor: glfwCursorShape => glfwCursor =
+  "caml_glfwCreateStandardCursor";
+/*[@noalloc] external caml_glfwDestroyCursor: glfwCursor => unit =
+  "caml_glfwDestroyCursor";*/
+[@noalloc] external caml_glfwSetCursor: Window.t => glfwCursor => unit =
+  "caml_glfwSetCursor";
+
+let glfwCreateStandardCursor(shape) {
+  let cursor = caml_glfwCreateStandardCursor(shape);
+  /* We want this garbage collected, how can we do that?
+  Gc.finalise((c) => caml_glfwDestroyCursor(c), cursor);*/
+  cursor;
+}
+
+let glfwSetCursor(window, cursor) {
+  caml_glfwSetCursor(window, cursor);
+}
+
 /* GL */
 type shader;
 type shaderType =

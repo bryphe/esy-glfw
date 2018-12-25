@@ -39,6 +39,9 @@ let run = () => {
   glfwSetWindowSize(w, 800, 600);
   glfwSetWindowTitle(w, "reason-glfw example");
 
+  let cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
+  glfwSetCursor(w, cursor);
+
   glViewport(0, 0, 800, 600);
 
   /* glfwSwapInterval sets the 'swap interval' - also known as vsync / vertical synchronization */
