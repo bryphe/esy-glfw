@@ -22,5 +22,5 @@ if [[ "$OS_NAME" == "Linux" ]]; then
   glxinfo
 
   # Only run tests on Linux, for now-
-  dune runtest
+  esy b dune runtest
 fi
