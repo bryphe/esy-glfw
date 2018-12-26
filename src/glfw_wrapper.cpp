@@ -81,6 +81,9 @@ extern "C" {
         return GLFW_HRESIZE_CURSOR;
       case 5:
         return GLFW_VRESIZE_CURSOR;
+      default:
+        printf("Unexpected cursor shape.\n");
+        return 0;
       }
     }
 

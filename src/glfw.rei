@@ -125,6 +125,7 @@ type glfwCursorShape =
   | GLFW_HRESIZE_CURSOR
   | GLFW_VRESIZE_CURSOR;
 let glfwCreateStandardCursor: (glfwCursorShape) => glfwCursor;
+let glfwDestroyCursor: (glfwCursor) => unit;
 let glfwSetCursor: (Window.t, glfwCursor) => unit;
 
 let printFrameBufferSize: Window.t => unit;

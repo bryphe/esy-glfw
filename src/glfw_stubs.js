@@ -91,6 +91,31 @@ function caml_glfwGetCursorPos(w) {
     return caml_js_to_array([joo_global_object._mouseState.x, joo_global_object._mouseState.y]);
 }
 
+// Provides; caml_glfwCreateStandardCursor
+function caml_glfwCreateStandardCursor(shape) {
+  switch (shape) {
+  case 0: return "default";
+  case 1: return "text";
+  case 2: return "crosshair";
+  case 3: return "pointer";
+  case 4: return "ew-resize";
+  case 5: return "ns-resize";
+  default:
+    joo_global_object.console.warn("Unsupported cursor shape.");
+    return "default";
+  }
+}
+
+// Provides: caml_glfwDestroyCursor
+function caml_glfwDestroyCursor(cursor) {
+  // no op
+}
+
+// Provides: caml_glfwSetCursor
+function caml_glfwSetCursor(window, cursor) {
+  window.canvas.style.cursor = cursor;
+}
+
 // Provides: caml_glfwGetTime_byte
 function caml_glfwGetTime_byte() {
     return (joo_global_object._time.offset + (Date.now() - joo_global_object._time.start)) / 1000;
