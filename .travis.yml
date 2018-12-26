@@ -16,15 +16,10 @@ matrix:
            - libegl1-mesa-dev
            - mesa-utils
            - mesa-utils-extra
-           - binutils-2.26
+           - gcc-7
+
     node_js: 8
 install:
-- ld -v
-- sudo apt-cache policy gcc
-- sudo apt-get update
-- sudo apt-cache policy binutils
-- sudo apt-cache policy gcc
-- sudo apt-get upgrade
 - ld -v
 - travis_retry npm install -g esy@0.4.0
 - travis_wait esy install
