@@ -20,9 +20,8 @@ matrix:
   - os: osx # OSX 10.12
     node_js: 8
 install:
-- export PATH=/usr/lib/binutils-2.26/bin:${PATH}
+- cp -r /usr/lib/binutils-2.26/bin/* /usr/bin/
 - ld -v
-- cp /usr/lib/binutils-2.26/bin/. /usr/bin/
 - sudo apt-cache policy binutils
 - sudo apt-get update
 - sudo apt-cache policy binutils
