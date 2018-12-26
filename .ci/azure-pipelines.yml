@@ -17,6 +17,8 @@ jobs:
   - script: brew update
   - script: brew install libpng
   - template: esy-build-steps.yml
+  - script: glxinfo
+    displayName; "glxinfo"
   - script: esy b dune runtest
 
 - job: Windows
