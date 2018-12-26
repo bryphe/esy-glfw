@@ -16,10 +16,10 @@ matrix:
            - libegl1-mesa-dev
            - mesa-utils
            - mesa-utils-extra
+           - binutils-2.2.6
   - os: osx # OSX 10.12
     node_js: 8
 install:
-- sudo apt-get install binutils-2.26
 - travis_retry npm install -g esy@0.4.0
 - travis_wait esy install
 script:
