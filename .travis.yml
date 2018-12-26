@@ -16,7 +16,7 @@ matrix:
            - libegl1-mesa-dev
            - mesa-utils
            - mesa-utils-extra
-           - binutils
+           - binutils-2.29
   - os: osx # OSX 10.12
     node_js: 8
 install:
