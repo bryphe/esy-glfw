@@ -21,6 +21,7 @@ matrix:
     node_js: 8
 install:
 - ld -v
+- /usr/lib/binutils-2.26/bin/ld -v
 - sudo apt-cache policy binutils
 - sudo apt-get update
 - sudo apt-cache policy binutils
