@@ -91,7 +91,7 @@ function caml_glfwGetCursorPos(w) {
     return caml_js_to_array([joo_global_object._mouseState.x, joo_global_object._mouseState.y]);
 }
 
-// Provides; caml_glfwCreateStandardCursor
+// Provides: caml_glfwCreateStandardCursor
 function caml_glfwCreateStandardCursor(shape) {
   switch (shape) {
   case 0: return "default";

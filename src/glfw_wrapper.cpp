@@ -514,16 +514,18 @@ extern "C" {
 
     CAMLprim value
     caml_glfwCreateStandardCursor(value shape) {
+      CAMLparam1(shape);
       GLFWcursor *cursor;
       cursor = glfwCreateStandardCursor(variantToCursorShape(shape));
-      return (value) cursor;
+      CAMLreturn((value) cursor);
     }
 
     CAMLprim value
     caml_glfwDestroyCursor(value cursor) {
+      CAMLparam1(cursor);
       GLFWcursor *cd = (GLFWcursor *) cursor;
       glfwDestroyCursor(cd);
-      return Val_unit;
+      CAMLreturn(Val_unit);
     }
 
     CAMLprim value
@@ -532,7 +534,7 @@ extern "C" {
       WindowInfo *wd = (WindowInfo *) window;
       GLFWcursor *cd = (GLFWcursor *) cursor;
       glfwSetCursor(wd->pWindow, cd);
-      return Val_unit;
+      CAMLreturn(Val_unit);
     }
 
     CAMLprim value

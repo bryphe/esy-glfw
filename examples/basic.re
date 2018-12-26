@@ -39,8 +39,17 @@ let run = () => {
   glfwSetWindowSize(w, 800, 600);
   glfwSetWindowTitle(w, "reason-glfw example");
 
-  let cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
-  glfwSetCursor(w, cursor);
+  let cursors = [|
+    glfwCreateStandardCursor(GLFW_ARROW_CURSOR),
+    glfwCreateStandardCursor(GLFW_IBEAM_CURSOR),
+    glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR),
+    glfwCreateStandardCursor(GLFW_HAND_CURSOR),
+    glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR),
+    glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR),
+  |];
+  Random.self_init();
+  let cursor = Random.int(Array.length(cursors));
+  glfwSetCursor(w, cursors[cursor]);
 
   glViewport(0, 0, 800, 600);
 
