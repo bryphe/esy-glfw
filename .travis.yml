@@ -20,6 +20,10 @@ matrix:
   - os: osx # OSX 10.12
     node_js: 8
 install:
+- ld -v
+- sudo apt-cache policy binutils
+- sudo apt-get update
+- sudo apt-cache policy binutils
 - travis_retry npm install -g esy@0.4.0
 - travis_wait esy install
 script:
