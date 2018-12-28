@@ -271,3 +271,5 @@ type drawMode =
 
 let glDrawArrays: (drawMode, int, int) => unit;
 let glDrawElements: (drawMode, int, glType, int) => unit;
+
+let captureWindow: (Window.t, string) => unit;

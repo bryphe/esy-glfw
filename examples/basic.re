@@ -319,8 +319,14 @@ let run = () => {
 
   /* glfwMaximizeWindow(w); */
 
+  let frame = ref(0);
   glfwRenderLoop(_t => {
     render();
+    if (frame^ mod 60 == 0) {
+      print_endline("Capturing!");
+      captureWindow(w, Printf.sprintf("scrot%d.tga", frame^));
+    };
+    frame := frame^ + 1;
 
     /* Run the GC so we can catch any GC-related crashes early! */
     Gc.full_major();

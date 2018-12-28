@@ -381,3 +381,5 @@ external glDrawElements: (drawMode, int, glType, int) => unit =
   "caml_glDrawElements";
 
 external printFrameBufferSize: Window.t => unit = "caml_printFrameBufferSize";
+
+external captureWindow: (Window.t, string) => unit = "caml_captureWindow";
