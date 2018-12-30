@@ -473,8 +473,3 @@ function caml_glfwSwapInterval(swapInterval) {
 function caml_glfwTerminate() {
     // no op
 }
-
-// Provides: caml_captureWindow
-function caml_captureWindow(vWindow, vFilename) {
-  throw "caml_captureWindow is not implemented in JS";
-}

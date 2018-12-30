@@ -604,38 +604,4 @@ extern "C" {
         glfwTerminate();
         return Val_unit;
     }
-
-    // Based on https://github.com/Jba03/glReadPixels_example/blob/master/tga.cpp
-    // Is this the best place for this function?
-    CAMLprim value
-    caml_captureWindow(value vWindow, value vFilename) {
-      CAMLparam2(vWindow, vFilename);
-      WindowInfo *wd = (WindowInfo *) vWindow;
-      const char *filename = String_val(vFilename);
-
-      int width, height;
-
-      GLFWwindow *glfwWin = wd->pWindow;
-      glfwGetFramebufferSize(glfwWin, &width, &height);
-
-      uint8_t tga_header[12] = { 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-      uint16_t header[3] = { (uint16_t) width, (uint16_t) height, 0x2018 };
-
-      // Array of 24-bit (3 byte) pixels of length width * height
-      size_t image_size = width * height * 3;
-      GLubyte *buffer = (GLubyte *) malloc(image_size * sizeof(GLubyte));
-
-      glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, buffer);
-
-      FILE *fd = fopen(filename, "wb");
-      fwrite(tga_header, 1, 12, fd);
-      fwrite(header, 2, 3, fd);
-      fwrite(buffer, sizeof(GLubyte), image_size, fd);
-      fclose(fd);
-
-      free(buffer);
-
-      CAMLreturn(Val_unit);
-    }
 }

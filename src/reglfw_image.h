@@ -1,4 +1,3 @@
-
 extern "C" {
     struct ReglfwImageInfo {
         int width;
@@ -15,4 +14,16 @@ extern "C" {
         // Actual data - should be width*height*numChannels*channelSize bytes!
         unsigned char* data;
     };
+
+    CAMLprim value
+    caml_createImage(value vWidth, value vHeight, value vNumChannels, value vChannelSize);
+
+    CAMLprim value
+    caml_destroyImage(value vImage);
+
+    CAMLprim value
+    caml_getImageBuffer(value vImage);
+
+    CAMLprim value
+    caml_saveImage(value vImage, value path);
 }

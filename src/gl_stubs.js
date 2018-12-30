@@ -261,3 +261,24 @@ function caml_glVertexAttribPointer(attributeLocation, numComponents) {
 function caml_glEnableVertexAttribArray(attributeLocation) {
     joo_global_object.gl.enableVertexAttribArray(attributeLocation);
 }
+
+// Provides: caml_glReadPixels
+function caml_glReadPixels(x, y, width, height, vFormat, vType, data) {
+  var format, type;
+  switch (vFormat) {
+  case 0: format = joo_global_object.gl.RGB; break;
+  case 1: format = joo_global_object.gl.RGBA; break;
+  default: throw "Unrecognized pixel format";
+  }
+
+  switch (vType) {
+  case 0: type = joo_global_object.gl.UNSIGNED_BYTE; break;
+  case 1: type = joo_global_object.gl.UNSIGNED_SHORT_5_6_5; break;
+  case 2: type = joo_global_object.gl.UNSIGNED_SHORT_4_4_4_4; break;
+  case 3: type = joo_global_object.gl.UNSIGNED_SHORT_5_5_5_1; break;
+  case 4: type = joo_global_object.gl.UNSIGNED_FLOAT; break;
+  default: throw "Unrecognized pixel type";
+  }
+
+  joo_global_object.gl.readPixels(x, y, width, height, format, type, data);
+}

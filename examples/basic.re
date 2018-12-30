@@ -319,6 +319,16 @@ let run = () => {
 
   /* glfwMaximizeWindow(w); */
 
+  let captureWindow(w, filename) {
+    let size = glfwGetFramebufferSize(w);
+    let image = Image.create(~width=size.width, ~height=size.height,
+                             ~numChannels=3, ~channelSize=1);
+    let buffer = Image.getBuffer(image);
+    glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, buffer);
+    Image.save(image, filename);
+    Image.destroy(image);
+  };
+
   let frame = ref(0);
   glfwRenderLoop(_t => {
     render();

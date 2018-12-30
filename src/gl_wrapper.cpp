@@ -38,7 +38,7 @@ extern "C" {
                 return 0;
         }
     }
-    
+
     GLenum variantToEnableOption(value vVal) {
         switch (Int_val(vVal)) {
             case 0:
@@ -61,6 +61,12 @@ extern "C" {
                 return GL_UNSIGNED_BYTE;
             case 2:
                 return GL_UNSIGNED_SHORT;
+            case 3:
+                return GL_UNSIGNED_SHORT_5_6_5;
+            case 4:
+                return GL_UNSIGNED_SHORT_4_4_4_4;
+            case 5:
+                return GL_UNSIGNED_SHORT_5_5_5_1;
             default:
                 warn("Unexpected GL type!");
                 return 0;
@@ -139,6 +145,16 @@ extern "C" {
             default:
                 return GL_TRIANGLE_STRIP;
         }
+    }
+
+    GLenum variantToPixelFormat(value vFormat) {
+      switch (Int_val(vFormat)) {
+      case 0: return GL_RGB;
+      case 1: return GL_RGBA;
+      default:
+        warn("Unsupported pixel format!");
+        return 0;
+      }
     }
 
     CAMLprim value
@@ -580,5 +596,53 @@ extern "C" {
     caml_glUnbindBuffer(value unit) {
         printf("TODO: glUnbindBuffer\n");
         return Val_unit;
+    }
+
+    /* 2 copies of this stub, since the OCaml runtime requires a native
+       version & a bytecode version for functions with >5 parameters. */
+    CAMLprim value
+    caml_glReadPixels_native(value vX, value vY, value vWidth, value vHeight,
+                             value vFormat, value vType, value vData) {
+      CAMLparam5(vX, vY, vWidth, vHeight, vFormat);
+      CAMLxparam2(vType, vData);
+
+      GLint x = (GLint) Int_val(vX);
+      GLint y = (GLint) Int_val(vY);
+
+      GLsizei width = (GLsizei) Int_val(vWidth);
+      GLsizei height = (GLsizei) Int_val(vHeight);
+
+      GLenum format = variantToPixelFormat(vFormat);
+      GLenum type = variantToType(vType);
+
+      void *data = (void *) vData;
+
+      glReadPixels(x, y, width, height, format, type, data);
+
+      CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_glReadPixels_bytecode(value * argv, int argc) {
+      value vX = argv[0], vY = argv[1], vWidth = argv[2],
+            vHeight = argv[3], vFormat = argv[4],
+            vType = argv[5], vData = argv[6];
+      CAMLparam5(vX, vY, vWidth, vHeight, vFormat);
+      CAMLxparam2(vType, vData);
+
+      GLint x = (GLint) Int_val(vX);
+      GLint y = (GLint) Int_val(vY);
+
+      GLsizei width = (GLsizei) Int_val(vWidth);
+      GLsizei height = (GLsizei) Int_val(vHeight);
+
+      GLenum format = variantToPixelFormat(vFormat);
+      GLenum type = variantToType(vType);
+
+      void *data = (void *) vData;
+
+      glReadPixels(x, y, width, height, format, type, data);
+
+      CAMLreturn(Val_unit);
     }
 }
