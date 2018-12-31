@@ -62,7 +62,9 @@ function caml_saveImage(image, path) {
     bufferIndex++;
   }
   for (var i = 0; i < header.length; i++) {
-    bufferView.setUint16(bufferIndex, header[i]);
+    // The true parameter tells this to use little endianness, which
+    // is required for the TGA file
+    bufferView.setUint16(bufferIndex, header[i], true);
     bufferIndex += 2;
   }
   if (image.data instanceof Uint8Array) {
@@ -72,7 +74,7 @@ function caml_saveImage(image, path) {
     }
   } else if (image.data instanceof Uint16Array) {
     for (var i = 0; i < image.data.length; i++) {
-      bufferView.setUint16(bufferIndex, image.data[i]);
+      bufferView.setUint16(bufferIndex, image.data[i], true);
       bufferIndex += 2;
     }
   } else {
