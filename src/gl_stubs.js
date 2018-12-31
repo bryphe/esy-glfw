@@ -269,7 +269,9 @@ function caml_glReadPixels_bytecode(x, y, width, height, vFormat, vType, data) {
   var format, type;
 
   switch (vFormat) {
-  case 0: format = joo_global_object.gl.RGB; break;
+  case 0:
+    console.log("Warning: Your browser most likely doesn't support GL_RGB. Try GL_RGBA if you see an error");
+    format = joo_global_object.gl.RGB; break;
   case 1: format = joo_global_object.gl.RGBA; break;
   default: throw "Unrecognized pixel format";
   }
@@ -286,3 +288,4 @@ function caml_glReadPixels_bytecode(x, y, width, height, vFormat, vType, data) {
 
   joo_global_object.gl.readPixels(x, y, width, height, format, type, data);
 }
+

@@ -44,6 +44,8 @@ function caml_getImageBuffer(image) {
   return image.data;
 }
 
+var caml_saveImage_anchor;
+
 // Provides: caml_saveImage
 function caml_saveImage(image, path) {
   var buffer = new ArrayBuffer(18 + image.data.byteLength);
@@ -83,17 +85,24 @@ function caml_saveImage(image, path) {
 
   // Based on https://gist.github.com/liabru/11263260
   // and https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
-
   function download(filename, text) {
-    var element = document.createElement('a');
     var blob = new Blob([text], {type: "application/octet-binary"});
-    element.setAttribute('href', URL.createObjectURL(blob));
-    element.setAttribute('download', filename);
 
-    element.style.display = 'none';
-    document.body.appendChild(element);
+    if (!caml_saveImage_anchor) {
+      caml_saveImage_anchor = document.createElement('a');
+      document.body.appendChild(caml_saveImage_anchor);
+      caml_saveImage_anchor.style.display = 'none';
+    } else {
+      // We need to revoke ObjectURLs because they don't get collected by the
+      // browser GC.
+      var objUrl = caml_saveImage_anchor.getAttribute('href');
+      URL.revokeObjectURL(objUrl);
+    }
 
-    element.click();
+    caml_saveImage_anchor.setAttribute('href', URL.createObjectURL(blob));
+    caml_saveImage_anchor.setAttribute('download', filename);
+
+    caml_saveImage_anchor.click();
   }
 
   download(path, bufferView);
