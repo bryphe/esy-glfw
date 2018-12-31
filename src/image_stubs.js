@@ -79,13 +79,20 @@ function caml_saveImage(image, path) {
     throw "TGA image saving only supports Uint8Array and Uint16Array buffers!";
   }
 
-  // Now create a Blob that the browser can download
   // Based on https://gist.github.com/liabru/11263260
-  var fd = new Blob([bufferView], {type: 'application/octet-binary'});
+  // and https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
 
-  var anchor = document.createElement('a');
-  anchor.download = path; // File name to save with
-  anchor.href = (window.webkitURL || window.URL).createObjectURL(fd);
-  anchor.dataset.downloadurl =
-    'application/octet-binary:' + anchor.download + ':' + anchor.href;
+  function download(filename, text) {
+    var element = document.createElement('a');
+    var blob = new Blob([text], {type: "application/octet-binary"});
+    element.setAttribute('href', URL.createObjectURL(blob));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+  }
+
+  download(path, bufferView);
 }

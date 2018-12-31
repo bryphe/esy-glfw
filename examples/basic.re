@@ -322,9 +322,9 @@ let run = () => {
   let captureWindow(w, filename) {
     let size = glfwGetFramebufferSize(w);
     let image = Image.create(~width=size.width, ~height=size.height,
-                             ~numChannels=3, ~channelSize=1);
+                             ~numChannels=4, ~channelSize=1);
     let buffer = Image.getBuffer(image);
-    glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, buffer);
+    glReadPixels(0, 0, size.width, size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
     Image.save(image, filename);
     Image.destroy(image);
   };
@@ -332,7 +332,7 @@ let run = () => {
   let frame = ref(0);
   glfwRenderLoop(_t => {
     render();
-    if (frame^ mod 60 == 0) {
+    if (frame^ mod 600 == 0) {
       print_endline("Capturing!");
       captureWindow(w, Printf.sprintf("scrot%d.tga", frame^));
     };
