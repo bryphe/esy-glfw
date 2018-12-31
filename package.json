@@ -13,7 +13,10 @@
     "install": [
         "esy-installer"
     ],
-    "buildsInSource":"_build"
+    "buildsInSource":"_build",
+    "buildEnv": {
+      "ESY__LOG": "debug"
+    }
   },
   "peerDependencies": {
     "ocaml": "~4.6.0"
