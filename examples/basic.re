@@ -332,8 +332,7 @@ let run = () => {
   let frame = ref(0);
   glfwRenderLoop(_t => {
     render();
-    if (frame^ mod 600 == 0) {
-      print_endline("Capturing!");
+    if (frame^ == 60) {
       captureWindow(w, Printf.sprintf("scrot%d.tga", frame^));
     };
     frame := frame^ + 1;
