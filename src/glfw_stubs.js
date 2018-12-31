@@ -145,8 +145,9 @@ function caml_glfwGetMonitorPos() {
 
 // Provides: caml_glfwGetFramebufferSize
 function caml_glfwGetFramebufferSize(w) {
-    var width = w.canvas.width;
-    var height = w.canvas.height;
+    var pixelRatio = joo_global_object.window.devicePixelRatio;
+    var width = w.canvas.width / pixelRatio;
+    var height = w.canvas.height / pixelRatio;
     return [0, width, height];
 }
 
