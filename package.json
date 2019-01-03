@@ -34,7 +34,8 @@
     "reason-gl-matrix": "^0.2.0"
   },
   "resolutions": {
-    "@opam/cmdliner": "1.0.2"
+    "@opam/cmdliner": "1.0.2",
+    "esy-cmake": "github:esy-packages/esy-cmake#47e0a9d"
   },
   "devDependencies": {
     "ocaml": "~4.6.0"
