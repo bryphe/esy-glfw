@@ -49,12 +49,10 @@ extern "C" {
       uint8_t tga_header[12] = { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
       uint8_t bitsPerPixel = 8 * image->numChannels * image->channelSize;
       // See http://www.paulbourke.net/dataformats/tga/
-      uint8_t imageDescriptor =
-        image->numChannels > 3 ? 0x28 : 0x20;
       uint16_t header[3] = {
         (uint16_t) image->width,
         (uint16_t) image->height,
-        (uint16_t) (((uint16_t) imageDescriptor << 8) | (uint16_t) bitsPerPixel)
+        (uint16_t) bitsPerPixel // Image descriptor = 0
       };
 
       const char *path = String_val(vPath);

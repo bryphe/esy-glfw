@@ -54,8 +54,7 @@ function caml_saveImage(image, path) {
   var tga_header = [0, 0, 2, 0, 0, 0,
                     0, 0, 0, 0, 0, 0];
   var bitsPerPixel = 8 * image.numChannels * image.channelSize;
-  var imageDescriptor = image.numChannels > 3 ? 0x28 : 0x20;
-  var header = [image.width, image.height, (imageDescriptor << 8) | bitsPerPixel];
+  var header = [image.width, image.height, bitsPerPixel];
 
   // Copy in all the data to the new buffer
   var bufferIndex = 0;
