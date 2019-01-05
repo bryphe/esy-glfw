@@ -20,6 +20,8 @@ external glfwSetWindowSize: (Window.t, int, int) => unit =
 [@noalloc]
 external glfwSetWindowPos: (Window.t, int, int) => unit =
   "caml_glfwSetWindowPos";
+external glfwGetWindowSize: Window.t => Window.windowSize =
+  "caml_glfwGetWindowSize";
 external glfwGetFramebufferSize: Window.t => Window.frameBufferSize =
   "caml_glfwGetFramebufferSize";
 [@noalloc] external glfwShowWindow: Window.t => unit = "caml_glfwShowWindow";
