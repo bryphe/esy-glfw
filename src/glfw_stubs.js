@@ -142,12 +142,20 @@ function caml_glfwGetVideoMode() {
 function caml_glfwGetMonitorPos() {
     return [0, 0, 0];
 };
+//
+// Provides: caml_glfwGetWindowSize
+function caml_glfwGetWindowSize(w) {
+    var pixelRatio = joo_global_object.window.devicePixelRatio;
+    var width = w.canvas.width;
+    var height = w.canvas.height;
+    return [0, width, height];
+}
 
 // Provides: caml_glfwGetFramebufferSize
 function caml_glfwGetFramebufferSize(w) {
     var pixelRatio = joo_global_object.window.devicePixelRatio;
-    var width = w.canvas.width / pixelRatio;
-    var height = w.canvas.height / pixelRatio;
+    var width = w.canvas.width * pixelRatio;
+    var height = w.canvas.height * pixelRatio;
     return [0, width, height];
 }
 
