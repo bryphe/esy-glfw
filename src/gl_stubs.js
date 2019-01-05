@@ -287,5 +287,21 @@ function caml_glReadPixels_bytecode(x, y, width, height, vFormat, vType, data) {
   }
 
   joo_global_object.gl.readPixels(x, y, width, height, format, type, data);
+
+  // If we're on a little-endian system, the R/B channels are swapped
+  // So let's determine endianness...
+  var marker = new ArrayBuffer(4);
+  var u32view = new Uint32Array(marker);
+  u32view[0] = 0x12345678;
+  var u8view = new Uint8Array(marker);
+  if (u8view[0] == 0x78 && type == joo_global_object.gl.UNSIGNED_BYTE) {
+    // We are little-endian. Onto the swap...
+    var numChannels = format == joo_global_object.gl.RGBA ? 4 : 3;
+    for (var i = 0; i < width * height * numChannels; i += numChannels) {
+      var tmp = data[i];
+      data[i] = data[i+2];
+      data[i+2] = tmp;
+    }
+  }
 }
 

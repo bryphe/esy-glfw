@@ -619,6 +619,19 @@ extern "C" {
 
       glReadPixels(x, y, width, height, format, type, data);
 
+      // If we're on a little-endian system, the R/B channels are swapped
+      // So let's determine endianness...
+      unsigned int marker = 0x12345678;
+      if (*(char *) &marker == 0x78 && type == GL_UNSIGNED_BYTE) {
+        // We are little-endian. Onto the swap...
+        int numChannels = format == GL_RGBA ? 4 : 3;
+        for (int i = 0; i < width * height * numChannels; i += numChannels) {
+          uint8_t tmp = *((uint8_t *) data + i);
+          *((uint8_t *) data + i) = *((uint8_t *) data + i + 2);
+          *((uint8_t *) data + i + 2) = tmp;
+        }
+      }
+
       CAMLreturn(Val_unit);
     }
 
@@ -642,6 +655,19 @@ extern "C" {
       void *data = (void *) vData;
 
       glReadPixels(x, y, width, height, format, type, data);
+
+      // If we're on a little-endian system, the R/B channels are swapped
+      // So let's determine endianness...
+      unsigned int marker = 0x12345678;
+      if (*(char *) &marker == 0x78 && type == GL_UNSIGNED_BYTE) {
+        // We are little-endian. Onto the swap...
+        int numChannels = format == GL_RGBA ? 4 : 3;
+        for (int i = 0; i < width * height * numChannels; i += numChannels) {
+          uint8_t tmp = *((uint8_t *) data + i);
+          *((uint8_t *) data + i) = *((uint8_t *) data + i + 2);
+          *((uint8_t *) data + i + 2) = tmp;
+        }
+      }
 
       CAMLreturn(Val_unit);
     }
