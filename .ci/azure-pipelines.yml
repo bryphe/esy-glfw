@@ -8,7 +8,6 @@ jobs:
   steps:
   - script: sudo apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libegl1-mesa-dev mesa-utils mesa-utils-extra ragel xvfb
   - template: esy-build-steps.yml
-  - script: esy b ./travis-test.sh
 
 - job: MacOS
   pool:
@@ -17,16 +16,12 @@ jobs:
   - script: brew update
   - script: brew install libpng
   - template: esy-build-steps.yml
-  - script: glxinfo
-    displayName: "glxinfo"
-  - script: esy b dune runtest
 
 - job: Windows
   pool:
     vmImage: 'vs2017-win2016'
   steps:
   - template: esy-build-steps.yml
-  - script: esy b dune runtest
 
 - job: Release
   displayName: Release

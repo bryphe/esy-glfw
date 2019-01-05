@@ -16,11 +16,10 @@ matrix:
            - libegl1-mesa-dev
            - mesa-utils
            - mesa-utils-extra
-           - gcc-7
+  - os: osx
 
     node_js: 8
 install:
-- ld -v
 - travis_retry npm install -g esy@0.4.0
 - travis_wait esy install
 script:
