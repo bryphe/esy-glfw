@@ -14,6 +14,7 @@ let glfwSwapBuffers: Window.t => unit;
 let glfwSetWindowPos: (Window.t, int, int) => unit;
 let glfwSetWindowSize: (Window.t, int, int) => unit;
 let glfwGetFramebufferSize: (Window.t) => Window.frameBufferSize;
+let glfwGetWindowSize: (Window.t) => Window.windowSize;
 let glfwMaximizeWindow: (Window.t) => unit;
 let glfwSetWindowTitle: (Window.t, string) => unit;
 let glfwShowWindow: (Window.t) => unit;
@@ -115,6 +116,18 @@ type glfwCursorPos = {
     mouseY: float
 };
 let glfwGetCursorPos: Window.t => glfwCursorPos;
+
+type glfwCursor;
+type glfwCursorShape =
+  | GLFW_ARROW_CURSOR
+  | GLFW_IBEAM_CURSOR
+  | GLFW_CROSSHAIR_CURSOR
+  | GLFW_HAND_CURSOR
+  | GLFW_HRESIZE_CURSOR
+  | GLFW_VRESIZE_CURSOR;
+let glfwCreateStandardCursor: (glfwCursorShape) => glfwCursor;
+let glfwDestroyCursor: (glfwCursor) => unit;
+let glfwSetCursor: (Window.t, glfwCursor) => unit;
 
 let printFrameBufferSize: Window.t => unit;
 
@@ -219,7 +232,10 @@ type texturePixelDataFormat =
 type glType =
   | GL_FLOAT
   | GL_UNSIGNED_BYTE
-  | GL_UNSIGNED_SHORT;
+  | GL_UNSIGNED_SHORT
+  | GL_UNSIGNED_SHORT_5_6_5
+  | GL_UNSIGNED_SHORT_4_4_4_4
+  | GL_UNSIGNED_SHORT_5_5_5_1;
 
 type texture;
 let glCreateTexture: unit => texture;
@@ -259,3 +275,6 @@ type drawMode =
 
 let glDrawArrays: (drawMode, int, int) => unit;
 let glDrawElements: (drawMode, int, glType, int) => unit;
+
+let glReadPixels:
+  (int, int, int, int, texturePixelDataFormat, glType, 'pixelBuffer) => unit;

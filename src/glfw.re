@@ -20,6 +20,8 @@ external glfwSetWindowSize: (Window.t, int, int) => unit =
 [@noalloc]
 external glfwSetWindowPos: (Window.t, int, int) => unit =
   "caml_glfwSetWindowPos";
+external glfwGetWindowSize: Window.t => Window.windowSize =
+  "caml_glfwGetWindowSize";
 external glfwGetFramebufferSize: Window.t => Window.frameBufferSize =
   "caml_glfwGetFramebufferSize";
 [@noalloc] external glfwShowWindow: Window.t => unit = "caml_glfwShowWindow";
@@ -213,6 +215,22 @@ let glfwGetCursorPos = w => {
   v;
 };
 
+type glfwCursor;
+type glfwCursorShape =
+  | GLFW_ARROW_CURSOR
+  | GLFW_IBEAM_CURSOR
+  | GLFW_CROSSHAIR_CURSOR
+  | GLFW_HAND_CURSOR
+  | GLFW_HRESIZE_CURSOR
+  | GLFW_VRESIZE_CURSOR;
+
+external glfwCreateStandardCursor: glfwCursorShape => glfwCursor =
+  "caml_glfwCreateStandardCursor";
+[@noalloc] external glfwDestroyCursor: glfwCursor => unit =
+  "caml_glfwDestroyCursor";
+[@noalloc] external glfwSetCursor: Window.t => glfwCursor => unit =
+  "caml_glfwSetCursor";
+
 /* GL */
 type shader;
 type shaderType =
@@ -325,7 +343,10 @@ type texturePixelDataFormat =
 type glType =
   | GL_FLOAT
   | GL_UNSIGNED_BYTE
-  | GL_UNSIGNED_SHORT;
+  | GL_UNSIGNED_SHORT
+  | GL_UNSIGNED_SHORT_5_6_5
+  | GL_UNSIGNED_SHORT_4_4_4_4
+  | GL_UNSIGNED_SHORT_5_5_5_1;
 
 external glCreateTexture: unit => texture = "caml_glCreateTexture";
 external glBindTexture: (textureType, texture) => unit = "caml_glBindTexture";
@@ -365,3 +386,7 @@ external glDrawElements: (drawMode, int, glType, int) => unit =
   "caml_glDrawElements";
 
 external printFrameBufferSize: Window.t => unit = "caml_printFrameBufferSize";
+
+external glReadPixels:
+  (int, int, int, int, texturePixelDataFormat, glType, 'pixelBuffer) => unit =
+  "caml_glReadPixels_bytecode" "caml_glReadPixels_native";

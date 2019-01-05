@@ -19,10 +19,10 @@ jobs:
 
   steps:
   - script: sudo apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libegl1-mesa-dev mesa-utils mesa-utils-extra ragel xvfb
-  - template: use-node.yml
-  - template: restore-build-cache.yml
-  - template: esy-build-steps.yml
-  - template: publish-build-cache.yml
+  - template: .ci/use-node.yml
+  - template: .ci/restore-build-cache.yml
+  - template: .ci/esy-build-steps.yml
+  - template: .ci/publish-build-cache.yml
 
 - job: MacOS
   timeoutInMinutes: 0
@@ -39,13 +39,13 @@ jobs:
   steps:
   - script: brew update
   - script: brew install libpng
-  - template: use-node.yml
-  - template: restore-build-cache.yml
-  - template: esy-build-steps.yml
-  - template: publish-build-cache.yml
+  - template: .ci/use-node.yml
+  - template: .ci/restore-build-cache.yml
+  - template: .ci/esy-build-steps.yml
+  - template: .ci/publish-build-cache.yml
 
 - job: Windows
-  timeoutInMinutes: 80
+  timeoutInMinutes: 0
   pool:
     vmImage: 'vs2017-win2016'
 
@@ -54,13 +54,14 @@ jobs:
     STAGING_DIRECTORY_UNIX: /C/Users/VssAdministrator/STAGING
     ESY__CACHE_INSTALL_PATH: /C/Users/VssAdministrator/.esy/3_/i
     ESY__CACHE_SOURCE_TARBALL_PATH: /C/Users/VssAdministrator/.esy/source/i
+    ESY__LOG: debug
     # ESY__NPM_ROOT: /C/npm/prefix/node_modules/esy
 
   steps:
-  - template: use-node.yml
-  - template: restore-build-cache.yml
-  - template: esy-build-steps.yml
-  - template: publish-build-cache.yml
+  - template: .ci/use-node.yml
+  - template: .ci/restore-build-cache.yml
+  - template: .ci/esy-build-steps.yml
+  - template: .ci/publish-build-cache.yml
 
 - job: Release
   timeoutInMinutes: 0

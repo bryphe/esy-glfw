@@ -261,3 +261,31 @@ function caml_glVertexAttribPointer(attributeLocation, numComponents) {
 function caml_glEnableVertexAttribArray(attributeLocation) {
     joo_global_object.gl.enableVertexAttribArray(attributeLocation);
 }
+
+// Provides: caml_glReadPixels_bytecode
+function caml_glReadPixels_bytecode(x, y, width, height, vFormat, vType, data) {
+  // Implements the _bytecode version since we have >7 parameters and because
+  // js_of_ocaml uses the bytecode backend.
+  var format, type;
+
+  switch (vFormat) {
+  case 0:
+    console.log("Warning: Your browser most likely doesn't support GL_RGB. Try GL_RGBA if you see an error");
+    format = joo_global_object.gl.RGB; break;
+  case 1: format = joo_global_object.gl.RGBA; break;
+  default: throw "Unrecognized pixel format";
+  }
+
+  switch (vType) {
+  case 0: type = joo_global_object.gl.UNSIGNED_FLOAT; break;
+  case 1: type = joo_global_object.gl.UNSIGNED_BYTE; break;
+  case 2: type = joo_global_object.gl.UNSIGNED_SHORT; break;
+  case 3: type = joo_global_object.gl.UNSIGNED_SHORT_5_6_5; break;
+  case 4: type = joo_global_object.gl.UNSIGNED_SHORT_4_4_4_4; break;
+  case 5: type = joo_global_object.gl.UNSIGNED_SHORT_5_5_5_1; break;
+  default: throw "Unrecognized pixel type";
+  }
+
+  joo_global_object.gl.readPixels(x, y, width, height, format, type, data);
+}
+
