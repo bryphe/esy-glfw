@@ -5,6 +5,7 @@
 #include <caml/memory.h>
 #include <caml/alloc.h>
 #include <caml/callback.h>
+#include <caml/fail.h>
 
 #include <glad/glad.h>
 
@@ -534,7 +535,11 @@ extern "C" {
       CAMLparam1(shape);
       GLFWcursor *cursor;
       cursor = glfwCreateStandardCursor(variantToCursorShape(shape));
-      CAMLreturn((value) cursor);
+      if (cursor == NULL) { // If there was an error
+        caml_failwith("Error thrown while creating GLFW cursor. Make sure to init GLFW before creating a cursor");
+      } else {
+        CAMLreturn((value) cursor);
+      }
     }
 
     CAMLprim value
