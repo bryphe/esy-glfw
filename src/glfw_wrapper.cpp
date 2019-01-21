@@ -206,7 +206,7 @@ extern "C" {
     CAMLprim value
     caml_glfwCreateWindow(value iWidth, value iHeight, value vSharedWindow, value sTitle)
     {
-      CAMLparam3(iWidth, iHeight, sTitle);
+      CAMLparam4(iWidth, iHeight, vSharedWindow, sTitle);
 
       GLFWwindow* wd;           /* window desciptor/handle */
       int w = Int_val(iWidth);
@@ -216,12 +216,10 @@ extern "C" {
 
       if (vSharedWindow == Val_none) {
         wd = glfwCreateWindow(w, h, s, NULL, NULL);
-        printf("Shared Window is None\n");
       } else {
         WindowInfo* sharedWindowInfo = (WindowInfo *)Some_val(vSharedWindow);
         GLFWwindow* sharedWindow = sharedWindowInfo->pWindow;
         wd = glfwCreateWindow(w, h, s, NULL, sharedWindow);
-        printf("Shared Window is Some\n");
       };
 
       struct WindowInfo* pWindowInfo = (WindowInfo *)malloc(sizeof(WindowInfo));

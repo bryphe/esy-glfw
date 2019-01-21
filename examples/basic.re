@@ -44,7 +44,7 @@ let run = () => {
   glfwSetWindowTitle(primaryWindow, "reason-glfw example");
 
   let secondaryWindow =
-    glfwCreateWindow(100, 50, ~sharedWindow=primaryWindow, "secondWindow");
+    glfwCreateWindow(100, 50, ~sharedContext=primaryWindow, "secondWindow");
   glfwSetWindowPos(secondaryWindow, vidMode.width / 2, vidMode.height / 2);
   glfwSetWindowSize(secondaryWindow, 800, 600);
   glfwSetWindowTitle(secondaryWindow, "second window");
