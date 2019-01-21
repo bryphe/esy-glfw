@@ -200,6 +200,8 @@ let run = () => {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthFunc(GL_LEQUAL);
 
+    glBindTexture(GL_TEXTURE_2D, texture);
+
     glUseProgram(shaderProgram);
     let m = Mat4.create();
     let v = Vec3.create(0., 0., -10.);
