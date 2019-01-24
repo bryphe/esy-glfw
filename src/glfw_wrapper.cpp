@@ -15,13 +15,15 @@
 
 #include <reglfw_image.h>
 
-
 extern "C" {
+
+static int _nextWindowId = 0;
 
 #define Val_none Val_int(0)
 #define Some_val(v) Field(v,0)
 
     struct WindowInfo {
+        int id;
         GLFWwindow* pWindow;
         bool isDestroyed;
         value vSetFramebufferSizeCallback;
@@ -95,7 +97,7 @@ extern "C" {
     WindowInfo* getWindowInfoFromWindow(GLFWwindow *w) {
         WindowInfo *pInfo;
         for (int i = 0; i < sActiveWindowCount; i++) {
-            if (sActiveWindows[i] && sActiveWindows[i]->pWindow) {
+            if (sActiveWindows[i] && sActiveWindows[i]->pWindow && sActiveWindows[i]->pWindow == w) {
                 pInfo = sActiveWindows[i];
             }
         }
@@ -232,7 +234,11 @@ extern "C" {
       };
 
 
+      int id = _nextWindowId;
+      _nextWindowId++;
+
       struct WindowInfo* pWindowInfo = (WindowInfo *)malloc(sizeof(WindowInfo));
+      pWindowInfo->id = id;
       pWindowInfo->pWindow = wd;
       pWindowInfo->isDestroyed = false;
       pWindowInfo->vSetFramebufferSizeCallback = Val_unit;
