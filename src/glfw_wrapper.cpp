@@ -17,13 +17,10 @@
 
 extern "C" {
 
-static int _nextWindowId = 0;
-
 #define Val_none Val_int(0)
 #define Some_val(v) Field(v,0)
 
     struct WindowInfo {
-        int id;
         GLFWwindow* pWindow;
         bool isDestroyed;
         value vSetFramebufferSizeCallback;
@@ -233,12 +230,7 @@ static int _nextWindowId = 0;
         wd = glfwCreateWindow(w, h, s, NULL, sharedWindow);
       };
 
-
-      int id = _nextWindowId;
-      _nextWindowId++;
-
       struct WindowInfo* pWindowInfo = (WindowInfo *)malloc(sizeof(WindowInfo));
-      pWindowInfo->id = id;
       pWindowInfo->pWindow = wd;
       pWindowInfo->isDestroyed = false;
       pWindowInfo->vSetFramebufferSizeCallback = Val_unit;
