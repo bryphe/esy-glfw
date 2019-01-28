@@ -21,7 +21,6 @@
     #include <winuser.h>
 #elif __APPLE__
     #define GLFW_EXPOSE_NATIVE_COCOA
-    #import "ReveryCocoa.h"
 #else
     #define GLFW_EXPOSE_NATIVE_X11
 #endif
@@ -223,40 +222,13 @@ extern "C" {
 
 #ifdef _WIN32
         HWND hwnd = glfwGetWin32Window(pWinInfo->pWindow);
-        HWND hwndEdit = CreateWindowExA(
-            0, 
-            "EDIT",
-            NULL,
-            WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL,
-            0, 0, 0, 0,
-            hwnd,
-            (HMENU) 100,
-            (HINSTANCE) GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
-            NULL);
-
-        MoveWindow(hwndEdit, 0, 0, 200, 200, TRUE);
-
-        HWND hwndButton = CreateWindow(
-         "BUTTON",
-         "OK",
-         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-         200, 
-         200,
-         100,
-         100,
-         hwnd,
-         NULL,
-         (HINSTANCE) GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
-         NULL
-        );
-        printf("native window handle: %p\n", hwnd);
+        return (value)hwnd;
 #elif __APPLE__
-       printf("tried to render input\n");
-       void* win = glfwGetCocoaWindow(pWinInfo->pWindow);
-       test_render(win);
-       printf("tried to render input: %p\n", win);
+       void* pWin = glfwGetCocoaWindow(pWinInfo->pWindow);
+       return (value)pWin;
 #else
-        printf("NO native handle available\n");
+       void *pWin = glfwGetX11Window(pWinInfo->pWindow);
+       return (value)pWin;
 #endif
     }
 
