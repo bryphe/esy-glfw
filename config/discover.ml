@@ -20,8 +20,7 @@ let get_os =
         | _ -> Unknown
 
 
-let c_flags = ["-I"; (Sys.getenv "GLFW_INCLUDE_PATH"); "-I"; "./../../../include"; "-I"; "./../../../src"; "-x"; "objective-c"]
-let cxx_flags = ["-I"; (Sys.getenv "GLFW_INCLUDE_PATH"); "-I"; "./../../../include"; "-I"; "./../../../src"]
+let c_flags = ["-I"; (Sys.getenv "GLFW_INCLUDE_PATH"); "-I"; "./../../../include"; "-I"; "./../../../src"]
 
 let libPath = "-L" ^ (Sys.getenv "GLFW_LIB_PATH")
 

@@ -198,6 +198,11 @@ function caml_test_callback_failure(s, f) {
     f(caml_js_to_string("failed"));
 }
 
+// Provides: caml_glfwGetNativeWindow
+function caml_glfwGetNativeWindow(w) {
+    return w.canvas;
+}
+
 //Provides: caml_glfwCreateWindow
 function caml_glfwCreateWindow(width, height, title) {
     var canvas = document.createElement("canvas");
