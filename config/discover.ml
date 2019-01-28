@@ -55,7 +55,7 @@ let flags =
 let cxx_flags =
     match get_os with
     | Windows -> c_flags @ ["-fno-exceptions"; "-fno-rtti"; "-lstdc++"]
-    | _ -> cxx_flags
+    | _ -> c_flags
 ;;
 
 Configurator.V1.Flags.write_sexp "c_flags.sexp" c_flags;
