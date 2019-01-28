@@ -227,8 +227,8 @@ extern "C" {
        void* pWin = glfwGetCocoaWindow(pWinInfo->pWindow);
        return (value)pWin;
 #else
-       void *pWin = glfwGetX11Window(pWinInfo->pWindow);
-       return (value)pWin;
+       long unsigned int lWin = glfwGetX11Window(pWinInfo->pWindow);
+       return (value)lWin;
 #endif
     }
 
