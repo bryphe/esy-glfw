@@ -35,6 +35,21 @@ __WEB:__
 
 This project is licensed under the MIT License - see [LICENSE](LICENSE) for more details.
 
+## Design
+
+For the most part, we strive to have API compatibility for [GLFW](https://glfw.org) and OpenGL. This library supports compilation to both native and JSOO targets. In the JSOO case, we emulate the GLFW APIs.
+
+We do have some exceptions:
+
+#### `glfwGetNativeWindow`
+
+We wrap the [native window access](https://www.glfw.org/docs/latest/group__native.html) functions in a function `glfwGetNativeWindow`. This returns a `NativeWindow.t`, where the underlying value is platform specific:
+
+- __Windows__ - `HWND` for the current window.
+- __OSX__ - `void *` pointer to the `NSWindow`.
+- __Linux__ - `void *` pointer to the X11 Window.
+- __JS__ - `HTMLCanvasElement` representing the window.
+
 ## Acknowledgements
 
 - The test texture is provided by [LearnOpenGL](https://www.learnopengl) - an excellent resource for OpenGL!
