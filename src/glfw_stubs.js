@@ -145,7 +145,10 @@ function caml_glfwGetMonitorPos() {
 
 // Provides: caml_glfwGetMonitorPhysicalSize
 function caml_glfwGetMonitorPhysicalSize() {
-  return [0, 0, 0];
+  const dpi = window.devicePixelRatio * 96;
+  const widthMM = window.innerWidth / (25.4 * 96 * window.devicePixelRatio)
+  const heightMM = window.innerHeight / (25.4 * 96 * window.devicePixelRatio)
+  return [0, widthMM, heightMM];
 };
 
 // Provides: caml_glfwGetWindowSize
