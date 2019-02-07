@@ -554,7 +554,7 @@ extern "C" {
 
         ret = caml_alloc(2, 0);
         Store_field(ret, 0, Val_int(widthMM));
-        Store_field(ret, 0, Val_int(heightMM));
+        Store_field(ret, 1, Val_int(heightMM));
 
         CAMLreturn(ret);
     }
