@@ -36,8 +36,7 @@
     "@opam/js_of_ocaml-lwt": "^3.3.0",
     "@opam/lwt": "^4.0.0",
     "@opam/lwt_ppx": "^1.1.0",
-    "esy-glfw": "^3.2.1008",
-    "esy-cmake": "^0.3.4",
+    "esy-glfw-prebuilt": "^3.2.1008",
     "reason-gl-matrix": "^0.9.9301"
   },
   "resolutions": {
