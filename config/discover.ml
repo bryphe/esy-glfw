@@ -41,6 +41,8 @@ let flags =
         @ cclib("-lX11")
         @ cclib("-lXxf86vm")
         @ cclib("-lXrandr")
+        @ cclib("-lXinerama")
+        @ cclib("-lXcursor")
         @ cclib("-lpthread")
         @ cclib("-lXi")
     | _ -> []
