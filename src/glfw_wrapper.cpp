@@ -6,6 +6,7 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/threads.h>
 
 #include <glad/glad.h>
 
@@ -681,7 +682,7 @@ extern "C" {
     caml_glfwSwapBuffers(value window)
     {
         WindowInfo *wd = (WindowInfo*)window;
-        GLFWWindow *pWindow = wd->pWindow;
+        GLFWwindow *pWindow = wd->pWindow;
         caml_release_runtime_system();
         glfwSwapBuffers(pWindow);
         caml_acquire_runtime_system();
