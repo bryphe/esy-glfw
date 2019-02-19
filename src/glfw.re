@@ -16,7 +16,6 @@ external glfwWindowShouldClose: Window.t => bool =
 
 external glfwPollEvents: unit => unit = "caml_glfwPollEvents";
 external glfwTerminate: unit => unit = "caml_glfwTerminate";
-[@noalloc]
 external glfwSwapBuffers: Window.t => unit = "caml_glfwSwapBuffers";
 external glfwSetWindowSize: (Window.t, int, int) => unit =
   "caml_glfwSetWindowSize";
