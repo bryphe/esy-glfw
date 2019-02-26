@@ -142,7 +142,16 @@ function caml_glfwGetVideoMode() {
 function caml_glfwGetMonitorPos() {
     return [0, 0, 0];
 };
-//
+
+// Provides: caml_glfwGetMonitorPhysicalSize
+function caml_glfwGetMonitorPhysicalSize() {
+  var win = joo_global_object.window;
+  var dpi = 96;
+  var widthMM = (win.innerWidth * 25.4) / dpi;
+  var heightMM = (win.innerHeight * 25.4) / dpi;
+  return [0, widthMM, heightMM];
+};
+
 // Provides: caml_glfwGetWindowSize
 function caml_glfwGetWindowSize(w) {
     var pixelRatio = joo_global_object.window.devicePixelRatio;
@@ -196,6 +205,11 @@ function caml_glfwJavascriptRenderLoop(loopFunc) {
 // Requires: caml_js_to_string
 function caml_test_callback_failure(s, f) {
     f(caml_js_to_string("failed"));
+}
+
+// Provides: caml_glfwGetNativeWindow
+function caml_glfwGetNativeWindow(w) {
+    return w.canvas;
 }
 
 //Provides: caml_glfwCreateWindow
@@ -330,6 +344,16 @@ function caml_glfwSetWindowTitle(w, title) {
     var t = title.toString();
     w.title = t;
     document.title = t;
+}
+
+// Provides: caml_glfwSetWindowIcon
+function caml_glfwSetWindowIcon(w, path) {
+    var p = path.toString();
+    var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+    link.type = 'image/x-icon';
+    link.rel = 'shortcut icon';
+    link.href = p;
+    document.getElementsByTagName('head')[0].appendChild(link);
 }
 
 // Provides: caml_glfwWindowHint

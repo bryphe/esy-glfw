@@ -6,12 +6,27 @@
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/fail.h>
+#include <caml/threads.h>
 
 #include <glad/glad.h>
 
 #define GLFW_INCLUDE_NONE
 
 #include <GLFW/glfw3.h>
+
+#include "stb_image.h"
+
+// Include native GLFW access functions
+// Documentation here: https://www.glfw.org/docs/latest/group__native.html
+#ifdef _WIN32
+    #define GLFW_EXPOSE_NATIVE_WIN32
+    #include <winuser.h>
+#elif __APPLE__
+    #define GLFW_EXPOSE_NATIVE_COCOA
+#else
+    #define GLFW_EXPOSE_NATIVE_X11
+#endif
+#include <GLFW/glfw3native.h>
 
 #include <reglfw_image.h>
 
@@ -201,6 +216,22 @@ extern "C" {
         if (pWinInfo && pWinInfo->vCharCallback != Val_unit) {
             (void) caml_callback2((value)pWinInfo->vCharCallback, ((value)(void *)pWinInfo), Val_int(codepoint));
         }
+    }
+
+    CAMLprim value
+    caml_glfwGetNativeWindow(value vWindow) {
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+
+#ifdef _WIN32
+        HWND hwnd = glfwGetWin32Window(pWinInfo->pWindow);
+        return (value)hwnd;
+#elif __APPLE__
+       void* pWin = glfwGetCocoaWindow(pWinInfo->pWindow);
+       return (value)pWin;
+#else
+       long unsigned int lWin = glfwGetX11Window(pWinInfo->pWindow);
+       return (value)lWin;
+#endif
     }
 
     CAMLprim value
@@ -514,6 +545,23 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwGetMonitorPhysicalSize(value vMonitor)
+    {
+        CAMLparam1(vMonitor);
+        CAMLlocal1(ret);
+        GLFWmonitor* zMonitor = (GLFWmonitor*)vMonitor;
+
+        int widthMM, heightMM;
+        glfwGetMonitorPhysicalSize(zMonitor, &widthMM, &heightMM);
+
+        ret = caml_alloc(2, 0);
+        Store_field(ret, 0, Val_int(widthMM));
+        Store_field(ret, 1, Val_int(heightMM));
+
+        CAMLreturn(ret);
+    }
+
+    CAMLprim value
     caml_glfwSetCursorPosCallback(value vWindow, value vCallback) {
         CAMLparam2(vWindow, vCallback);
 
@@ -577,6 +625,23 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwSetWindowIcon(value vWindow, value vPath) {
+        WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
+
+        int numberOfImages = 1;
+        GLFWimage images[1];
+        char *szPath = String_val(vPath);
+
+        int channels;
+        int width;
+        int height;
+        images[0].pixels = stbi_load(szPath, &images[0].width, &images[0].height, 0, 4);
+        glfwSetWindowIcon(pWindowInfo->pWindow, 1, images);
+
+        return Val_unit;
+    }
+
+    CAMLprim value
     caml_printFrameBufferSize(value window)
     {
         WindowInfo* wd = (WindowInfo*)window;
@@ -635,7 +700,10 @@ extern "C" {
     caml_glfwSwapBuffers(value window)
     {
         WindowInfo *wd = (WindowInfo*)window;
-        glfwSwapBuffers(wd->pWindow);
+        GLFWwindow *pWindow = wd->pWindow;
+        caml_release_runtime_system();
+        glfwSwapBuffers(pWindow);
+        caml_acquire_runtime_system();
         return Val_unit;
     }
 

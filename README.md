@@ -11,7 +11,7 @@
 `esy` is used for building, so if you don't have `esy`, install it:
 
 ```
-npm install -g esy@0.2.11
+npm install -g esy@0.4.9
 ```
 
 - `esy install`
@@ -35,8 +35,23 @@ __WEB:__
 
 This project is licensed under the MIT License - see [LICENSE](LICENSE) for more details.
 
+## Design
+
+For the most part, we strive to have API compatibility for [GLFW](https://glfw.org) and OpenGL. This library supports compilation to both native and JSOO targets. In the JSOO case, we emulate the GLFW APIs.
+
+We do have some exceptions:
+
+#### `glfwGetNativeWindow`
+
+We wrap the [native window access](https://www.glfw.org/docs/latest/group__native.html) functions in a function `glfwGetNativeWindow`. This returns a `NativeWindow.t`, where the underlying value is platform specific:
+
+- __Windows__ - `HWND` for the current window.
+- __OSX__ - `void *` pointer to the `NSWindow`.
+- __Linux__ - `void *` pointer to the X11 Window.
+- __JS__ - `HTMLCanvasElement` representing the window.
+
 ## Acknowledgements
 
-- The test texture is provided by [LearnOpenGL](https://www.learnopengl) - an excellent resource for OpenGL!
+- The test texture is provided by [LearnOpenGL](https://learnopengl.com) - an excellent resource for OpenGL!
 - This is built on several great libraries, like [GLFW](https://www.glfw.org), [glad](https://github.com/Dav1dde/glad), [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)
 - The test image is from @Arahnoid's [UVChecker-map](https://github.com/Arahnoid/UVChecker-map) repo.

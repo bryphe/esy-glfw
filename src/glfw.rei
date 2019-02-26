@@ -24,6 +24,10 @@ let glfwDestroyWindow: Window.t => unit;
 let glfwSwapInterval: int => unit;
 let glfwGetTime: unit => float;
 let glfwSetTime: float => unit;
+let glfwSetWindowIcon: (Window.t, string) => unit;
+
+let glfwGetNativeWindow: Window.t => NativeWindow.t;
+
 
 module Modifier: {
   type t;
@@ -57,6 +61,11 @@ module Monitor: {
     x: int,
     y: int,
   };
+
+  type dimensions = {
+    width: int,
+    height: int,
+  };
 };
 
 module VideoMode: {
@@ -69,6 +78,7 @@ module VideoMode: {
 let glfwGetPrimaryMonitor: unit => Monitor.t;
 let glfwGetVideoMode: Monitor.t => VideoMode.t;
 let glfwGetMonitorPos: Monitor.t => Monitor.position;
+let glfwGetMonitorPhysicalSize: Monitor.t => Monitor.dimensions;
 
 type windowHint =
   | GLFW_RESIZABLE
@@ -283,6 +293,7 @@ let glDrawArrays: (drawMode, int, int) => unit;
 let glDrawElements: (drawMode, int, glType, int) => unit;
 
 let glReadPixels:
+<<<<<<< HEAD
   (
     int,
     int,
@@ -291,3 +302,6 @@ let glReadPixels:
     Bigarray.Array2.t(int, Bigarray.int8_unsigned_elt, Bigarray.c_layout)
   ) =>
   unit;
+=======
+  (int, int, int, int, texturePixelDataFormat, glType, 'pixelBuffer) => unit;
+>>>>>>> master

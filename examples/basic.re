@@ -53,11 +53,11 @@ let run = () => {
   glfwSetWindowSize(primaryWindow, 800, 600);
   glfwSetWindowTitle(primaryWindow, "reason-glfw example");
 
-  let secondaryWindow =
-    glfwCreateWindow(100, 50, ~sharedContext=primaryWindow, "secondWindow");
-  glfwSetWindowPos(secondaryWindow, vidMode.width / 2, vidMode.height / 2);
-  glfwSetWindowSize(secondaryWindow, 800, 600);
-  glfwSetWindowTitle(secondaryWindow, "second window");
+/*   let secondaryWindow = */
+/*     glfwCreateWindow(100, 50, ~sharedContext=primaryWindow, "secondWindow"); */
+/*   glfwSetWindowPos(secondaryWindow, vidMode.width / 2, vidMode.height / 2); */
+/*   glfwSetWindowSize(secondaryWindow, 800, 600); */
+/*   glfwSetWindowTitle(secondaryWindow, "second window"); */
 
   let cursors = [|
     glfwCreateStandardCursor(GLFW_ARROW_CURSOR),
@@ -70,6 +70,8 @@ let run = () => {
   Random.self_init();
   let cursor = Random.int(Array.length(cursors));
   glfwSetCursor(primaryWindow, cursors[cursor]);
+
+  glfwSetWindowIcon(primaryWindow, "favicon01.png");
 
   glViewport(0, 0, 800, 600);
 
@@ -374,10 +376,13 @@ let run = () => {
     Image.destroy(image);
   };
 
+  let nativeWindow = glfwGetNativeWindow(primaryWindow);
+  print_endline ("Native window handle/pointer: " ++ string_of_int(Obj.magic(nativeWindow)));
+
   let frame = ref(0);
   glfwRenderLoop(_t => {
     render(primaryWindow);
-    render(secondaryWindow);
+    /* render(secondaryWindow); */
     if (frame^ == 60) {
       captureWindow(primaryWindow, Printf.sprintf("scrot%d.tga", frame^));
     };
