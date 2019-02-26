@@ -20,7 +20,7 @@ matrix:
 
       node_js: 8
 install:
-  - travis_retry npm install -g esy@0.4.9
+  - travis_retry npm install -g esy@0.5.6
   - travis_wait esy install
 script:
   - travis_wait 40 esy build

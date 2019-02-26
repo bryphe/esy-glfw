@@ -500,12 +500,14 @@ extern "C" {
             value vPixels) {
         CAMLparam5(vTextureType, vLevel, vInternalFormat, vFormat, vType);
         CAMLxparam1(vPixels);
+        CAMLlocal1(vData);
 
         GLenum format = variantToFormat(vFormat);
         GLsizei numChannels = formatToNumChannels(format);
         GLsizei width = Caml_ba_array_val(vPixels)->dim[1] / numChannels;
         GLsizei height = Caml_ba_array_val(vPixels)->dim[0];
-        GLvoid *pPixels = (GLvoid *)Caml_ba_data_val(vPixels);
+        vData = (value)Caml_ba_data_val(vPixels);
+        GLvoid *pPixels = (GLvoid *)vData;
 
         glTexImage2D(
                 variantToTextureType(vTextureType),
