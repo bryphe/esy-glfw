@@ -13,6 +13,7 @@ external glfwMakeContextCurrent: Window.t => unit =
   "caml_glfwMakeContextCurrent";
 external glfwWindowShouldClose: Window.t => bool =
   "caml_glfwWindowShouldClose";
+
 external glfwPollEvents: unit => unit = "caml_glfwPollEvents";
 external glfwTerminate: unit => unit = "caml_glfwTerminate";
 external glfwSwapBuffers: Window.t => unit = "caml_glfwSwapBuffers";
@@ -40,6 +41,13 @@ external glfwGetTime: unit => [@unboxed] float =
 [@noalloc]
 external glfwSetTime: ([@unboxed] float) => unit =
   "caml_glfwSetTime_byte" "caml_glfwSetTime";
+
+[@noalloc]
+external glfwSetWindowIcon: (Window.t, string) => unit = "caml_glfwSetWindowIcon";
+
+[@noalloc]
+external glfwGetNativeWindow: Window.t => NativeWindow.t =
+  "caml_glfwGetNativeWindow";
 
 module Modifier = {
   type t = int;
@@ -91,6 +99,11 @@ module Monitor = {
     x: int,
     y: int,
   };
+
+  type dimensions = {
+    width: int,
+    height: int,
+  };
 };
 
 module VideoMode = {
@@ -106,6 +119,8 @@ external glfwGetPrimaryMonitor: unit => Monitor.t =
 external glfwGetVideoMode: Monitor.t => VideoMode.t = "caml_glfwGetVideoMode";
 external glfwGetMonitorPos: Monitor.t => Monitor.position =
   "caml_glfwGetMonitorPos";
+external glfwGetMonitorPhysicalSize: Monitor.t => Monitor.dimensions =
+  "caml_glfwGetMonitorPhysicalSize";
 
 type windowHint =
   | GLFW_RESIZABLE
@@ -293,32 +308,46 @@ type shaderLinkResult =
 external glLinkProgram: program => shaderLinkResult = "caml_glLinkProgram";
 
 type attribLocation;
+[@noalloc]
 external glGetAttribLocation: (program, string) => attribLocation =
   "caml_glGetAttribLocation";
 
 type uniformLocation;
+[@noalloc]
 external glGetUniformLocation: (program, string) => uniformLocation =
   "caml_glGetUniformLocation";
 
+[@noalloc]
 external glUniform1f: (uniformLocation, float) => unit = "caml_glUniform1f";
+[@noalloc]
 external glUniform2f: (uniformLocation, float, float) => unit =
   "caml_glUniform2f";
+[@noalloc]
 external glUniform3f: (uniformLocation, float, float, float) => unit =
   "caml_glUniform3f";
+[@noalloc]
 external glUniform4f: (uniformLocation, float, float, float, float) => unit =
   "caml_glUniform4f";
 
+[@noalloc]
 external glUniform1i: (uniformLocation, int) => unit = "caml_glUniform1i";
+[@noalloc]
 external glUniform2i: (uniformLocation, int, int) => unit = "caml_glUniform2i";
+[@noalloc]
 external glUniform3i: (uniformLocation, int, int, int) => unit =
   "caml_glUniform3i";
+[@noalloc]
 external glUniform4i: (uniformLocation, int, int, int, int) => unit =
   "caml_glUniform4i";
 
+[@noalloc]
 external glUniform2fv: (uniformLocation, Vec2.t) => unit = "caml_glUniform2fv";
+[@noalloc]
 external glUniform3fv: (uniformLocation, Vec3.t) => unit = "caml_glUniform3fv";
+[@noalloc]
 external glUniform4fv: (uniformLocation, Vec4.t) => unit = "caml_glUniform4fv";
 
+[@noalloc]
 external glUniformMatrix4fv: (uniformLocation, Mat4.t) => unit =
   "caml_glUniformMatrix4fv";
 
@@ -326,6 +355,7 @@ type pixelAlignmentParameter =
   | GL_PACK_ALIGNMENT
   | GL_UNPACK_ALIGNMENT;
 
+[@noalloc]
 external glPixelStorei: (pixelAlignmentParameter, int) => unit =
   "caml_glPixelStorei";
 
@@ -357,8 +387,11 @@ type glType =
   | GL_UNSIGNED_SHORT_4_4_4_4
   | GL_UNSIGNED_SHORT_5_5_5_1;
 
+[@noallooc]
 external glCreateTexture: unit => texture = "caml_glCreateTexture";
+[@noalloc]
 external glBindTexture: (textureType, texture) => unit = "caml_glBindTexture";
+[@noalloc]
 external glTexParameteri:
   (textureType, textureParameter, textureParameterValue) => unit =
   "caml_glTexParameteri";
@@ -373,6 +406,7 @@ external glTexImage2D:
   ) =>
   unit =
   "caml_glTexImage2D_bytecode" "caml_glTexImage2D_native";
+[@noalloc]
 external glGenerateMipmap: textureType => unit = "caml_glGenerateMipmap";
 
 type bufferType =
@@ -380,19 +414,25 @@ type bufferType =
   | GL_ELEMENT_ARRAY_BUFFER;
 
 type buffer;
+[@noalloc]
 external glCreateBuffer: unit => buffer = "caml_glCreateBuffer";
+[@noalloc]
 external glBindBuffer: (bufferType, buffer) => unit = "caml_glBindBuffer";
+[@noalloc]
 external glUnbindBuffer: bufferType => unit = "caml_glUnbindBuffer";
 
 type drawType =
   | GL_STATIC_DRAW;
 
+[@noalloc]
 external glBufferData:
   (bufferType, Bigarray.Array1.t('a, 'b, Bigarray.c_layout), drawType) => unit =
   "caml_glBufferData";
 
+[@noalloc]
 external glVertexAttribPointer: (attribLocation, int, glType, bool) => unit =
   "caml_glVertexAttribPointer";
+[@noalloc]
 external glEnableVertexAttribArray: attribLocation => unit =
   "caml_glEnableVertexAttribArray";
 
@@ -400,7 +440,9 @@ type drawMode =
   | GL_TRIANGLES
   | GL_TRIANGLE_STRIP;
 
+[@noalloc]
 external glDrawArrays: (drawMode, int, int) => unit = "caml_glDrawArrays";
+[@noalloc]
 external glDrawElements: (drawMode, int, glType, int) => unit =
   "caml_glDrawElements";
 

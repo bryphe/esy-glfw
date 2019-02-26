@@ -12,6 +12,10 @@ module Window = {
   };
 };
 
+module NativeWindow = {
+    type t;
+}
+
 type enableOptions =
   | GL_DEPTH_TEST
   | GL_BLEND
