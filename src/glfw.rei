@@ -293,7 +293,6 @@ let glDrawArrays: (drawMode, int, int) => unit;
 let glDrawElements: (drawMode, int, glType, int) => unit;
 
 let glReadPixels:
-<<<<<<< HEAD
   (
     int,
     int,
@@ -302,6 +301,3 @@ let glReadPixels:
     Bigarray.Array2.t(int, Bigarray.int8_unsigned_elt, Bigarray.c_layout)
   ) =>
   unit;
-=======
-  (int, int, int, int, texturePixelDataFormat, glType, 'pixelBuffer) => unit;
->>>>>>> master
