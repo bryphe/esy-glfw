@@ -71,7 +71,7 @@ let run = () => {
   let cursor = Random.int(Array.length(cursors));
   glfwSetCursor(primaryWindow, cursors[cursor]);
 
-  glfwSetWindowIcon(primaryWindow, "favicon01.png");
+  glfwSetWindowIcon(primaryWindow, getExecutingDirectory() ++ "favicon01.png");
 
   glViewport(0, 0, 800, 600);
 
@@ -85,8 +85,10 @@ let run = () => {
   /* Update pack alignment to allow single-channel images */
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
+  print_endline ("Trying to load image - " ++ getExecutingDirectory());
   let%lwt img =
     Image.load(getExecutingDirectory() ++ "UVCheckerMap02-512.png");
+  print_endline ("Loaded image!");
   /* let img = Image.fromColor(255, 0, 0, 255); */
   let dimensions = Image.getDimensions(img);
   let pixels = Image.getPixels(img);
