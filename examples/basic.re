@@ -85,10 +85,9 @@ let run = () => {
   /* Update pack alignment to allow single-channel images */
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
-  print_endline ("Trying to load image - " ++ getExecutingDirectory());
   let%lwt img =
     Image.load(getExecutingDirectory() ++ "UVCheckerMap02-512.png");
-  print_endline ("Loaded image!");
+
   /* let img = Image.fromColor(255, 0, 0, 255); */
   let dimensions = Image.getDimensions(img);
   let pixels = Image.getPixels(img);
