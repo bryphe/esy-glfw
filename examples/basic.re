@@ -375,6 +375,18 @@ let run = () => {
       render(window);
     },
   );
+  
+  glfwSetWindowPosCallback(
+    primaryWindow,
+    (_w, x, y) => {
+      print_endline(
+        "Window position changed: "
+        ++ string_of_int(x)
+        ++ ", "
+        ++ string_of_int(y),
+      );
+    },
+  );
 
   /* glfwMaximizeWindow(w); */
 
