@@ -40,6 +40,7 @@ extern "C" {
         bool isDestroyed;
         value vSetFramebufferSizeCallback;
         value vSetWindowSizeCallback;
+        value vSetWindowPosCallback;
         value vSetCursorPosCallback;
         value vKeyCallback;
         value vMouseButtonCallback;
@@ -164,6 +165,15 @@ extern "C" {
         }
     }
 
+    void window_pos_callback(GLFWwindow *pWin, int iX, int iY) {
+        // Is there a window info?
+        WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
+
+        if (pWinInfo && pWinInfo->vSetWindowPosCallback != Val_unit) {
+            (void) caml_callback3((value)pWinInfo->vSetWindowPosCallback, ((value)(void *)pWinInfo), Val_int(iX), Val_int(iY));
+        }
+    }
+
     void key_callback(GLFWwindow *pWin, int key, int scancode, int action, int mods) {
         WindowInfo * pWinInfo = getWindowInfoFromWindow(pWin);
         if (pWinInfo && pWinInfo->vKeyCallback != Val_unit) {
@@ -275,6 +285,7 @@ extern "C" {
       pWindowInfo->isDestroyed = false;
       pWindowInfo->vSetFramebufferSizeCallback = Val_unit;
       pWindowInfo->vSetWindowSizeCallback = Val_unit;
+      pWindowInfo->vSetWindowPosCallback = Val_unit;
       pWindowInfo->vSetCursorPosCallback = Val_unit;
       pWindowInfo->vCharCallback = Val_unit;
       pWindowInfo->vCharModsCallback = Val_unit;
@@ -284,6 +295,7 @@ extern "C" {
 
       glfwSetFramebufferSizeCallback(wd, framebuffer_size_callback);
       glfwSetWindowSizeCallback(wd, window_size_callback);
+      glfwSetWindowPosCallback(wd, window_pos_callback);
       glfwSetCursorPosCallback(wd, cursor_pos_callback);
       glfwSetCharCallback(wd, char_callback);
       glfwSetCharModsCallback(wd, char_mods_callback);
@@ -368,6 +380,24 @@ extern "C" {
             // collector knows it is being used.
             pWinInfo->vSetWindowSizeCallback = vCallback;
             caml_register_global_root(&(pWinInfo->vSetWindowSizeCallback));
+        }
+
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_glfwSetWindowPosCallback(value vWindow, value vCallback) {
+        CAMLparam2(vWindow, vCallback);
+
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+
+        if (pWinInfo) {
+            // TODO: Recycle existing callback if any!
+
+            // We need to mark the closure as being a global root, so the garbage
+            // collector knows it is being used.
+            pWinInfo->vSetWindowPosCallback = vCallback;
+            caml_register_global_root(&(pWinInfo->vSetWindowPosCallback));
         }
 
         CAMLreturn(Val_unit);
