@@ -360,10 +360,15 @@ function caml_glfwSetWindowIcon(w, path) {
 function caml_glfwWindowHint(hint, val) {
     joo_global_object.console.warn("Unsupported API: glfwWindowHint");
 }
-//
+
 // Provides: caml_glfwSetWindowSizeCallback
 function caml_glfwSetWindowSizeCallback(w, callback) {
     w.onSetWindowSize = callback;
+}
+//
+// Provides: caml_glfwSetWindowPosCallback
+function caml_glfwSetWindowPosCallback(w, callback) {
+    // no-op
 }
 
 // Provides: caml_glfwSetFramebufferSizeCallback
