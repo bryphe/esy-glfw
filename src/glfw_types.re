@@ -23,3 +23,4 @@ type enableOptions =
 
 type glfwFramebufferSizeCallback = (Window.t, int, int) => unit;
 type glfwWindowSizeCallback = (Window.t, int, int) => unit;
+type glfwWindowPosCallback = (Window.t, int, int) => unit;
