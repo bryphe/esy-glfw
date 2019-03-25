@@ -351,18 +351,20 @@ extern "C" {
     }
 
     CAMLprim value
-    caml_glUniform1f(value vUniformLocation, value v0) {
-        float f0 = Double_val(v0);
+    caml_glUniform1f(value vUniformLocation, double f) {
         int iUniformLocation = (int)vUniformLocation;
 
-        glUniform1f(iUniformLocation, f0);
+        glUniform1f(iUniformLocation, f);
         return Val_unit;
     }
 
     CAMLprim value
-    caml_glUniform2f(value vUniformLocation, value v0, value v1) {
-        float f0 = Double_val(v0);
-        float f1 = Double_val(v1);
+    caml_glUniform1f_byte(value vUniformLocation, value v0) {
+        return caml_glUniform1f(vUniformLocation, Double_val(v0));
+    }
+
+    CAMLprim value
+    caml_glUniform2f(value vUniformLocation, double f0, double f1) {
         int iUniformLocation = (int)vUniformLocation;
 
         glUniform2f(iUniformLocation, f0, f1);
@@ -370,10 +372,12 @@ extern "C" {
     }
 
     CAMLprim value
-    caml_glUniform3f(value vUniformLocation, value v0, value v1, value v2) {
-        float f0 = Double_val(v0);
-        float f1 = Double_val(v1);
-        float f2 = Double_val(v2);
+    caml_glUniform2f_byte(value vUniformLocation, value v0, value v1) {
+        return caml_glUniform2f(vUniformLocation, Double_val(v0), Double_val(v1));
+    }
+
+    CAMLprim value
+    caml_glUniform3f(value vUniformLocation, double f0, double f1, double f2) {
         int iUniformLocation = (int)vUniformLocation;
 
         glUniform3f(iUniformLocation, f0, f1, f2);
@@ -381,15 +385,21 @@ extern "C" {
     }
 
     CAMLprim value
-    caml_glUniform4f(value vUniformLocation, value v0, value v1, value v2, value v3) {
-        float f0 = Double_val(v0);
-        float f1 = Double_val(v1);
-        float f2 = Double_val(v2);
-        float f3 = Double_val(v3);
+    caml_glUniform3f_byte(value vUniformLocation, value v0, value v1, value v2) {
+        return caml_glUniform3f(vUniformLocation, Double_val(v0), Double_val(v1), Double_val(v2));
+    }
+
+    CAMLprim value
+    caml_glUniform4f(value vUniformLocation, double f0, double f1, double f2, double f3) {
         int iUniformLocation = (int)vUniformLocation;
 
         glUniform4f(iUniformLocation, f0, f1, f2, f3);
         return Val_unit;
+    }
+
+    CAMLprim value
+    caml_glUniform4f_byte(value vUniformLocation, value v0, value v1, value v2, value v3) {
+        return caml_glUniform4f(vUniformLocation, Double_val(v0), Double_val(v1), Double_val(v2), Double_val(v3));
     }
 
     CAMLprim value

@@ -362,16 +362,16 @@ external glGetUniformLocation: (program, string) => uniformLocation =
   "caml_glGetUniformLocation";
 
 [@noalloc]
-external glUniform1f: (uniformLocation, float) => unit = "caml_glUniform1f";
+external glUniform1f: (uniformLocation, [@unboxed] float) => unit = "caml_glUniform1f_byte" "caml_glUniform1f";
 [@noalloc]
-external glUniform2f: (uniformLocation, float, float) => unit =
-  "caml_glUniform2f";
+external glUniform2f: (uniformLocation, [@unboxed] float, [@unboxed] float) => unit =
+  "caml_glUniform2f_byte" "caml_glUniform2f";
 [@noalloc]
-external glUniform3f: (uniformLocation, float, float, float) => unit =
-  "caml_glUniform3f";
+external glUniform3f: (uniformLocation, [@unboxed] float, [@unboxed] float, [@unboxed] float) => unit =
+  "caml_glUniform3f_byte" "caml_glUniform3f";
 [@noalloc]
-external glUniform4f: (uniformLocation, float, float, float, float) => unit =
-  "caml_glUniform4f";
+external glUniform4f: (uniformLocation, [@unboxed] float, [@unboxed] float, [@unboxed] float, [@unboxed] float) => unit =
+  "caml_glUniform4f_byte" "caml_glUniform4f";
 
 [@noalloc]
 external glUniform1i: (uniformLocation, int) => unit = "caml_glUniform1i";
