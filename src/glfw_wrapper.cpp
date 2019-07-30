@@ -751,29 +751,39 @@ extern "C" {
     CAMLprim value
     caml_glfwPollEvents(value unit)
     {
+        CAMLparam0();
+        caml_release_runtime_system();
         glfwPollEvents();
-        return Val_unit;
+        caml_acquire_runtime_system();
+        CAMLreturn(Val_unit);
     }
     
     CAMLprim value
     caml_glfwPostEmptyEvent(value unit)
     {
+        CAMLparam0();
         glfwPostEmptyEvent();
-        return Val_unit;
+        CAMLreturn(Val_unit);
     }
 
     CAMLprim value
     caml_glfwWaitEvents(value unit)
     {
+        CAMLparam0();
+        caml_release_runtime_system();
         glfwWaitEvents();
-        return Val_unit;
+        caml_acquire_runtime_system();
+        CAMLreturn(Val_unit);
     }
     
     CAMLprim value
-    caml_glfwWaitEventsTimeout(double timeout)
+    caml_glfwWaitEventsTimeout(value timeout)
     {
-        glfwWaitEventsTimeout(timeout);
-        return Val_unit;
+        CAMLparam1(timeout);
+        caml_release_runtime_system();
+        glfwWaitEventsTimeout(Double_val(timeout));
+        caml_acquire_runtime_system();
+        CAMLreturn(Val_unit);
     }
 
     CAMLprim value
