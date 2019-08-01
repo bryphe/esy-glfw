@@ -238,6 +238,40 @@ extern "C" {
     }
 
     CAMLprim value
+    caml_glfwGetClipboardString(value vWindow) {
+        CAMLparam1(vWindow);
+        CAMLlocal1(ret);
+        
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+        GLFWwindow *wd = pWinInfo->pWindow;
+
+        const char* sz = glfwGetClipboardString(wd);
+        printf("string: %s\n", sz);
+
+
+        if (wd == NULL) {
+            ret = Val_none;
+        } else {
+            ret = caml_alloc(1, 0);
+            Store_field(ret, 0, caml_copy_string(sz));
+        }
+
+        CAMLreturn(ret);
+    }
+
+    CAMLprim value
+    caml_glfwSetClipboardString(value vWindow, value vSz) {
+        CAMLparam2(vWindow, vSz);
+
+        char *s = String_val(vSz);
+        WindowInfo *pWinInfo = (WindowInfo *)vWindow;
+        GLFWwindow *wd = pWinInfo->pWindow;
+
+        glfwSetClipboardString(wd, s);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
     caml_glfwGetNativeWindow(value vWindow) {
         WindowInfo *pWinInfo = (WindowInfo *)vWindow;
 

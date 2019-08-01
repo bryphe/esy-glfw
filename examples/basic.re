@@ -417,6 +417,24 @@ let run = () => {
     };
     frame := frame^ + 1;
 
+    let s = Glfw.glfwGetClipboardString(primaryWindow);
+
+    let v = switch(s) {
+    | Some(v) => "Some(" ++ v ++ ")"
+    | None => "None"
+    }
+    print_endline ("Clipboard string before: " ++ v);
+/*
+    Glfw.glfwSetClipboardString(primaryWindow, "test clipboard: " ++ string_of_int(frame^));
+    
+    let s = Glfw.glfwGetClipboardString(primaryWindow);
+    let v = switch(s) {
+    | Some(v) => "Some(" ++ v ++ ")"
+    | None => "None"
+    }
+    print_endline ("Clipboard string after: " ++ v);
+  */
+
     /* Run the GC so we can catch any GC-related crashes early! */
     Gc.full_major();
 
