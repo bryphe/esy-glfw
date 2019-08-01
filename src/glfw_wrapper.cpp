@@ -246,10 +246,8 @@ extern "C" {
         GLFWwindow *wd = pWinInfo->pWindow;
 
         const char* sz = glfwGetClipboardString(wd);
-        printf("string: %s\n", sz);
 
-
-        if (wd == NULL) {
+        if (sz == NULL) {
             ret = Val_none;
         } else {
             ret = caml_alloc(1, 0);
