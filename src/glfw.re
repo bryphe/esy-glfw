@@ -64,6 +64,9 @@ external glfwSetTime: ([@unboxed] float) => unit =
 external glfwSetWindowIcon: (Window.t, string) => unit =
   "caml_glfwSetWindowIcon";
 
+external glfwGetClipboardString: (Window.t) => option(string) = "caml_glfwGetClipboardString";
+external glfwSetClipboardString: (Window.t) => string = "caml_gflwSetClipbaordString";
+
 [@noalloc]
 external glfwGetNativeWindow: Window.t => NativeWindow.t =
   "caml_glfwGetNativeWindow";

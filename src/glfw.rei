@@ -26,6 +26,9 @@ let glfwGetTime: unit => float;
 let glfwSetTime: float => unit;
 let glfwSetWindowIcon: (Window.t, string) => unit;
 
+let glfwGetClipboardString: (Window.t) => string;
+let glfwSetClipboardString: (Window.t, string) => unit;
+
 let glfwGetNativeWindow: Window.t => NativeWindow.t;
 
 module Modifier: {
