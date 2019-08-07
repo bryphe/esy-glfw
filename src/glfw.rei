@@ -16,6 +16,7 @@ let glfwSetWindowPos: (Window.t, int, int) => unit;
 let glfwSetWindowSize: (Window.t, int, int) => unit;
 let glfwGetFramebufferSize: Window.t => Window.frameBufferSize;
 let glfwGetWindowSize: Window.t => Window.windowSize;
+let glfwGetWindowContentScale: Window.t => Window.windowScale;
 let glfwMaximizeWindow: Window.t => unit;
 let glfwSetWindowTitle: (Window.t, string) => unit;
 let glfwShowWindow: Window.t => unit;

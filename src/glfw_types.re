@@ -10,6 +10,11 @@ module Window = {
     width: int,
     height: int,
   };
+
+  type windowScale = {
+    xScale: float,
+    yScale: float
+  }
 };
 
 module NativeWindow = {

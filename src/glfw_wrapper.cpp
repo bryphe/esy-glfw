@@ -241,7 +241,7 @@ extern "C" {
     caml_glfwGetClipboardString(value vWindow) {
         CAMLparam1(vWindow);
         CAMLlocal1(ret);
-        
+
         WindowInfo *pWinInfo = (WindowInfo *)vWindow;
         GLFWwindow *wd = pWinInfo->pWindow;
 
@@ -295,7 +295,7 @@ extern "C" {
       int h = Int_val(iHeight);
       char *s = String_val(sTitle);
 
-      /* 
+      /*
       vSharedContext is an optional labeled argument in OCaml
       Depending on the value of vSharedContext we create a normal window if is none
       or a window with shared context https://www.glfw.org/docs/latest/context_guide.html#context_sharing if the value exists
@@ -615,6 +615,40 @@ extern "C" {
         ret = caml_alloc(2, 0);
         Store_field(ret, 0, Val_int(width));
         Store_field(ret, 1, Val_int(height));
+
+        CAMLreturn(ret);
+    }
+
+    CAMLprim value
+    caml_glfwGetWindowContentScale(value vWindow)
+    {
+        CAMLparam1(vWindow);
+        CAMLlocal1(ret);
+        WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
+
+        float xScale, yScale;
+        glfwGetWindowContentScale(pWindowInfo->pWindow, &xScale, &yScale);
+
+        ret = caml_alloc(2, 0);
+        Store_field(ret, 0, Val_int(xScale));
+        Store_field(ret, 1, Val_int(yScale));
+
+        CAMLreturn(ret);
+    }
+
+    CAMLprim value
+    caml_glfwGetMonitorContentScale(value vMonitor)
+    {
+        CAMLparam1(vMonitor);
+        CAMLlocal1(ret);
+        GLFWmonitor* pMonitor = (GLFWmonitor*)vMonitor;
+
+        float xScale, yScale;
+        glfwGetMonitorContentScale(pMonitor, &xScale, &yScale);
+
+        ret = caml_alloc(2, 0);
+        Store_field(ret, 0, Val_int(xScale));
+        Store_field(ret, 1, Val_int(yScale));
 
         CAMLreturn(ret);
     }
