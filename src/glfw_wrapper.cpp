@@ -626,12 +626,12 @@ extern "C" {
         CAMLlocal1(ret);
         WindowInfo* pWindowInfo = (WindowInfo *)vWindow;
 
-        float xScale, yScale;
-        glfwGetWindowContentScale(pWindowInfo->pWindow, &xScale, &yScale);
+        double xScale, yScale;
+        glfwGetWindowContentScale(pWindowInfo->pWindow, (float*) &xScale, (float*) &yScale);
 
-        ret = caml_alloc(2, 0);
-        Store_field(ret, 0, Val_int(xScale));
-        Store_field(ret, 1, Val_int(yScale));
+        ret = caml_alloc(2 * Double_wosize, Double_array_tag);
+        Store_double_field(ret, 0, xScale);
+        Store_double_field(ret, 1, yScale);
 
         CAMLreturn(ret);
     }
@@ -643,12 +643,12 @@ extern "C" {
         CAMLlocal1(ret);
         GLFWmonitor* pMonitor = (GLFWmonitor*)vMonitor;
 
-        float xScale, yScale;
-        glfwGetMonitorContentScale(pMonitor, &xScale, &yScale);
+        double xScale, yScale;
+        glfwGetMonitorContentScale(pMonitor, (float*) &xScale, (float*) &yScale);
 
-        ret = caml_alloc(2, 0);
-        Store_field(ret, 0, Val_int(xScale));
-        Store_field(ret, 1, Val_int(yScale));
+        ret = caml_alloc(2 * Double_wosize, Double_array_tag);
+        Store_double_field(ret, 0, xScale);
+        Store_double_field(ret, 1, yScale);
 
         CAMLreturn(ret);
     }
