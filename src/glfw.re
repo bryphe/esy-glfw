@@ -139,6 +139,11 @@ module Monitor = {
     width: int,
     height: int,
   };
+
+  type scale = {
+    xScale: float,
+    yScale: float,
+  }
 };
 
 module VideoMode = {
@@ -156,6 +161,8 @@ external glfwGetMonitorPos: Monitor.t => Monitor.position =
   "caml_glfwGetMonitorPos";
 external glfwGetMonitorPhysicalSize: Monitor.t => Monitor.dimensions =
   "caml_glfwGetMonitorPhysicalSize";
+external glfwGetMonitorContentScale: Monitor.t => Monitor.scale =
+  "caml_glfwGetMonitorContentScale";
 
 type windowHint =
   | GLFW_RESIZABLE
