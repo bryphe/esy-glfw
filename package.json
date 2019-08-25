@@ -27,7 +27,7 @@
     "ocaml": "^4.6.0"
   },
   "dependencies": {
-    "@opam/dune": "1.7.3",
+    "@opam/dune": "*",
     "@esy-ocaml/reason": "^3.3.7",
     "refmterr": "^3.1.0",
     "@opam/js_of_ocaml": "^3.3.0",
