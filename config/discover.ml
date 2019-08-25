@@ -34,7 +34,6 @@ let flags =
         @ cclib("-lglfw3")
         @ cclib("-lgdi32")
     | Linux -> []
-        @ ccopt("-fPIC")
         @ ccopt(libPath)
         @ cclib("-lGL")
         @ cclib("-lGLU")
@@ -57,6 +56,7 @@ let flags =
 
 let cxx_flags =
     match get_os with
+    | Linux -> c_flags @ ["-fPIC"]
     | Windows -> c_flags @ ["-fno-exceptions"; "-fno-rtti"; "-lstdc++"]
     | _ -> c_flags
 ;;
