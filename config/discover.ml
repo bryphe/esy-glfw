@@ -34,6 +34,7 @@ let flags =
         @ cclib("-lglfw3")
         @ cclib("-lgdi32")
     | Linux -> []
+        @ ccopt("-fPIC")
         @ ccopt(libPath)
         @ cclib("-lGL")
         @ cclib("-lGLU")
