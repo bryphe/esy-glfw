@@ -20,7 +20,7 @@ let get_os =
         | _ -> Unknown
 
 let root = Sys.getenv "cur__root"
-let c_flags = ["-I"; (Sys.getenv "GLFW_INCLUDE_PATH"); "-I"; Filename.concat root "include"; "-I"; Filename.concat root "src"]
+let c_flags = ["-fPIC"; "-I"; (Sys.getenv "GLFW_INCLUDE_PATH"); "-I"; Filename.concat root "include"; "-I"; Filename.concat root "src"]
 
 let libPath = "-L" ^ (Sys.getenv "GLFW_LIB_PATH")
 
