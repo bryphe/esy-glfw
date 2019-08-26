@@ -50,7 +50,6 @@ let flags =
         @ cclib("-lXcursor")
         @ cclib("-lpthread")
         @ cclib("-lXi")
-	@ cclib("-lstdc++")
     | _ -> []
         @ ccopt(libPath)
         @ cclib("-lglfw3")
@@ -62,6 +61,7 @@ let flags =
 
 let cxx_flags =
     match get_os with
+    | Linux -> c_flags @ ["-lstdc++"]
     | Windows -> c_flags @ ["-fno-exceptions"; "-fno-rtti"; "-lstdc++"]
     | _ -> c_flags
 ;;
