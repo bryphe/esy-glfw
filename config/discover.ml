@@ -50,6 +50,7 @@ let flags =
         @ cclib("-lXcursor")
         @ cclib("-lpthread")
         @ cclib("-lXi")
+	@ cclib("-lstdc++")
     | _ -> []
         @ ccopt(libPath)
         @ cclib("-lglfw3")
