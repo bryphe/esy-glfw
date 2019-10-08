@@ -1,0 +1,12 @@
+(executable
+    (name test_glfw_byte)
+    (preprocess (pps lwt_ppx))
+    (modes byte)
+    (public_name test_glfw_byte)
+    (libraries
+        lwt
+        lwt.unix
+        reglm
+        EsyGlfwExamples
+        reglfw
+            ))
